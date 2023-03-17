@@ -1,10 +1,32 @@
-with track_info as (
+with track_info_raw as (
         SELECT 
             pair as pair,
-            writer as autor,
-            title as titulo
+            writer as autor1_track,
+            title as titulo_track
         FROM tracks
         ),
+    
+    song_info as (
+        SELECT
+            writer as autor1,
+            cowriter as autor2,
+            title as titulo_song
+        FROM songs
+        ),
+
+    track_info as (
+        SELECT 
+            autor1, 
+            autor2, 
+            titulo_song, 
+            pair 
+        FROM (
+            track_info_raw
+            inner JOIN
+            song_info
+            ON track_info_raw.autor1_track = song_info.autor1 and track_info_raw.titulo_track = song_info.titulo_song
+        )
+    ),
 
     performer_info as (
         SELECT
@@ -24,7 +46,7 @@ with track_info as (
 
     members as (
         SELECT
-            musician as autor_2,
+            musician as member,
             band as interprete_2
         FROM involvement
         ),
@@ -37,8 +59,8 @@ with track_info as (
                 performer_tracks
                 INNER JOIN
                 members
-                ON
-                performer_tracks.autor = members.autor_2 and performer_tracks.interprete = members.interprete_2
+                ON 
+                (members.member = performer_tracks.autor1 or members.member = performer_tracks.autor2) and performer_tracks.interprete = members.interprete_2
             ) 
         GROUP BY interprete
         ),
@@ -53,9 +75,9 @@ with track_info as (
 
     SELECT 
         interprete_numerador_tracks,
+        round(100*(num_numerador_tracks/num_denominador_tracks), 2)||'%' as porcentaje_tracks,
         num_numerador_tracks,
-        num_denominador_tracks,
-        num_numerador_tracks/num_denominador_tracks as porcentaje_tracks
+        num_denominador_tracks
     FROM (
         numerador_tracks
         INNER JOIN
@@ -66,8 +88,14 @@ with track_info as (
     ORDER BY num_numerador_tracks/num_denominador_tracks
     
     
-    
-    
-    
-    
-    
+
+
+
+
+
+with performer_performances as (
+    SELECT
+        songtitle as titulo
+
+
+)
