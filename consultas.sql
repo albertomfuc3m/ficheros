@@ -47,20 +47,39 @@ with track_info_raw as (
     members as (
         SELECT
             musician as member,
-            band as interprete_2
+            band as interprete_member
         FROM involvement
+            WHERE end_d is NULL
         ),
+    performer_tracks_new as (
+        SELECT 
+            autor1,
+            autor2,
+            titulo_song,
+            interprete,
+            interprete_member as interprete_autor1
+        FROM (
+            performer_tracks
+            INNER JOIN
+            members
+            ON
+                performer_tracks.autor1 = members.member
+        )
+
+    )
 
     numerador_tracks as (
         SELECT
             interprete as interprete_numerador_tracks, 
             count(*) as num_numerador_tracks
         FROM(
-                performer_tracks
+                performer_tracks_new
                 INNER JOIN
                 members
                 ON 
-                (members.member = performer_tracks.autor1 or members.member = performer_tracks.autor2) and performer_tracks.interprete = members.interprete_2
+                (members.member = performer_tracks.autor1 AND members.interprete_member = performer_tracks_new.interprete) OR
+                (members.member = performer_tracks.autor2 AND members.interprete_member = performer_tracks_new.interprete AND 
+                performer_tracks_new.interprete_autor1 != members.interprete_member)
             ) 
         GROUP BY interprete
         ),
@@ -69,7 +88,7 @@ with track_info_raw as (
         SELECT 
             interprete as interprete_denominador_tracks,
             count(*) as num_denominador_tracks
-        FROM performer_tracks 
+        FROM performer_tracks_new 
         GROUP BY interprete
     )
 
@@ -88,14 +107,3 @@ with track_info_raw as (
     ORDER BY num_numerador_tracks/num_denominador_tracks
     
     
-
-
-
-
-
-with performer_performances as (
-    SELECT
-        songtitle as titulo
-
-
-)
