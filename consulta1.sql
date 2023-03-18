@@ -73,7 +73,8 @@ with song_info as (
             performer_info 
             ON track_info.pair = performer_info.pair
             )
-    ),
+        ),
+    
     temp_performance as (
        -- añadir el grupo del primer autor
         SELECT
@@ -84,7 +85,7 @@ with song_info as (
             band as band_autor1
         FROM (
             performer_performance
-            LEFT OUTER join
+            LEFT OUTER JOIN
             members
             ON members.member = performer_performance.autor1
         ) 
@@ -109,6 +110,7 @@ with song_info as (
         SELECT * FROM tabla_sin_filtrar_performance
         WHERE interprete = band_autor1 or interprete = band_autor2
     ),
+    
     numerador_performance as (
         SELECT 
             performers.name as interprete_numerador_performance,
@@ -155,7 +157,7 @@ with song_info as (
             band as band_autor1
         FROM (
             performer_tracks
-            LEFT OUTER join
+            LEFT OUTER JOIN
             members
             ON members.member = performer_tracks.autor1
         )
