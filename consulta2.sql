@@ -84,19 +84,23 @@ with tracks_info_raw as (
         GROUP BY  performers.name
     ),
     
-    porcentaje as (
-        SELECT 
-            numerador_porcentaje.p_interprete,
-            round(100*(numerador_porcentaje.numerador/denominador_porcentaje.denominador), 2)||'%' as porcentaje
-        FROM (
-            numerador_porcentaje
-            INNER JOIN
-            denominador_porcentaje
-            
-            ON numerador_porcentaje.p_interprete = denominador_porcentaje.p_interprete
+    top_10 as (
+        SELECT * FROM (
+            SELECT 
+                numerador_porcentaje.p_interprete as p_interprete
+                -- round(100*(numerador_porcentaje.numerador/denominador_porcentaje.denominador), 2)||'%' as porcentaje
+            FROM (
+                numerador_porcentaje
+                INNER JOIN
+                denominador_porcentaje
+                
+                ON numerador_porcentaje.p_interprete = denominador_porcentaje.p_interprete
+            )
+            ORDER BY numerador_porcentaje.numerador/denominador_porcentaje.denominador
         )
-        
+        WHERE ROWNUM <= 11
     ),
+    
     temp as (
         SELECT
             performance_info.interprete as p_interprete,
@@ -105,14 +109,12 @@ with tracks_info_raw as (
             performance_info.f_interpretacion as p_fecha,
             f_grabacion as t_fecha,
             tracks_info.autor1 as t_autor1,
-            tracks_info.interprete as t_interprete
-            -- ,f_interpretacion - f_grabacion as intervalo,
-            -- round((f_interpretacion - f_grabacion)/365,0) as YEARS,
-            -- round(MOD(f_interpretacion - f_grabacion, 365)/30,0) as MONTHS,
-            -- MOD(MOD(f_interpretacion - f_grabacion, 365),30) as DAYS
+            tracks_info.interprete as t_interprete,
+            f_interpretacion - f_grabacion as edad
+
         FROM (
            performance_info
-           LEFT OUTER JOIN
+           INNER JOIN
            tracks_info
 
            ON tracks_info.interprete = performance_info.interprete AND
@@ -121,16 +123,26 @@ with tracks_info_raw as (
         ) order by p_interprete
         
     ),
-    pre_porcentaje as (
+    medias as (
+    
         SELECT
             p_interprete,
-            p_titulo,
-            p_autor1,
-            count(*)
+            round(sum(edad)/count(*),0) as media
         FROM temp
-        GROUP BY 
-            p_interprete,
-            p_titulo,
-            p_autor1
-   )
-   select * from porcentaje
+        GROUP BY p_interprete  
+    ),
+    FINAL as (
+        SELECT 
+            top_10.p_interprete,
+            medias.media as media_total_dias,
+            trunc(medias.media/365,0) as media_años,
+            trunc(MOD(medias.media, 365)/30,0) as media_meses,
+            MOD(MOD(medias.media, 365),30) as media_dias
+        FROM 
+            top_10
+            INNER JOIN
+            medias
+            on medias.p_interprete = top_10.p_interprete
+    )
+    
+    SELECT * FROM FINAL
