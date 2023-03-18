@@ -15,7 +15,7 @@ with song_info as (
     ),
 
     track_info_raw as (
-        SELECT 
+        SELECT
             pair as pair,
             writer as autor1_track,
             title as titulo_track
