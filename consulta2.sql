@@ -98,7 +98,7 @@ with tracks_info_raw as (
             )
             ORDER BY numerador_porcentaje.numerador/denominador_porcentaje.denominador
         )
-        WHERE ROWNUM <= 11
+        WHERE ROWNUM <= 10
     ),
     
     temp as (
@@ -124,7 +124,6 @@ with tracks_info_raw as (
         
     ),
     medias as (
-    
         SELECT
             p_interprete,
             round(sum(edad)/count(*),0) as media
