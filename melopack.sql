@@ -3,7 +3,7 @@ CREATE OR REPLACE PACKAGE melopack AS
     interprete_actual VARCHAR2(50);
   
     PROCEDURE asignar(id_interprete VARCHAR2);
-    FUNCTION get_ia() return VARCHAR2;
+    FUNCTION get_ia return VARCHAR2;
     PROCEDURE insertar_album_track(
         id_pair CHAR,
         format CHAR,
@@ -21,7 +21,6 @@ CREATE OR REPLACE PACKAGE melopack AS
         duration NUMBER
         );
     PROCEDURE borrar_track(id_pair CHAR, sequ NUMBER);
-    PROCEDURE informe();
     
 
 END melopack;
@@ -46,9 +45,9 @@ CREATE OR REPLACE PACKAGE BODY melopack AS
             END IF;
         END asignar;
     
-    FUNCTION get_ia() return VARCHAR2 IS 
+    FUNCTION get_ia return VARCHAR2 IS 
         BEGIN
-            return interprete_actual
+            return interprete_actual;
         END get_ia;
     PROCEDURE insertar_album_track(
         id_pair CHAR,
@@ -210,21 +209,7 @@ CREATE OR REPLACE PACKAGE BODY melopack AS
             END IF;
         END borrar_track;
 
-    PROCEDURE informe() AS
-
-        -- # album por tipo
-        with n_albums as (
-            SELECT 
-                format,
-                count(*)
-            FROM albums
-            WHERE performer = interprete_actual;
-        )
-
-
-
-    END informe;
-
+    
 
 END melopack;
 
