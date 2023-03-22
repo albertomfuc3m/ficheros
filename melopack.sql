@@ -73,7 +73,6 @@ CREATE OR REPLACE PACKAGE BODY melopack AS
             BEGIN
                 IF interprete_actual is not NULL THEN
                     -- Comprobar las filas referenciadas
-                    
                     SELECT 
                         count(*)
                         INTO cuenta
