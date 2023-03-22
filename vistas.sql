@@ -1,4 +1,4 @@
-CREATE OR REPLACE VIEW my_albums as (
+CREATE OR REPLACE VIEW my_albums as 
     SELECT
         albums.title as t,
         sum(tracks.duration) as d
@@ -12,7 +12,7 @@ CREATE OR REPLACE VIEW my_albums as (
     )
     WHERE albums.performer = melopack.get_ia()
     GROUP BY albums.title, albums.pair
-)WITH READ ONLY;
+) WITH READ ONLY;
 
 CREATE OR REPLACE VIEW events as (
     WITH 
@@ -28,7 +28,7 @@ CREATE OR REPLACE VIEW events as (
     n_conciertos as (
         SELECT 
             TO_CHAR(when, 'MM-YYYY') as fecha,
-            count(*) as total_conciertos,
+            count(*) as total_conciertos
         FROM concerts
         WHERE concerts.performer = melopack.get_ia()
         GROUP BY TO_CHAR(when, 'MM-YYYY')
@@ -36,7 +36,7 @@ CREATE OR REPLACE VIEW events as (
     n_espectadores as (
         SELECT 
             TO_CHAR(when, 'MM-YYYY') as fecha,
-            count(*) as total_espectadores,
+            count(*) as total_espectadores
         FROM attendances
         WHERE attendances.performer = melopack.get_ia()
         GROUP BY TO_CHAR(when, 'MM-YYYY')
@@ -46,25 +46,25 @@ CREATE OR REPLACE VIEW events as (
             n_conciertos.fecha as fecha,
             n_conciertos.total_conciertos as n_conciertos,
             n_espectadores.total_espectadores as n_espectadores,
-            n_interpretacion.m_duration as media_duracion,
+            round(n_interpretacion.m_duration, 2) as media_duracion,
             round(n_interpretacion.total_interpretacion/n_conciertos.total_conciertos, 2) as media_interpretaciones
         FROM (
+            
             n_conciertos
             INNER JOIN
             n_espectadores
             ON n_conciertos.fecha = n_espectadores.fecha
+            
 
             INNER JOIN 
             n_interpretacion
             ON 
-                n_interpretaciones.fecha = n_conciertos.fecha AND
-                n_interpretaciones.fecha = n_espectadores.fecha
+                n_interpretacion.fecha = n_conciertos.fecha
 
         )
-    ),
+    )
     SELECT * FROM FINAL
 
-
-) WITH READ ONLY;
+WITH READ ONLY;
 
 
