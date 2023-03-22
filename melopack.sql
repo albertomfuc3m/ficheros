@@ -3,6 +3,7 @@ CREATE OR REPLACE PACKAGE melopack AS
     interprete_actual VARCHAR2(50);
   
     PROCEDURE asignar(id_interprete VARCHAR2);
+    FUNCTION get_ia() return VARCHAR2;
     PROCEDURE insertar_album_track(
         id_pair CHAR,
         format CHAR,
@@ -44,7 +45,11 @@ CREATE OR REPLACE PACKAGE BODY melopack AS
                 interprete_actual := NULL;
             END IF;
         END asignar;
-  
+    
+    FUNCTION get_ia() return VARCHAR2 IS 
+        BEGIN
+            return interprete_actual
+        END get_ia;
     PROCEDURE insertar_album_track(
         id_pair CHAR,
         format CHAR,
