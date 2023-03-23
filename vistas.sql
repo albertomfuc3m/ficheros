@@ -12,9 +12,9 @@ CREATE OR REPLACE VIEW my_albums as
     )
     WHERE albums.performer = melopack.get_ia()
     GROUP BY albums.title, albums.pair
-) WITH READ ONLY;
+WITH READ ONLY;
 
-CREATE OR REPLACE VIEW events as (
+CREATE OR REPLACE VIEW events as 
     WITH 
     n_interpretacion as (
         SELECT 
@@ -68,3 +68,33 @@ CREATE OR REPLACE VIEW events as (
 WITH READ ONLY;
 
 
+CREATE OR REPLACE VIEW fans 
+    WITH interprete_valido as (
+        SELECT 
+            performer as p
+        FROM concerts
+        WHERE performer = melopack.get_ia()
+        GROUP BY performer
+        HAVING count(*) > 1
+        
+    ),
+    FINAL as (
+        SELECT 
+            clients.e_mail,
+            clients.name,
+            clients.surn1,
+            clients.surn2,
+            trunc((SYSDATE - clients.birthdate)/365, 0)
+        FROM (
+            clients
+            INNER JOIN
+            (SELECT * 
+            FROM 
+                attendances
+                INNER JOIN
+                interprete_valido
+                ON attendances.performer = interprete_valido.p
+            )
+            ON attendances.client = client.e_mail
+        )
+    )
