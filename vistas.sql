@@ -60,7 +60,6 @@ CREATE OR REPLACE VIEW events as
             n_interpretacion
             ON 
                 n_interpretacion.fecha = n_conciertos.fecha
-
         )
     )
     SELECT * FROM FINAL
@@ -102,7 +101,7 @@ CREATE OR REPLACE VIEW fans AS
         
     ),
     FINAL as (
-        SELECT 
+        SELECT DISTINCT
             clients.e_mail as email,
             clients.name as nombre,
             clients.surn1 as apellido1,
@@ -119,10 +118,59 @@ CREATE OR REPLACE VIEW fans AS
     SELECT * FROM FINAL
 WITH CHECK OPTION;
 
-CREATE TRIGGER modificaciones_fans
-BEFORE UPDATE OF * ON fans
+CREATE OR REPLACE TRIGGER modificaciones_fans
+INSTEAD OF UPDATE ON fans
 BEGIN
     raise_application_error(-20111, "No se puede modificar view * fans *");
+END;
+
+CREATE OR REPLACE TRIGGER insertar_fans
+INSTEAD OF INSERT ON fans
+FOR EACH ROW
+DECLARE
+    cuenta NUMBER(3);
+    ultimo_concierto DATE;
+    penultimo_concierto DATE;
+BEGIN
+    
+    SELECT count(*)
+        INTO cuenta
+        FROM cliente
+        GROUP BY e_mail
+    WHERE e_mail = NEW.e_mail;
+    IF cuenta = 0 THEN
+        INSERT INTO clients
+            (e_mail, name, surn1, surn2, birthdate, phone, address, dni)
+            VALUES(
+                NEW.e_mail, NEW.name, NEW.surn1, NEW.surn2, NEW.birthdate, NEW.phone, NEW.address, NEW.dni
+            );
+
+    END IF;
+
+    SELECT count(*)
+        INTO cuenta
+        FROM attendances
+        GROUP BY client, performer
+    WHERE client = NEW.e_mail AND performer = melopack.get_ia();
+
+    SELECT max(when)
+        INTO ultimo_concierto
+        FROM concerts
+        GROUP BY performer
+    WHERE performer = melopack.get_ia();
+
+    SELECT when
+        INTO penultimo_concierto
+        FROM (
+            SELECT * FROM concerts ORDER BY -TO_CHAR(when, 'YYYY-MM-DD')
+        )
+
+    IF cuenta = 0 THEN
+    ELIF cuenta = 1 THEN
+    ELSE
+    END IF;
+    
+
 END;
 
 
