@@ -1,7 +1,7 @@
 CREATE OR REPLACE VIEW my_albums as 
     SELECT
-        albums.title as t,
-        sum(tracks.duration) as d
+        albums.title as album,
+        sum(tracks.duration) as duracion
 
     FROM (
         albums
@@ -98,7 +98,6 @@ CREATE OR REPLACE VIEW fans AS
         WHERE performer = melopack.get_ia()
         GROUP BY performer
         HAVING count(*) > 1
-        
     ),
     FINAL as (
         SELECT DISTINCT
@@ -129,48 +128,122 @@ INSTEAD OF INSERT ON fans
 FOR EACH ROW
 DECLARE
     cuenta NUMBER(3);
+    temp_concierto DATE;
     ultimo_concierto DATE;
     penultimo_concierto DATE;
+
 BEGIN
     
     SELECT count(*)
         INTO cuenta
-        FROM cliente
-        GROUP BY e_mail
-    WHERE e_mail = NEW.e_mail;
-    IF cuenta = 0 THEN
-        INSERT INTO clients
-            (e_mail, name, surn1, surn2, birthdate, phone, address, dni)
-            VALUES(
-                NEW.e_mail, NEW.name, NEW.surn1, NEW.surn2, NEW.birthdate, NEW.phone, NEW.address, NEW.dni
-            );
+    FROM concerts
+    WHERE performer = melopack.get_ia()
+    GROUP BY performer
 
-    END IF;
+    -- Si no se ha asignado o si no tiene dos conciertos
+    IF melopack.get_ia() is not NULL OR cuenta < 1
+        SELECT count(*)
+            INTO cuenta
+            FROM cliente
+            GROUP BY e_mail
+        WHERE e_mail = NEW.e_mail;
 
-    SELECT count(*)
-        INTO cuenta
-        FROM attendances
-        GROUP BY client, performer
-    WHERE client = NEW.e_mail AND performer = melopack.get_ia();
+        -- Si el cliente no existe, lo creamos
+        IF cuenta = 0 THEN
+            INSERT INTO clients
+                (e_mail, name, surn1, surn2, birthdate, phone, address, dni)
+                VALUES
+                    (NEW.e_mail, NEW.name, NEW.surn1, NEW.surn2, NEW.birthdate, NEW.phone, NEW.address, NEW.dni);
+        END IF;
 
-    SELECT max(when)
-        INTO ultimo_concierto
-        FROM concerts
-        GROUP BY performer
-    WHERE performer = melopack.get_ia();
+        -- Calcular # de asistencias
+        SELECT count(*)
+            INTO cuenta
+            FROM attendances
+            GROUP BY client, performer
+        WHERE client = NEW.e_mail AND performer = melopack.get_ia();
 
-    SELECT when
-        INTO penultimo_concierto
+        -- fecha( ULTimo concierto )
+        SELECT max(when)
+            INTO ultimo_concierto
+            FROM concerts
+            GROUP BY performer
+        WHERE performer = melopack.get_ia();
+
+        -- fecha( PENultimo concierto )
+        SELECT when
+            INTO penultimo_concierto
         FROM (
-            SELECT * FROM concerts ORDER BY -TO_CHAR(when, 'YYYY-MM-DD')
-        )
+            SELECT when, rownum as rn
+            FROM concerts 
+            WHERE performer = melopack.get_ia()
+            ORDER BY TO_NUMBER(TO_CHAR(when, 'J'))
+        ) WHERE rn = 2
 
-    IF cuenta = 0 THEN
-    ELIF cuenta = 1 THEN
-    ELSE
+        -- Si no ha ido a ningun concierto del interprete actual
+        IF cuenta = 0 THEN
+            -- insertar fichas del fan para el ultimo y penultimo concierto
+            -- cuidado con que sean menores de edad
+            INSERT INTO attendances
+                (client, performer, when, rfid, birthdate, purchase)
+                VALUES
+                    (NEW.e_mail, melopack.get_ia(), ultimo_concierto, 'RFID-INVENTADO-ULTIMO-CONCIERTO-3.141592653589793', NEW.birthdate, SYSDATE),
+                    (NEW.e_mail, melopack.get_ia(), penultimo_concierto, 'RFID-INVENTADO-PENULTIMO-CONCIERTO-3.141592653589793', NEW.birthdate, SYSDATE);
+            
+            -- crear tupla de banned
+            INSERT INTO banned
+                (client, performer)
+                VALUES
+                    (NEW.e_mail, melopack.get_ia());
+            
+        -- Si solo ha ido a un concierto
+        ELIF cuenta = 1 THEN
+            -- ver si el concierto que tiene es el ultimo
+            SELECT when
+                INTO temp_concierto
+                FROM attendances
+                GROUP BY client, performer
+            WHERE client = NEW.e_mail AND performer = melopack.get_ia();
+
+            IF temp_concierto = ultimo_concierto THEN
+                -- si el único concierto al que ha ido es el ultimo, insertamos el PENultimo
+                INSERT INTO attendances
+                (client, performer, when, rfid, birthdate, purchase)
+                VALUES
+                    (NEW.e_mail, melopack.get_ia(), penultimo_concierto, 'RFID-INVENTADO-PENULTIMO-CONCIERTO-3.141592653589793', NEW.birthdate, SYSDATE);
+            ELSE
+                -- si no insertamos el ultimo
+                INSERT INTO attendances
+                (client, performer, when, rfid, birthdate, purchase)
+                VALUES
+                    (NEW.e_mail, melopack.get_ia(), ultimo_concierto, 'RFID-INVENTADO-ULTIMO-CONCIERTO-3.141592653589793', NEW.birthdate, SYSDATE);
+            END IF;
+
+            -- vetado a Falso
+            UPDATE TABLE banned SET ban = 0 WHERE client = NEW.e_mail AND performer = melopack.get_ia()
+        
+        -- si ha ido a más de un concierto
+        ELSE
+            -- vetado a Falso
+            UPDATE TABLE banned 
+                SET ban = 0 
+                WHERE 
+                    client = NEW.e_mail AND 
+                    performer = melopack.get_ia()
+        END IF;
     END IF;
-    
 
+END;
+
+CREATE OR REPLACE TRIGGER borrar_fans
+INSTEAD OF INSERT ON fans
+FOR EACH ROW
+BEGIN
+    UPDATE TABLE banned 
+        SET ban = 1
+        WHERE 
+            client = NEW.e_mail AND 
+            performer = melopack.get_ia()
 END;
 
 
