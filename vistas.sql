@@ -145,7 +145,7 @@ BEGIN
 
         SELECT count(*)
             INTO cuenta
-            FROM cliente
+            FROM clients
         WHERE email = :NEW.email
         GROUP BY email;
         
@@ -172,7 +172,7 @@ BEGIN
         
 
         SELECT when
-            INTO penultimo_concierto
+            -- INTO penultimo_concierto
             FROM (
                 SELECT
                     when,
@@ -184,8 +184,7 @@ BEGIN
                 )
             )
         WHERE rn = 2;
-
-
+        
         IF cuenta = 0 THEN
             INSERT INTO attendances
                 (client, performer, when, rfid, birthdate, purchase)
@@ -238,6 +237,9 @@ BEGIN
     END IF;
 
 END;
+
+
+
 
 
 CREATE OR REPLACE TRIGGER borrar_fans
