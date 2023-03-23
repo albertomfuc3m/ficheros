@@ -67,6 +67,31 @@ CREATE OR REPLACE VIEW events as
 
 WITH READ ONLY;
 
+CREATE TABLE Banned (
+    client VARCHAR2(100),
+    performer VARCHAR2(100),
+    ban NUMBER(1) DEFAULT 0 not null,
+
+    CONSTRAINT pk_banned
+        PRIMARY KEY (client, performer)
+    CONSTRAINT fk_banned_cliente
+        FOREIGN KEY (cliente)
+        REFERENCES clients(e_mail)
+        ON DELETE CASCADE,
+    CONSTRAINT fk_banned_performer
+        FOREIGN KEY (performer)
+        REFERENCES performers(name)
+        ON DELETE CASCADE
+    );
+
+INSERT INTO Banned 
+    (client, performer)
+    SELECT DISTINCT
+        client,
+        performer
+    FROM attendances
+
+
 
 CREATE OR REPLACE VIEW fans 
     WITH interprete_valido as (
@@ -78,6 +103,14 @@ CREATE OR REPLACE VIEW fans
         HAVING count(*) > 1
         
     ),
+    temp_attendances as (
+        SELECT * 
+        FROM 
+            attendances
+            INNER JOIN
+            interprete_valido
+            ON attendances.performer = interprete_valido.p
+    ),
     FINAL as (
         SELECT 
             clients.e_mail,
@@ -88,13 +121,8 @@ CREATE OR REPLACE VIEW fans
         FROM (
             clients
             INNER JOIN
-            (SELECT * 
-            FROM 
-                attendances
-                INNER JOIN
-                interprete_valido
-                ON attendances.performer = interprete_valido.p
-            )
-            ON attendances.client = client.e_mail
+            temp_attendances
+            ON temp_attendances.client = clients.e_mail
         )
     )
+
