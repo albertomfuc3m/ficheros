@@ -70,12 +70,12 @@ WITH READ ONLY;
 CREATE TABLE Banned (
     client VARCHAR2(100),
     performer VARCHAR2(100),
-    ban NUMBER(1) DEFAULT 0 not null,
+    ban NUMBER(1) DEFAULT 0,
 
     CONSTRAINT pk_banned
-        PRIMARY KEY (client, performer)
+        PRIMARY KEY (client, performer),
     CONSTRAINT fk_banned_cliente
-        FOREIGN KEY (cliente)
+        FOREIGN KEY (client)
         REFERENCES clients(e_mail)
         ON DELETE CASCADE,
     CONSTRAINT fk_banned_performer
@@ -89,11 +89,9 @@ INSERT INTO Banned
     SELECT DISTINCT
         client,
         performer
-    FROM attendances
+    FROM attendances;
 
-
-
-CREATE OR REPLACE VIEW fans 
+CREATE OR REPLACE VIEW fans AS
     WITH interprete_valido as (
         SELECT 
             performer as p
@@ -103,26 +101,29 @@ CREATE OR REPLACE VIEW fans
         HAVING count(*) > 1
         
     ),
-    temp_attendances as (
-        SELECT * 
-        FROM 
-            attendances
-            INNER JOIN
-            interprete_valido
-            ON attendances.performer = interprete_valido.p
-    ),
     FINAL as (
         SELECT 
-            clients.e_mail,
-            clients.name,
-            clients.surn1,
-            clients.surn2,
-            trunc((SYSDATE - clients.birthdate)/365, 0)
+            clients.e_mail as email,
+            clients.name as nombre,
+            clients.surn1 as apellido1,
+            clients.surn2 as apellido2,
+            trunc((SYSDATE - clients.birthdate)/365, 0) as edad
         FROM (
             clients
             INNER JOIN
-            temp_attendances
-            ON temp_attendances.client = clients.e_mail
+            banned
+            ON banned.client = clients.e_mail
         )
+        WHERE banned.ban = 0
     )
+    SELECT * FROM FINAL
+WITH CHECK OPTION;
+
+CREATE TRIGGER modificaciones_fans
+BEFORE UPDATE OF * ON fans
+BEGIN
+    raise_application_error(-20111, "No se puede modificar view * fans *");
+END;
+
+
 
