@@ -76,7 +76,7 @@ CREATE TABLE Banned (
         PRIMARY KEY (client, performer),
     CONSTRAINT fk_banned_cliente
         FOREIGN KEY (client)
-        REFERENCES clients(e_mail)
+        REFERENCES clients(email)
         ON DELETE CASCADE,
     CONSTRAINT fk_banned_performer
         FOREIGN KEY (performer)
@@ -102,7 +102,7 @@ CREATE OR REPLACE VIEW fans AS
     ),
     FINAL as (
         SELECT DISTINCT
-            clients.e_mail as email,
+            clients.email as email,
             clients.name as nombre,
             clients.surn1 as apellido1,
             clients.surn2 as apellido2,
@@ -111,7 +111,7 @@ CREATE OR REPLACE VIEW fans AS
             clients
             INNER JOIN
             banned
-            ON banned.client = clients.e_mail
+            ON banned.client = clients.email
         )
         WHERE banned.ban = 0
     )
@@ -147,15 +147,15 @@ BEGIN
         SELECT count(*)
             INTO cuenta
             FROM cliente
-            GROUP BY e_mail
-        WHERE e_mail = :NEW.e_mail;
+            GROUP BY email
+        WHERE email = :NEW.email;
 
         -- Si el cliente no existe, lo creamos
         IF cuenta = 0 THEN
             INSERT INTO clients
-                (e_mail, name, surn1, surn2, birthdate, phone, address, dni)
+                (email, name, surn1, surn2, birthdate, phone, address, dni)
                 VALUES
-                    (:NEW.e_mail, :NEW.name, :NEW.surn1, :NEW.surn2, :NEW.birthdate, :NEW.phone, :NEW.address, :NEW.dni);
+                    (:NEW.email, :NEW.nombre, :NEW.apellido1, :NEW.apellido2, SYSDATE - :NEW.edad, NULL, NULL, NULL);
         END IF;
 
         -- Calcular # de asistencias
@@ -163,7 +163,7 @@ BEGIN
             INTO cuenta
             FROM attendances
             GROUP BY client, performer
-        WHERE client = :NEW.e_mail AND performer = melopack.get_ia();
+        WHERE client = :NEW.email AND performer = melopack.get_ia();
 
         -- fecha( ULTimo concierto )
         SELECT max(when)
@@ -174,8 +174,8 @@ BEGIN
 
         -- fecha( PENultimo concierto )
 
-        SELECT 
-            when
+        SELECT when
+            INTO penultimo_concierto
             FROM (
                 SELECT
                     when,
@@ -196,14 +196,14 @@ BEGIN
             INSERT INTO attendances
                 (client, performer, when, rfid, birthdate, purchase)
                 VALUES
-                    (:NEW.e_mail, melopack.get_ia(), ultimo_concierto, 'RFID-INVENTADO-ULTIMO-CONCIERTO-3.141592653589793', :NEW.birthdate, SYSDATE),
-                    (:NEW.e_mail, melopack.get_ia(), penultimo_concierto, 'RFID-INVENTADO-PENULTIMO-CONCIERTO-3.141592653589793', :NEW.birthdate, SYSDATE);
+                    (:NEW.email, melopack.get_ia(), ultimo_concierto, 'RFID-INVENTADO-ULTIMO-CONCIERTO-3.141592653589793', SYSDATE - :NEW.edad, SYSDATE),
+                    (:NEW.email, melopack.get_ia(), penultimo_concierto, 'RFID-INVENTADO-PENULTIMO-CONCIERTO-3.141592653589793', SYSDATE - :NEW.edad, SYSDATE);
             
             -- crear tupla de banned
             INSERT INTO banned
                 (client, performer)
                 VALUES
-                    (:NEW.e_mail, melopack.get_ia());
+                    (:NEW.email, melopack.get_ia());
             
         -- Si solo ha ido a un concierto
         ELIF cuenta = 1 THEN
@@ -212,24 +212,28 @@ BEGIN
                 INTO temp_concierto
                 FROM attendances
                 GROUP BY client, performer
-            WHERE client = :NEW.e_mail AND performer = melopack.get_ia();
+            WHERE client = :NEW.email AND performer = melopack.get_ia();
 
             IF temp_concierto = ultimo_concierto THEN
                 -- si el único concierto al que ha ido es el ultimo, insertamos el PENultimo
                 INSERT INTO attendances
                 (client, performer, when, rfid, birthdate, purchase)
                 VALUES
-                    (:NEW.e_mail, melopack.get_ia(), penultimo_concierto, 'RFID-INVENTADO-PENULTIMO-CONCIERTO-3.141592653589793', :NEW.birthdate, SYSDATE);
+                    (:NEW.email, melopack.get_ia(), penultimo_concierto, 'RFID-INVENTADO-PENULTIMO-CONCIERTO-3.141592653589793', SYSDATE - :NEW.edad, SYSDATE);
             ELSE
                 -- si no insertamos el ultimo
                 INSERT INTO attendances
                 (client, performer, when, rfid, birthdate, purchase)
                 VALUES
-                    (:NEW.e_mail, melopack.get_ia(), ultimo_concierto, 'RFID-INVENTADO-ULTIMO-CONCIERTO-3.141592653589793', :NEW.birthdate, SYSDATE);
+                    (:NEW.email, melopack.get_ia(), ultimo_concierto, 'RFID-INVENTADO-ULTIMO-CONCIERTO-3.141592653589793', SYSDATE - :NEW.edad, SYSDATE);
             END IF;
 
             -- vetado a Falso
-            UPDATE TABLE banned SET ban = 0 WHERE client = :NEW.e_mail AND performer = melopack.get_ia();
+            UPDATE TABLE banned 
+                SET ban = 0 
+                WHERE 
+                    client = :NEW.email AND 
+                    performer = melopack.get_ia();
         
         -- si ha ido a más de un concierto
         ELSE
@@ -237,21 +241,21 @@ BEGIN
             UPDATE TABLE banned 
                 SET ban = 0 
                 WHERE 
-                    client = :NEW.e_mail AND 
-                    performer = melopack.get_ia()
+                    client = :NEW.email AND 
+                    performer = melopack.get_ia();
         END IF;
     END IF;
 
 END;
 
 CREATE OR REPLACE TRIGGER borrar_fans
-INSTEAD OF INSERT ON fans
+INSTEAD OF DELETE ON fans
 FOR EACH ROW
 BEGIN
-    UPDATE TABLE banned 
+    UPDATE banned 
         SET ban = 1
         WHERE 
-            client = :NEW.e_mail AND 
+            client = :OLD.email AND 
             performer = melopack.get_ia();
 END;
 
