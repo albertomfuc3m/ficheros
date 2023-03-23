@@ -143,6 +143,7 @@ BEGIN
 
     -- Si no se ha asignado o si no tiene dos conciertos
     IF melopack.get_ia() is not NULL OR cuenta < 1 THEN
+
         SELECT count(*)
             INTO cuenta
             FROM cliente
@@ -172,14 +173,21 @@ BEGIN
         WHERE performer = melopack.get_ia();
 
         -- fecha( PENultimo concierto )
-        SELECT when
-            INTO penultimo_concierto
-        FROM (
-            SELECT when, rownum as rn
-            FROM concerts 
-            WHERE performer = melopack.get_ia()
-            ORDER BY TO_NUMBER(TO_CHAR(when, 'J'))
-        ) WHERE rn = 2
+
+        SELECT 
+            when
+            FROM (
+                SELECT
+                    when,
+                    rownum as rn
+                FROM (
+                    SELECT * FROM concerts
+                    WHERE performer = melopack.get_ia()
+                    ORDER BY -TO_NUMBER(TO_CHAR(when, 'J'))
+                )
+            )
+            WHERE rn = 2
+
 
         -- Si no ha ido a ningun concierto del interprete actual
         IF cuenta = 0 THEN
