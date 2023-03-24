@@ -121,7 +121,7 @@ WITH CHECK OPTION;
 CREATE OR REPLACE TRIGGER modificaciones_fans
 INSTEAD OF UPDATE ON fans
 BEGIN
-    raise_application_error(-20111, "No se puede modificar view * fans *");
+    raise_application_error(-20001, "No se puede modificar view * fans *");
 END;
 
 CREATE OR REPLACE TRIGGER insertar_fans

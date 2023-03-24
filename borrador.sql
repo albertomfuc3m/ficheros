@@ -7,7 +7,7 @@ WITH
             ROUND((MAX(rel_date) - MIN(rel_date))/COUNT(*), 0) AS t, 
             COUNT(*) AS c
         FROM albums
-        WHERE performer = 'La Ciudadela'
+        WHERE performer = melopack.get_ia()
         GROUP BY format, performer
         ORDER BY performer
     ),
@@ -16,13 +16,15 @@ WITH
             performer as p,
             count(*) as c
         FROM albums
+        WHERE performer = melopack.get_ia()
         GROUP BY performer
-    )
+    ),
     n_conciertos AS (
         SELECT
             performer as p,
             count(*) as c
         FROM concerts
+        WHERE performer = melopack.get_ia()
         GROUP BY performer
     ),
     n_tracks as (
@@ -35,6 +37,7 @@ WITH
             tracks
             ON tracks.pair = albums.pair
         )
+        WHERE albums.performer = melopack.get_ia()
         GROUP BY albums.performer
     ),
 
@@ -45,6 +48,7 @@ WITH
             COUNT(*) AS n_canciones,
             SUM(tracks.duration) AS duration_tipo
         FROM albums
+        WHERE albums.performer = melopack.get_ia()
         INNER JOIN tracks ON tracks.pair = albums.pair
         GROUP BY albums.performer, albums.format
     ),
@@ -62,13 +66,15 @@ WITH
             ON concerts.performer = performances.performer AND 
             concerts.when = performances.when
         )
+        WHERE concerts.performer = melopack.get_ia()
         GROUP BY concerts.performer
     ),
     temp_conciertos1 as (
         SELECT 
             performer as p, 
             count(*) as n_conciertos 
-        FROM concerts 
+        FROM concerts
+        WHERE performer = melopack.get_ia()
         GROUP BY performer
     ),
 
@@ -77,8 +83,8 @@ WITH
             performer as p,
             publisher,
             count(*) as c
-        FROM 
-            albums
+        FROM albums
+        WHERE performer = melopack.get_ia()
         GROUP BY performer, publisher
         order by performer
     ),
@@ -87,7 +93,7 @@ WITH
             discograficas.p,
             discograficas.publisher,
             discograficas.c,
-            round(discograficas.c/n_albums.c, 2) as porcentaje
+            round(discograficas.c/n_albums.c, 3) as porcentaje
         FROM (
             discograficas
             INNER JOIN
@@ -106,6 +112,7 @@ WITH
             tracks
             ON tracks.pair = albums.pair
         )
+        WHERE albums.performer = melopack.get_ia()
         GROUP BY albums.performer, tracks.engineer
     ),
     FINAL_ingenieros as (
@@ -113,7 +120,7 @@ WITH
             ingenieros.p,
             ingenieros.engineer,
             ingenieros.c,
-            round(ingenieros.c/n_tracks.c, 2) as porcentaje
+            round(ingenieros.c/n_tracks.c, 3) as porcentaje
         FROM (
             ingenieros
             INNER JOIN
@@ -132,7 +139,7 @@ WITH
             tracks
             ON tracks.pair = albums.pair
         )
-        WHERE tracks.studio is not NULL
+        WHERE tracks.studio is not NULL AND albums.performer = melopack.get_ia()
         GROUP BY albums.performer, tracks.studio
         ORDER BY PERFORMER
 
@@ -142,7 +149,7 @@ WITH
             studios.p,
             studios.studio,
             studios.c,
-            round(studios.c/n_tracks.c, 2) as porcentaje
+            round(studios.c/n_tracks.c, 3) as porcentaje
         FROM (
             studios
             INNER JOIN
@@ -150,25 +157,26 @@ WITH
             ON studios.p = n_tracks.p
         )
     ),
-    managers_album as (
+    managers_albums as (
         SELECT 
             performer as p,
             manager,
             count(*) as c
         FROM albums
+        WHERE performer = melopack.get_ia()
         GROUP BY performer, manager
     ),
-    FINAL_managers_album as (
+    FINAL_managers_albums as (
         SELECT 
-            managers_album.p,
-            managers_album.manager,
-            managers_album.c,
-            round(managers_album.c/n_albums.c, 2) as porcentaje
+            managers_albums.p,
+            managers_albums.manager,
+            managers_albums.c,
+            round(managers_albums.c/n_albums.c, 3) as porcentaje
         FROM (
-            managers_album
+            managers_albums
             INNER JOIN
             n_albums
-            ON managers_album.p = n_albums.p
+            ON managers_albums.p = n_albums.p
         )
     ),
     managers_conciertos as (
@@ -177,6 +185,7 @@ WITH
             manager,
             count(*) as c
         FROM concerts
+        WHERE performer = melopack.get_ia()
         GROUP BY performer, manager
     ),
     FINAL_managers_conciertos as (
@@ -184,7 +193,7 @@ WITH
             managers_conciertos.p,
             managers_conciertos.manager,
             managers_conciertos.c,
-            round(managers_conciertos.c/n_conciertos.c, 2) as porcentaje
+            round(managers_conciertos.c/n_conciertos.c, 3) as porcentaje
         FROM (
             managers_conciertos
             INNER JOIN
@@ -195,23 +204,23 @@ WITH
     FINAL_conciertos as (
         SELECT
             temp_conciertos0.p,
-            round(temp_conciertos0.total_canciones/temp_conciertos1.n_conciertos, 1) as media_canciones,
-            round(temp_conciertos0.total_duration/temp_conciertos1.n_conciertos, 1) as media_duration,
-            round(temp_conciertos0.total_periodo/temp_conciertos1.n_conciertos, 1) as media_periodo
+            round(temp_conciertos0.total_canciones/temp_conciertos1.n_conciertos, 1) as m_canciones,
+            round(temp_conciertos0.total_duration/temp_conciertos1.n_conciertos, 1) as m_duration,
+            round(temp_conciertos0.total_periodo/temp_conciertos1.n_conciertos, 1) as m_periodo
         FROM 
             temp_conciertos0
             INNER JOIN
             temp_conciertos1
             ON temp_conciertos0.p = temp_conciertos1.p
     ),
-    FINAL_canciones AS (
+    FINAL_albums AS (
         SELECT
             n_albums_format.p AS p,
             n_albums_format.f AS f,
             n_albums_format.c AS n_albums_format,
             n_albums_format.t AS m_periodicidad,
-            TRUNC(temp_canciones.n_canciones/n_albums_format.c, 1) AS m_canciones,
-            TRUNC(temp_canciones.duration_tipo/n_albums_format.c, 1) AS m_duration
+            trunc(temp_canciones.n_canciones/n_albums_format.c, 1) AS m_canciones,
+            trunc(temp_canciones.duration_tipo/n_albums_format.c, 1) AS m_duration
         FROM 
             n_albums_format
             INNER JOIN temp_canciones 
