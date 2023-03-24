@@ -467,7 +467,7 @@ CREATE OR REPLACE PACKAGE BODY melopack AS
             dbms_output.put_line('----->' || melopack.get_ia());
 
             OPEN c_albums;
-            dbms_output.put_line('--- Albums')
+            dbms_output.put_line('--- Albums');
             LOOP 
                 FETCH c_albums INTO r_albums;
                 EXIT WHEN c_albums%NOTFOUND;
@@ -508,46 +508,58 @@ CREATE OR REPLACE PACKAGE BODY melopack AS
             END LOOP;
             CLOSE c_albums;
 
+
             OPEN c_conciertos;
             dbms_output.put_line('');
             LOOP
                 FETCH c_conciertos INTO r_concc_conciertos;
                 EXIT WHEN c_conciertos%NOTFOUND;
+            END LOOP;
             CLOSE c_conciertos;
+
 
             OPEN c_discograficas;
             dbms_output.put_line('');
             LOOP
                 FETCH c_discorgraficas INTO r_discorgraficas;
                 EXIT WHEN c_discorgraficas%NOTFOUND;
+            END LOOP;
             CLOSE c_discograficas;
+
 
             OPEN c_studios;
             dbms_output.put_line('');
             LOOP
                 FETCH c_studios INTO r_studios;
                 EXIT WHEN c_studios%NOTFOUND;
+            END LOOP;
             CLOSE c_studios;
+
 
             OPEN c_ingenieros;
             dbms_output.put_line('');
             LOOP
                 FETCH c_ingenieros INTO r_ingenieros;
                 EXIT WHEN c_ingenieros%NOTFOUND;
+            END LOOP;
             CLOSE c_ingenieros;
+
 
             OPEN c_managers_albums;
             dbms_output.put_line('');
             LOOP
                 FETCH c_managers_albums INTO r_managers_albums;
                 EXIT WHEN c_managers_albums%NOTFOUND;
+            END LOOP;
             CLOSE c_managers_albums;
+
 
             OPEN c_managers_conciertos;
             dbms_output.put_line('');
             LOOP
                 FETCH c_managers_conciertos INTO r_managers_conciertos;
                 EXIT WHEN c_managers_conciertos%NOTFOUND;
+            END LOOP;
             CLOSE c_managers_conciertos;
 
         END informe;
