@@ -503,16 +503,18 @@ CREATE OR REPLACE PACKAGE BODY melopack AS
 
                 
                 IF r_albums.f = 'C' THEN
-                    dbms_output.put_line('CD'|| CHR(9) || CHR(9) || CHR(9) || r_albums.n_albums_format || CHR(9) || CHR(9) || CHR(9) || r_albums.m_canciones || CHR(9) || CHR(9) || CHR(9) || r_albums.m_duration || CHR(9) || CHR(9) || CHR(9) || r_albums.m_periodicidad);
+                    dbms_output.put_line('CD        '|| CHR(9) || CHR(9) || CHR(9) || r_albums.n_albums_format || CHR(9) || CHR(9) || CHR(9) || r_albums.m_canciones || CHR(9) || CHR(9) || CHR(9) || r_albums.m_duration || CHR(9) || CHR(9) || CHR(9) || r_albums.m_periodicidad);
                 ELSIF r_albums.f = 'S' THEN
-                    dbms_output.put_line('SINGLE'|| CHR(9) || CHR(9) || CHR(9) || r_albums.n_albums_format || CHR(9) || CHR(9) || CHR(9) || r_albums.m_canciones || CHR(9) || CHR(9) || CHR(9) || r_albums.m_duration || CHR(9) || CHR(9) || CHR(9) || r_albums.m_periodicidad);
+                    dbms_output.put_line('SINGLE    '|| CHR(9) || CHR(9) || CHR(9) || r_albums.n_albums_format || CHR(9) || CHR(9) || CHR(9) || r_albums.m_canciones || CHR(9) || CHR(9) || CHR(9) || r_albums.m_duration || CHR(9) || CHR(9) || CHR(9) || r_albums.m_periodicidad);
                 ELSIF r_albums.f = 'M' THEN
-                    dbms_output.put_line('MP3'|| CHR(9) || CHR(9) || CHR(9) || r_albums.n_albums_format || CHR(9) || CHR(9) || CHR(9) || r_albums.m_canciones || CHR(9) || CHR(9) || CHR(9) || r_albums.m_duration || CHR(9) || CHR(9) || CHR(9) || r_albums.m_periodicidad);
+                    dbms_output.put_line('MP3       '|| CHR(9) || CHR(9) || CHR(9) || r_albums.n_albums_format || CHR(9) || CHR(9) || CHR(9) || r_albums.m_canciones || CHR(9) || CHR(9) || CHR(9) || r_albums.m_duration || CHR(9) || CHR(9) || CHR(9) || r_albums.m_periodicidad);
                 ELSIF r_albums.f = 'T' THEN
-                    dbms_output.put_line('STREAMING'|| CHR(9) || CHR(9) || CHR(9) || r_albums.n_albums_format || CHR(9) || CHR(9) || CHR(9) || r_albums.m_canciones || CHR(9) || CHR(9) || CHR(9) || r_albums.m_duration || CHR(9) || CHR(9) || CHR(9) || r_albums.m_periodicidad);
+                    dbms_output.put_line('STREAMING '|| CHR(9) || CHR(9) || CHR(9) || r_albums.n_albums_format || CHR(9) || CHR(9) || CHR(9) || r_albums.m_canciones || CHR(9) || CHR(9) || CHR(9) || r_albums.m_duration || CHR(9) || CHR(9) || CHR(9) || r_albums.m_periodicidad);
                 ELSIF r_albums.f = 'V' THEN
-                    dbms_output.put_line('VYNIL'|| CHR(9) || CHR(9) || CHR(9) || r_albums.n_albums_format || CHR(9) || CHR(9) || CHR(9) || r_albums.m_canciones || CHR(9) || CHR(9) || CHR(9) || r_albums.m_duration || CHR(9) || CHR(9) || CHR(9) || r_albums.m_periodicidad);
+                    dbms_output.put_line('VYNIL     '|| CHR(9) || CHR(9) || CHR(9) || r_albums.n_albums_format || CHR(9) || CHR(9) || CHR(9) || r_albums.m_canciones || CHR(9) || CHR(9) || CHR(9) || r_albums.m_duration || CHR(9) || CHR(9) || CHR(9) || r_albums.m_periodicidad);
                 END IF;
+
+
 
             END LOOP;
             CLOSE c_albums;
