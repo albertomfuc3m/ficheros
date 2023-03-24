@@ -429,7 +429,7 @@ CREATE OR REPLACE PACKAGE BODY melopack AS
                     temp_conciertos0.p,
                     round(temp_conciertos0.total_canciones/temp_conciertos1.n_conciertos, 1) as m_canciones,
                     round(temp_conciertos0.total_duration/temp_conciertos1.n_conciertos, 1) as m_duration,
-                    round(temp_conciertos0.total_periodo/temp_conciertos1.n_conciertos, 1) as m_periodo
+                    round(temp_conciertos0.total_periodo/temp_conciertos1.n_conciertos, 1) as m_periodicidad
                 FROM 
                     temp_conciertos0
                     INNER JOIN
@@ -490,30 +490,32 @@ CREATE OR REPLACE PACKAGE BODY melopack AS
         r_albums c_albums%ROWTYPE;
 
         BEGIN
-            dbms_output.put_line('-------------INFORME-------------');
-            dbms_output.put_line('----->' || interprete_actual || CHAR(10));
+            dbms_output.put_line('--------------------INFORME--------------------');
+            dbms_output.put_line('----- ' || interprete_actual || CHR(10));
 
             OPEN c_albums;
-            dbms_output.put_line('\n-*- Albums');
+            dbms_output.put_line('-*- Albums');
             LOOP 
                 FETCH c_albums INTO r_albums;
                 EXIT WHEN c_albums%NOTFOUND;
 
+                dbms_output.put_line('FORMATO'|| CHR(9) ||'Nº DE ALBUMES' || CHR(9) ||'MEDIA DE CANCIONES' || CHR(9) ||'DURACION MEDIA' || CHR(9) ||'PERIODICIDAD MEDIA');
+                dbms_output.put_line('------------------------------------------------------------------------------------------------------------------------------------');
                 IF r_albums.f = 'C' THEN
-                    dbms_output.put_line('CD [nº de albums = ' || r_albums.n_albums_format ||'][media de canciones = ' || r_albums.m_canciones ||'][duracion media = ' || r_albums.m_duration ||'][periodicidad media = ' || r_albums.m_periodicidad || ']');
+                    dbms_output.put_line('CD'|| CHR(9) || r_albums.n_albums_format || CHR(9) || r_albums.m_canciones || CHR(9) || r_albums.m_duration || CHR(9) || r_albums.m_periodicidad);
                 ELSIF r_albums.f = 'S' THEN
-                    dbms_output.put_line('Single [nº de albums = ' || r_albums.n_albums_format ||'][media de canciones = ' || r_albums.m_canciones ||'][duracion media = ' || r_albums.m_duration ||'][periodicidad media = ' || r_albums.m_periodicidad || ']');
+                    dbms_output.put_line('SINGLE'|| CHR(9) || r_albums.n_albums_format || CHR(9) || r_albums.m_canciones || CHR(9) || r_albums.m_duration || CHR(9) || r_albums.m_periodicidad);
                 ELSIF r_albums.f = 'M' THEN
-                    dbms_output.put_line('MP3 [nº de albums = ' || r_albums.n_albums_format ||'][media de canciones = ' || r_albums.m_canciones ||'][duracion media = ' || r_albums.m_duration ||'][periodicidad media = ' || r_albums.m_periodicidad || ']');
+                    dbms_output.put_line('MP3'|| CHR(9) || r_albums.n_albums_format || CHR(9) || r_albums.m_canciones || CHR(9) || r_albums.m_duration || CHR(9) || r_albums.m_periodicidad);
                 ELSIF r_albums.f = 'T' THEN
-                    dbms_output.put_line('Streaming [nº de albums = ' || r_albums.n_albums_format ||'][media de canciones = ' || r_albums.m_canciones ||'][duracion media = ' || r_albums.m_duration ||'][periodicidad media = ' || r_albums.m_periodicidad || ']');
+                    dbms_output.put_line('STREAMING'|| CHR(9) || r_albums.n_albums_format || CHR(9) || r_albums.m_canciones || CHR(9) || r_albums.m_duration || CHR(9) || r_albums.m_periodicidad);
                 ELSIF r_albums.f = 'V' THEN
-                    dbms_output.put_line('Vynil[nº de albums = ' || r_albums.n_albums_format ||'][media de canciones = ' || r_albums.m_canciones ||'][duracion media = ' || r_albums.m_duration ||'][periodicidad media = ' || r_albums.m_periodicidad || ']');
+                    dbms_output.put_line('VYNIL'|| CHR(9) || r_albums.n_albums_format || CHR(9) || r_albums.m_canciones || CHR(9) || r_albums.m_duration || CHR(9) || r_albums.m_periodicidad);
                 END IF;
 
             END LOOP;
             CLOSE c_albums;
-
+            dbms_output.put_line(CHR(10));
 
             OPEN c_conciertos;
             dbms_output.put_line('-*- Conciertos');
@@ -524,10 +526,11 @@ CREATE OR REPLACE PACKAGE BODY melopack AS
 
             END LOOP;
             CLOSE c_conciertos;
+            dbms_output.put_line(CHR(10) || CHR(10));
 
 
             OPEN c_discograficas;
-            dbms_output.put_line('------ Colaboradores');
+            dbms_output.put_line('---------Colaboradores---------');
             dbms_output.put_line('-*- Discograficas');
             LOOP
                 FETCH c_discograficas INTO r_discograficas;
@@ -537,6 +540,7 @@ CREATE OR REPLACE PACKAGE BODY melopack AS
 
             END LOOP;
             CLOSE c_discograficas;
+            dbms_output.put_line(CHR(10));
 
 
             OPEN c_studios;
@@ -549,6 +553,7 @@ CREATE OR REPLACE PACKAGE BODY melopack AS
 
             END LOOP;
             CLOSE c_studios;
+            dbms_output.put_line(CHR(10));
 
 
             OPEN c_ingenieros;
@@ -561,6 +566,7 @@ CREATE OR REPLACE PACKAGE BODY melopack AS
 
             END LOOP;
             CLOSE c_ingenieros;
+            dbms_output.put_line(CHR(10));
 
 
             OPEN c_managers_albums;
@@ -569,10 +575,11 @@ CREATE OR REPLACE PACKAGE BODY melopack AS
                 FETCH c_managers_albums INTO r_managers_albums;
                 EXIT WHEN c_managers_albums%NOTFOUND;
 
-                dbms_output.put_line('[nombre = ' || r_managers_conciertos.manager || '][nº de colaboraciones = ' || r_managers_conciertos.c ||'][% de colaboraciones = ' || r_managers_conciertos.porcentaje*100 || '%]');
+                dbms_output.put_line('[nombre = ' || r_managers_albums.manager || '][nº de colaboraciones = ' || r_managers_albums.c ||'][% de colaboraciones = ' || r_managers_albums.porcentaje*100 || '%]');
 
             END LOOP;
             CLOSE c_managers_albums;
+            dbms_output.put_line(CHR(10));
 
 
             OPEN c_managers_conciertos;
@@ -581,10 +588,11 @@ CREATE OR REPLACE PACKAGE BODY melopack AS
                 FETCH c_managers_conciertos INTO r_managers_conciertos;
                 EXIT WHEN c_managers_conciertos%NOTFOUND;
 
-                dbms_output.put_line('[nombre = ' || r_managers_albums.manager || '][nº de colaboraxciones = ' || r_managers_albums.c ||'][% de colaboraciones = ' || r_managers_albums.porcentaje*100 || '%]');
+                dbms_output.put_line('[nombre = ' || r_managers_conciertos.manager || '][nº de colaboraxciones = ' || r_managers_conciertos.c ||'][% de colaboraciones = ' || r_managers_conciertos.porcentaje*100 || '%]');
 
             END LOOP;
             CLOSE c_managers_conciertos;
+            dbms_output.put_line(CHR(10));
 
         END informe;
 END melopack;
