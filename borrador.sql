@@ -523,7 +523,7 @@ CREATE OR REPLACE PACKAGE BODY melopack AS
 
             OPEN c_conciertos;
             dbms_output.put_line('----- CONCIERTOS');
-            dbms_output.put_line(RPAD('MEDIA INTERPRETACIONES', 20) || RPAD('DURACION MEDIA', 20) || RPAD('PERIODICIDAD MEDIA', 20))
+            dbms_output.put_line(RPAD('MEDIA INTERPRETACIONES', 20) || RPAD('DURACION MEDIA', 20) || RPAD('PERIODICIDAD MEDIA', 20));
             dbms_output.put_line('------------------------------------------------------------------------------------------------------------------------------------');
             LOOP
                 FETCH c_conciertos INTO r_conciertos;
@@ -540,12 +540,12 @@ CREATE OR REPLACE PACKAGE BODY melopack AS
             dbms_output.put_line('---------Colaboradores---------');
             dbms_output.put_line(CHR(10));
             dbms_output.put_line('-*- DISCOGRAFICAS');
-            dbms_output.put_line(RPAD('NOMBRE', 25) || RPAD('Nº COLABORACIONES', 20) || RPAD('PORCENTAJE DE COLABORACIONES', 30))
+            dbms_output.put_line(RPAD('NOMBRE', 25) || RPAD('Nº COLABORACIONES', 20) || RPAD('PORCENTAJE DE COLABORACIONES', 30));
             dbms_output.put_line('------------------------------------------------------------------------------------------------------------------------------------');
             LOOP
                 FETCH c_discograficas INTO r_discograficas;
                 EXIT WHEN c_discograficas%NOTFOUND;
-                dbms_output.put_line(RPAD(r_discograficas.publisher, 25) || RPAD(r_discograficas.c, 20) || RPAD(r_discograficas.porcentaje*100 || '%', 30))
+                dbms_output.put_line(RPAD(r_discograficas.publisher, 25) || RPAD(r_discograficas.c, 20) || RPAD(r_discograficas.porcentaje*100 || '%', 30));
 
             END LOOP;
             CLOSE c_discograficas;
@@ -555,12 +555,12 @@ CREATE OR REPLACE PACKAGE BODY melopack AS
 
             OPEN c_studios;
             dbms_output.put_line('-*- ESTUDIOS');
-            dbms_output.put_line(RPAD('NOMBRE', 25) || RPAD('Nº COLABORACIONES', 20) || RPAD('PORCENTAJE DE COLABORACIONES', 30))
+            dbms_output.put_line(RPAD('NOMBRE', 25) || RPAD('Nº COLABORACIONES', 20) || RPAD('PORCENTAJE DE COLABORACIONES', 30));
             dbms_output.put_line('------------------------------------------------------------------------------------------------------------------------------------');
             LOOP
                 FETCH c_studios INTO r_studios;
                 EXIT WHEN c_studios%NOTFOUND;
-                dbms_output.put_line(RPAD(r_studios.studio, 25) || RPAD(r_studios.c, 20) || RPAD(r_studios.porcentaje*100 || '%', 30))
+                dbms_output.put_line(RPAD(r_studios.studio, 25) || RPAD(r_studios.c, 20) || RPAD(r_studios.porcentaje*100 || '%', 30));
 
             END LOOP;
             CLOSE c_studios;
@@ -570,12 +570,12 @@ CREATE OR REPLACE PACKAGE BODY melopack AS
 
             OPEN c_ingenieros;
             dbms_output.put_line('-*- INGENIEROS');
-            dbms_output.put_line(RPAD('NOMBRE', 25) || RPAD('Nº COLABORACIONES', 20) || RPAD('PORCENTAJE DE COLABORACIONES', 30))
+            dbms_output.put_line(RPAD('NOMBRE', 25) || RPAD('Nº COLABORACIONES', 20) || RPAD('PORCENTAJE DE COLABORACIONES', 30));
             dbms_output.put_line('------------------------------------------------------------------------------------------------------------------------------------');
             LOOP
                 FETCH c_ingenieros INTO r_ingenieros;
                 EXIT WHEN c_ingenieros%NOTFOUND;
-                dbms_output.put_line(RPAD(r_ingenieros.engineer, 25) || RPAD(r_ingenieros.c, 20) || RPAD(r_ingenieros.porcentaje*100 || '%', 30))
+                dbms_output.put_line(RPAD(r_ingenieros.engineer, 25) || RPAD(r_ingenieros.c, 20) || RPAD(r_ingenieros.porcentaje*100 || '%', 30));
 
             END LOOP;
             CLOSE c_ingenieros;
@@ -585,12 +585,12 @@ CREATE OR REPLACE PACKAGE BODY melopack AS
 
             OPEN c_managers_albums;
             dbms_output.put_line('-*- MANAGERS DE ALBUMS');
-            dbms_output.put_line(RPAD('NOMBRE', 25) || RPAD('Nº COLABORACIONES', 20) || RPAD('PORCENTAJE DE COLABORACIONES', 30))
+            dbms_output.put_line(RPAD('NOMBRE', 25) || RPAD('Nº COLABORACIONES', 20) || RPAD('PORCENTAJE DE COLABORACIONES', 30));
             dbms_output.put_line('------------------------------------------------------------------------------------------------------------------------------------');
             LOOP
                 FETCH c_managers_albums INTO r_managers_albums;
                 EXIT WHEN c_managers_albums%NOTFOUND;
-                dbms_output.put_line(RPAD(r_managers_albums.manager, 25) || RPAD(r_managers_albums.c, 20) || RPAD(r_managers_albums.porcentaje*100 || '%', 30))
+                dbms_output.put_line(RPAD(r_managers_albums.manager, 25) || RPAD(r_managers_albums.c, 20) || RPAD(r_managers_albums.porcentaje*100 || '%', 30));
 
             END LOOP;
             CLOSE c_managers_albums;
@@ -600,13 +600,13 @@ CREATE OR REPLACE PACKAGE BODY melopack AS
 
             OPEN c_managers_conciertos;
             dbms_output.put_line('-*- MANAGERS DE CONCIERTOS');
-            dbms_output.put_line(RPAD('NOMBRE', 25) || RPAD('Nº COLABORACIONES', 20) || RPAD('PORCENTAJE DE COLABORACIONES', 30))
+            dbms_output.put_line(RPAD('NOMBRE', 25) || RPAD('Nº COLABORACIONES', 20) || RPAD('PORCENTAJE DE COLABORACIONES', 30));
             dbms_output.put_line('------------------------------------------------------------------------------------------------------------------------------------');
             LOOP
                 FETCH c_managers_conciertos INTO r_managers_conciertos;
                 EXIT WHEN c_managers_conciertos%NOTFOUND;
 
-                dbms_output.put_line(RPAD(r_managers_conciertos.manager, 25) || RPAD(r_managers_conciertos.c, 20) || RPAD(r_managers_conciertos.porcentaje*100 || '%', 30))
+                dbms_output.put_line(RPAD(r_managers_conciertos.manager, 25) || RPAD(r_managers_conciertos.c, 20) || RPAD(r_managers_conciertos.porcentaje*100 || '%', 30));
 
             END LOOP;
             CLOSE c_managers_conciertos;
