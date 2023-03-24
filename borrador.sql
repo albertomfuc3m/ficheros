@@ -214,16 +214,13 @@ CREATE OR REPLACE PACKAGE BODY melopack AS
 
     PROCEDURE informe AS 
         CURSOR c_discograficas IS 
-            WITH n_albums_format AS (
-                SELECT 
-                    performer AS p,
-                    format AS f,
-                    ROUND((MAX(rel_date) - MIN(rel_date))/COUNT(*), 0) AS t, 
-                    COUNT(*) AS c
+            WITH n_albums as (
+                SELECT
+                    performer as p,
+                    count(*) as c
                 FROM albums
                 WHERE performer = melopack.get_ia()
-                GROUP BY format, performer
-                ORDER BY performer
+                GROUP BY performer
             ),
             discograficas as (
                 SELECT 
@@ -252,7 +249,20 @@ CREATE OR REPLACE PACKAGE BODY melopack AS
         
         
         CURSOR c_ingenieros IS 
-            WITH ingenieros as (
+            WITH n_tracks as (
+                SELECT 
+                    albums.performer as p,
+                    count(*) as c 
+                FROM (
+                    albums
+                    INNER JOIN
+                    tracks
+                    ON tracks.pair = albums.pair
+                )
+                WHERE albums.performer = melopack.get_ia()
+                GROUP BY albums.performer
+            ),
+            ingenieros as (
                 SELECT 
                     albums.performer as p,
                     tracks.engineer,
@@ -281,7 +291,20 @@ CREATE OR REPLACE PACKAGE BODY melopack AS
             )
             SELECT * FROM FINAL_ingenieros;
         CURSOR c_studios IS 
-            WITH studios as (
+            WITH  n_tracks as (
+                SELECT 
+                    albums.performer as p,
+                    count(*) as c 
+                FROM (
+                    albums
+                    INNER JOIN
+                    tracks
+                    ON tracks.pair = albums.pair
+                )
+                WHERE albums.performer = melopack.get_ia()
+                GROUP BY albums.performer
+            ),
+            studios as (
                 SELECT 
                     albums.performer as p,
                     tracks.studio,
@@ -295,7 +318,6 @@ CREATE OR REPLACE PACKAGE BODY melopack AS
                 WHERE tracks.studio is not NULL AND albums.performer = melopack.get_ia()
                 GROUP BY albums.performer, tracks.studio
                 ORDER BY PERFORMER
-
             ),
             FINAL_studios as (
                 SELECT 
