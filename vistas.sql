@@ -121,9 +121,7 @@ WITH CHECK OPTION;
 CREATE OR REPLACE TRIGGER modificaciones_fans
 INSTEAD OF UPDATE ON fans
 BEGIN
-    raise error;
-EXCEPTION   
-    WHEN error THEN dbms_output.put_line("No se puede modificar la tabla fans")
+    raise_application_error(-20111, "No se puede modificar view * fans *");
 END;
 
 CREATE OR REPLACE TRIGGER insertar_fans
