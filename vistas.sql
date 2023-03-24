@@ -141,7 +141,7 @@ BEGIN
     WHERE performer = melopack.get_ia()
     GROUP BY performer;
 
-    IF melopack.get_ia() is not NULL OR cuenta < 1 THEN
+    IF melopack.get_ia() is not NULL OR NOT cuenta < 2 THEN
 
         SELECT count(*)
             INTO cuenta
@@ -237,9 +237,6 @@ BEGIN
     END IF;
 
 END;
-
-
-
 
 
 CREATE OR REPLACE TRIGGER borrar_fans
