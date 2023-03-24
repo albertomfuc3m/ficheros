@@ -121,7 +121,9 @@ WITH CHECK OPTION;
 CREATE OR REPLACE TRIGGER modificaciones_fans
 INSTEAD OF UPDATE ON fans
 BEGIN
-    raise_application_error(-20111, "No se puede modificar view * fans *");
+    raise error;
+EXCEPTION   
+    WHEN error THEN dbms_output.put_line("No se puede modificar la tabla fans")
 END;
 
 CREATE OR REPLACE TRIGGER insertar_fans
@@ -171,19 +173,18 @@ BEGIN
         GROUP BY performer;
         
 
-        SELECT when
-            -- INTO penultimo_concierto
+        SELECT min(when)
+            INTO penultimo_concierto
             FROM (
                 SELECT
                     when,
-                    rownum as rn
+                    performer
                 FROM (
                     SELECT * FROM concerts
                     WHERE performer = melopack.get_ia()
                     ORDER BY -TO_NUMBER(TO_CHAR(when, 'J'))
-                )
-            )
-        WHERE rn = 2;
+                ) where rownum <= 2
+            ) GROUP BY performer;
         
         IF cuenta = 0 THEN
             INSERT INTO attendances
