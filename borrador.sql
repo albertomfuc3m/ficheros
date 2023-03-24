@@ -213,24 +213,13 @@ CREATE OR REPLACE PACKAGE BODY melopack AS
     
 
     PROCEDURE informe AS 
+        CURSOR c_prueba is 
+            With hola as (SELECT * from albums)
+            select * from hola;
         BEGIN 
-        WITH 
-            n_albums_format AS (
-                SELECT 
-                    performer AS p,
-                    format AS f,
-                    ROUND((MAX(rel_date) - MIN(rel_date))/COUNT(*), 0) AS t, 
-                    COUNT(*) AS c
-                FROM albums
-                WHERE performer = melopack.get_ia()
-                GROUP BY format, performer
-                ORDER BY performer
-            );
-    
-        FOR i in FINAL_ALBUMS
-        LOOP
-            dbms_output.put_line('hola');
-        END LOOP;
+            for row in c_prueba LOOP
+                DBMS_OUTPUT.PUT_LINE('hola -- ');
+            end loop;
         END informe;
 END melopack;
 
