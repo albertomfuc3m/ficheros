@@ -547,8 +547,7 @@ CREATE OR REPLACE PACKAGE BODY melopack AS
             LOOP
                 FETCH c_managers_conciertos INTO r_managers_conciertos;
                 EXIT WHEN c_managers_conciertos%NOTFOUND;
-            c_managers_conciertos CLOS
-            E;
+            c_managers_conciertos CLOSE;
 
         END informe;
 END melopack;
