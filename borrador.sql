@@ -491,10 +491,10 @@ CREATE OR REPLACE PACKAGE BODY melopack AS
 
         BEGIN
             dbms_output.put_line('-------------INFORME-------------');
-            dbms_output.put_line('----->' || interprete_actual);
+            dbms_output.put_line('----->' || interprete_actual || CHAR(10));
 
             OPEN c_albums;
-            dbms_output.put_line('-*- Albums');
+            dbms_output.put_line('\n-*- Albums');
             LOOP 
                 FETCH c_albums INTO r_albums;
                 EXIT WHEN c_albums%NOTFOUND;
@@ -520,7 +520,7 @@ CREATE OR REPLACE PACKAGE BODY melopack AS
             LOOP
                 FETCH c_conciertos INTO r_conciertos;
                 EXIT WHEN c_conciertos%NOTFOUND;
-                dbms_output.put_line('[media de canciones interpretadas = ' || r_conciertos.m_canciones ||'][duracion media = ' || r_conciertos.m_duration || '][periodicidad media = ' || r_conciertos.m_periodicidad ']');
+                dbms_output.put_line('[media de canciones interpretadas = ' || r_conciertos.m_canciones ||'][duracion media = ' || r_conciertos.m_duration || '][periodicidad media = ' || r_conciertos.m_periodicidad ||']');
 
             END LOOP;
             CLOSE c_conciertos;
@@ -540,7 +540,7 @@ CREATE OR REPLACE PACKAGE BODY melopack AS
 
 
             OPEN c_studios;
-            dbms_output.put_line('');
+            dbms_output.put_line('-*- Studios');
             LOOP
                 FETCH c_studios INTO r_studios;
                 EXIT WHEN c_studios%NOTFOUND;
@@ -552,7 +552,7 @@ CREATE OR REPLACE PACKAGE BODY melopack AS
 
 
             OPEN c_ingenieros;
-            dbms_output.put_line('');
+            dbms_output.put_line('-*- Ingenieros');
             LOOP
                 FETCH c_ingenieros INTO r_ingenieros;
                 EXIT WHEN c_ingenieros%NOTFOUND;
@@ -564,7 +564,7 @@ CREATE OR REPLACE PACKAGE BODY melopack AS
 
 
             OPEN c_managers_albums;
-            dbms_output.put_line('');
+            dbms_output.put_line('-*- Managers de albumes');
             LOOP
                 FETCH c_managers_albums INTO r_managers_albums;
                 EXIT WHEN c_managers_albums%NOTFOUND;
@@ -576,7 +576,7 @@ CREATE OR REPLACE PACKAGE BODY melopack AS
 
 
             OPEN c_managers_conciertos;
-            dbms_output.put_line('');
+            dbms_output.put_line('-*- Managers de conciertos');
             LOOP
                 FETCH c_managers_conciertos INTO r_managers_conciertos;
                 EXIT WHEN c_managers_conciertos%NOTFOUND;
