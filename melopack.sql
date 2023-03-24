@@ -213,92 +213,22 @@ CREATE OR REPLACE PACKAGE BODY melopack AS
     
 
     PROCEDURE informe AS 
-        BEGIN 
-        WITH 
-            n_albums_format AS (
-                SELECT 
-                    performer AS p,
-                    format AS f,
-                    ROUND((MAX(rel_date) - MIN(rel_date))/COUNT(*), 0) AS t, 
-                    COUNT(*) AS c
-                FROM albums
-                WHERE performer = melopack.get_ia()
-                GROUP BY format, performer
-                ORDER BY performer
-            ),
-            n_albums as (
+        CURSOR c_discograficas IS 
+            WITH n_albums as (
                 SELECT
                     performer as p,
                     count(*) as c
                 FROM albums
-                WHERE performer = melopack.get_ia()
+                WHERE performer = interprete_actual
                 GROUP BY performer
             ),
-            n_conciertos AS (
-                SELECT
-                    performer as p,
-                    count(*) as c
-                FROM concerts
-                WHERE performer = melopack.get_ia()
-                GROUP BY performer
-            ),
-            n_tracks as (
-                SELECT 
-                    albums.performer as p,
-                    count(*) as c 
-                FROM (
-                    albums
-                    INNER JOIN
-                    tracks
-                    ON tracks.pair = albums.pair
-                )
-                WHERE albums.performer = melopack.get_ia()
-                GROUP BY albums.performer
-            ),
-            temp_canciones AS (
-                SELECT
-                    albums.performer AS p,
-                    albums.format AS f,
-                    COUNT(*) AS n_canciones,
-                    SUM(tracks.duration) AS duration_tipo
-                FROM albums
-                WHERE albums.performer = melopack.get_ia()
-                INNER JOIN tracks ON tracks.pair = albums.pair
-                GROUP BY albums.performer, albums.format
-            ),
-            temp_conciertos0 as (
-                SELECT
-                    concerts.performer as p,
-                    count(*) as total_canciones,
-                    sum(performances.duration) as total_duration,
-                    round((MAX(concerts.when) - MIN(concerts.when)), 0) as total_periodo
-                FROM (
-                    concerts
-                    INNER JOIN
-                    performances
-
-                    ON concerts.performer = performances.performer AND 
-                    concerts.when = performances.when
-                )
-                WHERE concerts.performer = melopack.get_ia()
-                GROUP BY concerts.performer
-            ),
-            temp_conciertos1 as (
-                SELECT 
-                    performer as p, 
-                    count(*) as n_conciertos 
-                FROM concerts
-                WHERE performer = melopack.get_ia()
-                GROUP BY performer
-            ),
-
             discograficas as (
                 SELECT 
                     performer as p,
                     publisher,
                     count(*) as c
                 FROM albums
-                WHERE performer = melopack.get_ia()
+                WHERE performer = interprete_actual
                 GROUP BY performer, publisher
                 order by performer
             ),
@@ -314,6 +244,23 @@ CREATE OR REPLACE PACKAGE BODY melopack AS
                     n_albums
                     ON discograficas.p = n_albums.p
                 )
+            )
+            SELECT * FROM FINAL_discograficas;
+        
+        
+        CURSOR c_ingenieros IS 
+            WITH n_tracks as (
+                SELECT 
+                    albums.performer as p,
+                    count(*) as c 
+                FROM (
+                    albums
+                    INNER JOIN
+                    tracks
+                    ON tracks.pair = albums.pair
+                )
+                WHERE albums.performer = interprete_actual
+                GROUP BY albums.performer
             ),
             ingenieros as (
                 SELECT 
@@ -326,7 +273,7 @@ CREATE OR REPLACE PACKAGE BODY melopack AS
                     tracks
                     ON tracks.pair = albums.pair
                 )
-                WHERE albums.performer = melopack.get_ia()
+                WHERE albums.performer = interprete_actual
                 GROUP BY albums.performer, tracks.engineer
             ),
             FINAL_ingenieros as (
@@ -341,6 +288,21 @@ CREATE OR REPLACE PACKAGE BODY melopack AS
                     n_tracks
                     ON ingenieros.p = n_tracks.p
                 )
+            )
+            SELECT * FROM FINAL_ingenieros;
+        CURSOR c_studios IS 
+            WITH  n_tracks as (
+                SELECT 
+                    albums.performer as p,
+                    count(*) as c 
+                FROM (
+                    albums
+                    INNER JOIN
+                    tracks
+                    ON tracks.pair = albums.pair
+                )
+                WHERE albums.performer = interprete_actual
+                GROUP BY albums.performer
             ),
             studios as (
                 SELECT 
@@ -353,10 +315,9 @@ CREATE OR REPLACE PACKAGE BODY melopack AS
                     tracks
                     ON tracks.pair = albums.pair
                 )
-                WHERE tracks.studio is not NULL AND albums.performer = melopack.get_ia()
+                WHERE tracks.studio is not NULL AND albums.performer = interprete_actual
                 GROUP BY albums.performer, tracks.studio
                 ORDER BY PERFORMER
-
             ),
             FINAL_studios as (
                 SELECT 
@@ -370,6 +331,16 @@ CREATE OR REPLACE PACKAGE BODY melopack AS
                     n_tracks
                     ON studios.p = n_tracks.p
                 )
+            )
+            SELECT * FROM FINAL_studios;
+        CURSOR c_managers_albums IS
+            WITH n_albums as (
+                SELECT
+                    performer as p,
+                    count(*) as c
+                FROM albums
+                WHERE performer = interprete_actual
+                GROUP BY performer
             ),
             managers_albums as (
                 SELECT 
@@ -377,7 +348,7 @@ CREATE OR REPLACE PACKAGE BODY melopack AS
                     manager,
                     count(*) as c
                 FROM albums
-                WHERE performer = melopack.get_ia()
+                WHERE performer = interprete_actual
                 GROUP BY performer, manager
             ),
             FINAL_managers_albums as (
@@ -392,6 +363,16 @@ CREATE OR REPLACE PACKAGE BODY melopack AS
                     n_albums
                     ON managers_albums.p = n_albums.p
                 )
+            )
+            SELECT * FROM FINAL_managers_albums;
+        CURSOR c_managers_conciertos IS 
+            WITH n_conciertos AS (
+                SELECT
+                    performer as p,
+                    count(*) as c
+                FROM concerts
+                WHERE performer = interprete_actual
+                GROUP BY performer
             ),
             managers_conciertos as (
                 SELECT 
@@ -399,7 +380,7 @@ CREATE OR REPLACE PACKAGE BODY melopack AS
                     manager,
                     count(*) as c
                 FROM concerts
-                WHERE performer = melopack.get_ia()
+                WHERE performer = interprete_actual
                 GROUP BY performer, manager
             ),
             FINAL_managers_conciertos as (
@@ -414,18 +395,74 @@ CREATE OR REPLACE PACKAGE BODY melopack AS
                     n_conciertos
                     ON managers_conciertos.p = n_conciertos.p
                 )
+            )
+            SELECT * FROM FINAL_managers_conciertos;
+
+        CURSOR c_conciertos IS 
+            WITH temp_conciertos0 as (
+                SELECT
+                    concerts.performer as p,
+                    count(*) as total_canciones,
+                    sum(performances.duration) as total_duration,
+                    MAX(concerts.when) - MIN(concerts.when) as total_periodo
+                FROM (
+                    concerts
+                    INNER JOIN
+                    performances
+
+                    ON concerts.performer = performances.performer AND 
+                    concerts.when = performances.when
+                )
+                WHERE concerts.performer = interprete_actual
+                GROUP BY concerts.performer
+            ),
+            temp_conciertos1 as (
+                SELECT 
+                    performer as p, 
+                    count(*) as n_conciertos 
+                FROM concerts
+                WHERE performer = interprete_actual
+                GROUP BY performer
             ),
             FINAL_conciertos as (
                 SELECT
                     temp_conciertos0.p,
                     round(temp_conciertos0.total_canciones/temp_conciertos1.n_conciertos, 1) as m_canciones,
                     round(temp_conciertos0.total_duration/temp_conciertos1.n_conciertos, 1) as m_duration,
-                    round(temp_conciertos0.total_periodo/temp_conciertos1.n_conciertos, 1) as m_periodo
+                    round(temp_conciertos0.total_periodo/temp_conciertos1.n_conciertos, 1) as m_periodicidad
                 FROM 
                     temp_conciertos0
                     INNER JOIN
                     temp_conciertos1
                     ON temp_conciertos0.p = temp_conciertos1.p
+            )
+            SELECT * FROM FINAL_conciertos;
+        CURSOR c_albums IS 
+            WITH n_albums_format AS (
+                SELECT 
+                    performer AS p,
+                    format AS f,
+                    ROUND((MAX(rel_date) - MIN(rel_date))/COUNT(*), 0) AS t, 
+                    COUNT(*) AS c
+                FROM albums
+                WHERE performer = interprete_actual
+                GROUP BY format, performer
+                ORDER BY performer
+            ),
+            temp_canciones AS (
+                SELECT
+                    albums.performer AS p,
+                    albums.format AS f,
+                    COUNT(*) AS n_canciones,
+                    SUM(tracks.duration) AS duration_tipo
+                FROM (
+                    albums
+                    INNER JOIN 
+                    tracks 
+                    ON tracks.pair = albums.pair
+                )
+                WHERE albums.performer = interprete_actual
+                GROUP BY albums.performer, albums.format
             ),
             FINAL_albums AS (
                 SELECT
@@ -441,114 +478,134 @@ CREATE OR REPLACE PACKAGE BODY melopack AS
                     temp_canciones 
                     ON n_albums_format.p = temp_canciones.p AND 
                         n_albums_format.f = temp_canciones.f
-            );
-    
-            -- cursores
-            DECLARE
-                CURSOR c_discograficas IS SELECT * FROM FINAL_discograficas;
-                CURSOR c_ingenieros IS SELECT * FROM FINAL_ingenieros;
-                CURSOR c_studios IS SELECT * FROM FINAL_studios;
-                CURSOR c_managers_albums IS SELECT * FROM FINAL_managers_albums;
-                CURSOR c_managers_conciertos IS SELECT * FROM FINAL_managers_conciertos;
-                CURSOR c_conciertos IS SELECT * FROM FINAL_conciertos;
-                CURSOR c_albums IS SELECT * FROM FINAL_albums;
+            )
+            SELECT * FROM FINAL_albums;  
 
-                r_discograficas c_discograficas%ROWTYPE;
-                r_ingenieros c_ingenieros%ROWTYPE;
-                r_studios c_studios%ROWTYPE;
-                r_managers_albums c_managers_albums%ROWTYPE;
-                r_managers_conciertos c_managers_conciertos%ROWTYPE;
-                r_conciertos c_conciertos%ROWTYPE;
-                r_albums c_albums%ROWTYPE;
-            BEGIN
-            END;
+        r_discograficas c_discograficas%ROWTYPE;
+        r_ingenieros c_ingenieros%ROWTYPE;
+        r_studios c_studios%ROWTYPE;
+        r_managers_albums c_managers_albums%ROWTYPE;
+        r_managers_conciertos c_managers_conciertos%ROWTYPE;
+        r_conciertos c_conciertos%ROWTYPE;
+        r_albums c_albums%ROWTYPE;
 
-           
-            dbms_output.put_line('-------------INFORME-------------');
-            dbms_output.put_line('----->' || melopack.get_ia());
+        BEGIN
+            dbms_output.put_line('--------------------INFORME--------------------');
+            dbms_output.put_line('----- ' || interprete_actual || CHR(10));
 
-            c_albums OPEN;
-            dbms_output.put_line('--- Albums')
+            OPEN c_albums;
+            dbms_output.put_line('-*- ALBUMS');
+            dbms_output.put_line(RPAD('FORMATO',10) ||RPAD('Nº DE ALBUMES',18) ||RPAD('MEDIA DE CANCIONES',20) ||RPAD('DURACION MEDIA',18) ||RPAD('PERIODICIDAD MEDIA',18));
+            dbms_output.put_line('-------------------------------------------------------------------------------------------');
             LOOP 
                 FETCH c_albums INTO r_albums;
                 EXIT WHEN c_albums%NOTFOUND;
 
                 IF r_albums.f = 'C' THEN
-                    dbms_output.put_line('CD 
-                        [nº de albums = ' || r_albums.n_albums_format ||
-                        '][media de canciones = ' || r_albums.m_canciones ||
-                        '][duracion media = ' || r_albums.m_duration ||
-                        '][periodicidad media = ' || r_albums.m_periodicidad );
-
+                    dbms_output.put_line(RPAD('CD',10)|| RPAD(r_albums.n_albums_format,18) || RPAD(r_albums.m_canciones,20) || RPAD(r_albums.m_duration,18) || RPAD(r_albums.m_periodicidad,18));
                 ELSIF r_albums.f = 'S' THEN
-                    dbms_output.put_line('Single 
-                        [nº de albums = ' || r_albums.n_albums_format ||
-                        '][media de canciones = ' || r_albums.m_canciones ||
-                        '][duracion media = ' || r_albums.m_duration ||
-                        '][periodicidad media = ' || r_albums.m_periodicidad );
+                    dbms_output.put_line(RPAD('SINGLE',10)|| RPAD(r_albums.n_albums_format,18) || RPAD(r_albums.m_canciones,20) || RPAD(r_albums.m_duration,18) || RPAD(r_albums.m_periodicidad,18));
                 ELSIF r_albums.f = 'M' THEN
-                    dbms_output.put_line('MP3 
-                        [nº de albums = ' || r_albums.n_albums_format ||
-                        '][media de canciones = ' || r_albums.m_canciones ||
-                        '][duracion media = ' || r_albums.m_duration ||
-                        '][periodicidad media = ' || r_albums.m_periodicidad );
+                    dbms_output.put_line(RPAD('MP3',10)|| RPAD(r_albums.n_albums_format,18) || RPAD(r_albums.m_canciones,20) || RPAD(r_albums.m_duration,18) || RPAD(r_albums.m_periodicidad,18));
                 ELSIF r_albums.f = 'T' THEN
-                    dbms_output.put_line('Streaming 
-                        [nº de albums = ' || r_albums.n_albums_format ||
-                        '][media de canciones = ' || r_albums.m_canciones ||
-                        '][duracion media = ' || r_albums.m_duration ||
-                        '][periodicidad media = ' || r_albums.m_periodicidad );
+                    dbms_output.put_line(RPAD('STREAMING',10)||  RPAD(r_albums.n_albums_format,18) || RPAD(r_albums.m_canciones,20) || RPAD(r_albums.m_duration,18) || RPAD(r_albums.m_periodicidad,18));
                 ELSIF r_albums.f = 'V' THEN
-                    dbms_output.put_line('Vynil
-                        [nº de albums = ' || r_albums.n_albums_format ||
-                        '][media de canciones = ' || r_albums.m_canciones ||
-                        '][duracion media = ' || r_albums.m_duration ||
-                        '][periodicidad media = ' || r_albums.m_periodicidad );
+                    dbms_output.put_line(RPAD('VYNIL',10)||  RPAD(r_albums.n_albums_format,18) || RPAD(r_albums.m_canciones,20) || RPAD(r_albums.m_duration,18) || RPAD(r_albums.m_periodicidad,18));
                 END IF;
+            END LOOP;
+            CLOSE c_albums;
+            dbms_output.put_line(CHR(10));
+            dbms_output.put_line(CHR(10));
+
+            OPEN c_conciertos;
+            dbms_output.put_line('----- CONCIERTOS');
+            dbms_output.put_line(RPAD('MEDIA INTERPRETACIONES', 25) || RPAD('DURACION MEDIA', 20) || RPAD('PERIODICIDAD MEDIA', 20));
+            dbms_output.put_line('-------------------------------------------------------------------------------------------');
+            LOOP
+                FETCH c_conciertos INTO r_conciertos;
+                EXIT WHEN c_conciertos%NOTFOUND;
+                dbms_output.put_line(RPAD(r_conciertos.m_canciones,25) || RPAD(r_conciertos.m_duration,20) || RPAD(r_conciertos.m_periodicidad,20));
 
             END LOOP;
+            CLOSE c_conciertos;
+            dbms_output.put_line(CHR(10));
+            dbms_output.put_line(CHR(10));
 
-            c_conciertos OPEN;
-            dbms_output.put_line('');
+
+            OPEN c_discograficas;
+            dbms_output.put_line('---------Colaboradores---------');
+            dbms_output.put_line(CHR(10));
+            dbms_output.put_line('-*- DISCOGRAFICAS');
+            dbms_output.put_line(RPAD('NOMBRE', 25) || RPAD('Nº COLABORACIONES', 20) || RPAD('PORCENTAJE DE COLABORACIONES', 30));
+            dbms_output.put_line('-------------------------------------------------------------------------------------------');
             LOOP
-                FETCH c_conciertos INTO r_concc_conciertos;
-                EXIT WHEN c_conciertos%NOTFOUND;
-            c_conciertos CLOSE;
+                FETCH c_discograficas INTO r_discograficas;
+                EXIT WHEN c_discograficas%NOTFOUND;
+                dbms_output.put_line(RPAD(r_discograficas.publisher, 25) || RPAD(r_discograficas.c, 20) || RPAD(r_discograficas.porcentaje*100 || '%', 30));
 
-            c_discograficas OPEN;
-            dbms_output.put_line('');
-            LOOP
-                FETCH c_discorgraficas INTO r_discorgraficas;
-                EXIT WHEN c_discorgraficas%NOTFOUND;
-            c_discograficas CLOSE;
+            END LOOP;
+            CLOSE c_discograficas;
+            dbms_output.put_line(CHR(10));
+            dbms_output.put_line(CHR(10));
 
-            c_studios OPEN;
-            dbms_output.put_line('');
+
+            OPEN c_studios;
+            dbms_output.put_line('-*- ESTUDIOS');
+            dbms_output.put_line(RPAD('NOMBRE', 51) || RPAD('Nº COLABORACIONES', 20) || RPAD('PORCENTAJE DE COLABORACIONES', 30));
+            dbms_output.put_line('-------------------------------------------------------------------------------------------');
             LOOP
                 FETCH c_studios INTO r_studios;
                 EXIT WHEN c_studios%NOTFOUND;
-            c_studios CLOSE;
+                dbms_output.put_line(RPAD(r_studios.studio, 51) || RPAD(r_studios.c, 20) || RPAD(r_studios.porcentaje*100 || '%', 30));
 
-            c_ingenieros OPEN;
-            dbms_output.put_line('');
+            END LOOP;
+            CLOSE c_studios;
+            dbms_output.put_line(CHR(10));
+            dbms_output.put_line(CHR(10));
+
+
+            OPEN c_ingenieros;
+            dbms_output.put_line('-*- INGENIEROS');
+            dbms_output.put_line(RPAD('NOMBRE', 51) || RPAD('Nº COLABORACIONES', 20) || RPAD('PORCENTAJE DE COLABORACIONES', 30));
+            dbms_output.put_line('-------------------------------------------------------------------------------------------');
             LOOP
                 FETCH c_ingenieros INTO r_ingenieros;
                 EXIT WHEN c_ingenieros%NOTFOUND;
-            c_ingenieros CLOSE;
+                dbms_output.put_line(RPAD(r_ingenieros.engineer, 51) || RPAD(r_ingenieros.c, 20) || RPAD(r_ingenieros.porcentaje*100 || '%', 30));
 
-            c_managers_albums OPEN;
-            dbms_output.put_line('');
+            END LOOP;
+            CLOSE c_ingenieros;
+            dbms_output.put_line(CHR(10));
+            dbms_output.put_line(CHR(10));
+
+
+            OPEN c_managers_albums;
+            dbms_output.put_line('-*- MANAGERS DE ALBUMS');
+            dbms_output.put_line(RPAD('NOMBRE', 25) || RPAD('Nº COLABORACIONES', 20) || RPAD('PORCENTAJE DE COLABORACIONES', 30));
+            dbms_output.put_line('-------------------------------------------------------------------------------------------');
             LOOP
                 FETCH c_managers_albums INTO r_managers_albums;
                 EXIT WHEN c_managers_albums%NOTFOUND;
-            c_managers_albums CLOSE;
+                dbms_output.put_line(RPAD(r_managers_albums.manager, 25) || RPAD(r_managers_albums.c, 20) || RPAD(r_managers_albums.porcentaje*100 || '%', 30));
 
-            c_managers_conciertos OPEN;
-            dbms_output.put_line('');
+            END LOOP;
+            CLOSE c_managers_albums;
+            dbms_output.put_line(CHR(10));
+            dbms_output.put_line(CHR(10));
+
+
+            OPEN c_managers_conciertos;
+            dbms_output.put_line('-*- MANAGERS DE CONCIERTOS');
+            dbms_output.put_line(RPAD('NOMBRE', 25) || RPAD('Nº COLABORACIONES', 20) || RPAD('PORCENTAJE DE COLABORACIONES', 30));
+            dbms_output.put_line('-------------------------------------------------------------------------------------------');
             LOOP
                 FETCH c_managers_conciertos INTO r_managers_conciertos;
                 EXIT WHEN c_managers_conciertos%NOTFOUND;
-            c_managers_conciertos CLOSE;
+
+                dbms_output.put_line(RPAD(r_managers_conciertos.manager, 25) || RPAD(r_managers_conciertos.c, 20) || RPAD(r_managers_conciertos.porcentaje*100 || '%', 30));
+
+            END LOOP;
+            CLOSE c_managers_conciertos;
 
         END informe;
 END melopack;

@@ -91,6 +91,7 @@ INSERT INTO Banned
         performer
     FROM attendances;
 
+
 CREATE OR REPLACE VIEW fans AS
     WITH interprete_valido as (
         SELECT 
