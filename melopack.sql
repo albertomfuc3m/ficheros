@@ -437,9 +437,10 @@ CREATE OR REPLACE PACKAGE BODY melopack AS
                     trunc(temp_canciones.duration_tipo/n_albums_format.c, 1) AS m_duration
                 FROM 
                     n_albums_format
-                    INNER JOIN temp_canciones 
-                    ON n_albums_format.p = temp_canciones.p 
-                    AND n_albums_format.f = temp_canciones.f
+                    INNER JOIN 
+                    temp_canciones 
+                    ON n_albums_format.p = temp_canciones.p AND 
+                        n_albums_format.f = temp_canciones.f
             );
     
             -- cursores
