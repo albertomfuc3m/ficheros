@@ -219,7 +219,7 @@ CREATE OR REPLACE PACKAGE BODY melopack AS
                     performer as p,
                     count(*) as c
                 FROM albums
-                WHERE performer = melopack.get_ia()
+                WHERE performer = interprete_actual
                 GROUP BY performer
             ),
             discograficas as (
@@ -228,7 +228,7 @@ CREATE OR REPLACE PACKAGE BODY melopack AS
                     publisher,
                     count(*) as c
                 FROM albums
-                WHERE performer = melopack.get_ia()
+                WHERE performer = interprete_actual
                 GROUP BY performer, publisher
                 order by performer
             ),
@@ -259,7 +259,7 @@ CREATE OR REPLACE PACKAGE BODY melopack AS
                     tracks
                     ON tracks.pair = albums.pair
                 )
-                WHERE albums.performer = melopack.get_ia()
+                WHERE albums.performer = interprete_actual
                 GROUP BY albums.performer
             ),
             ingenieros as (
@@ -273,7 +273,7 @@ CREATE OR REPLACE PACKAGE BODY melopack AS
                     tracks
                     ON tracks.pair = albums.pair
                 )
-                WHERE albums.performer = melopack.get_ia()
+                WHERE albums.performer = interprete_actual
                 GROUP BY albums.performer, tracks.engineer
             ),
             FINAL_ingenieros as (
@@ -301,7 +301,7 @@ CREATE OR REPLACE PACKAGE BODY melopack AS
                     tracks
                     ON tracks.pair = albums.pair
                 )
-                WHERE albums.performer = melopack.get_ia()
+                WHERE albums.performer = interprete_actual
                 GROUP BY albums.performer
             ),
             studios as (
@@ -315,7 +315,7 @@ CREATE OR REPLACE PACKAGE BODY melopack AS
                     tracks
                     ON tracks.pair = albums.pair
                 )
-                WHERE tracks.studio is not NULL AND albums.performer = melopack.get_ia()
+                WHERE tracks.studio is not NULL AND albums.performer = interprete_actual
                 GROUP BY albums.performer, tracks.studio
                 ORDER BY PERFORMER
             ),
@@ -339,7 +339,7 @@ CREATE OR REPLACE PACKAGE BODY melopack AS
                     performer as p,
                     count(*) as c
                 FROM albums
-                WHERE performer = melopack.get_ia()
+                WHERE performer = interprete_actual
                 GROUP BY performer
             ),
             managers_albums as (
@@ -348,7 +348,7 @@ CREATE OR REPLACE PACKAGE BODY melopack AS
                     manager,
                     count(*) as c
                 FROM albums
-                WHERE performer = melopack.get_ia()
+                WHERE performer = interprete_actual
                 GROUP BY performer, manager
             ),
             FINAL_managers_albums as (
@@ -371,7 +371,7 @@ CREATE OR REPLACE PACKAGE BODY melopack AS
                     performer as p,
                     count(*) as c
                 FROM concerts
-                WHERE performer = melopack.get_ia()
+                WHERE performer = interprete_actual
                 GROUP BY performer
             ),
             managers_conciertos as (
@@ -380,7 +380,7 @@ CREATE OR REPLACE PACKAGE BODY melopack AS
                     manager,
                     count(*) as c
                 FROM concerts
-                WHERE performer = melopack.get_ia()
+                WHERE performer = interprete_actual
                 GROUP BY performer, manager
             ),
             FINAL_managers_conciertos as (
@@ -397,13 +397,14 @@ CREATE OR REPLACE PACKAGE BODY melopack AS
                 )
             )
             SELECT * FROM FINAL_managers_conciertos;
+
         CURSOR c_conciertos IS 
             WITH temp_conciertos0 as (
                 SELECT
                     concerts.performer as p,
                     count(*) as total_canciones,
                     sum(performances.duration) as total_duration,
-                    round((MAX(concerts.when) - MIN(concerts.when)), 0) as total_periodo
+                    MAX(concerts.when) - MIN(concerts.when) as total_periodo
                 FROM (
                     concerts
                     INNER JOIN
@@ -412,7 +413,7 @@ CREATE OR REPLACE PACKAGE BODY melopack AS
                     ON concerts.performer = performances.performer AND 
                     concerts.when = performances.when
                 )
-                WHERE concerts.performer = melopack.get_ia()
+                WHERE concerts.performer = interprete_actual
                 GROUP BY concerts.performer
             ),
             temp_conciertos1 as (
@@ -420,7 +421,7 @@ CREATE OR REPLACE PACKAGE BODY melopack AS
                     performer as p, 
                     count(*) as n_conciertos 
                 FROM concerts
-                WHERE performer = melopack.get_ia()
+                WHERE performer = interprete_actual
                 GROUP BY performer
             ),
             FINAL_conciertos as (
@@ -444,7 +445,7 @@ CREATE OR REPLACE PACKAGE BODY melopack AS
                     ROUND((MAX(rel_date) - MIN(rel_date))/COUNT(*), 0) AS t, 
                     COUNT(*) AS c
                 FROM albums
-                WHERE performer = melopack.get_ia()
+                WHERE performer = interprete_actual
                 GROUP BY format, performer
                 ORDER BY performer
             ),
@@ -455,7 +456,7 @@ CREATE OR REPLACE PACKAGE BODY melopack AS
                     COUNT(*) AS n_canciones,
                     SUM(tracks.duration) AS duration_tipo
                 FROM albums
-                WHERE albums.performer = melopack.get_ia()
+                WHERE albums.performer = interprete_actual
                 INNER JOIN tracks ON tracks.pair = albums.pair
                 GROUP BY albums.performer, albums.format
             ),
@@ -486,7 +487,7 @@ CREATE OR REPLACE PACKAGE BODY melopack AS
 
         BEGIN
             dbms_output.put_line('-------------INFORME-------------');
-            dbms_output.put_line('----->' || melopack.get_ia());
+            dbms_output.put_line('----->' || interprete_actual);
 
             OPEN c_albums;
             dbms_output.put_line('--- Albums');
