@@ -414,7 +414,7 @@ CREATE OR REPLACE PACKAGE BODY melopack AS
                     ON temp_conciertos0.p = temp_conciertos1.p
             )
             SELECT * FROM FINAL_conciertos;
-        CURSOR c_albums;
+        CURSOR c_albums IS 
             WITH n_albums_format AS (
                 SELECT 
                     performer AS p,
@@ -466,7 +466,7 @@ CREATE OR REPLACE PACKAGE BODY melopack AS
             dbms_output.put_line('-------------INFORME-------------');
             dbms_output.put_line('----->' || melopack.get_ia());
 
-            c_albums OPEN;
+            OPEN c_albums;
             dbms_output.put_line('--- Albums')
             LOOP 
                 FETCH c_albums INTO r_albums;
@@ -506,48 +506,49 @@ CREATE OR REPLACE PACKAGE BODY melopack AS
                 END IF;
 
             END LOOP;
+            CLOSE c_albums;
 
-            c_conciertos OPEN;
+            OPEN c_conciertos;
             dbms_output.put_line('');
             LOOP
                 FETCH c_conciertos INTO r_concc_conciertos;
                 EXIT WHEN c_conciertos%NOTFOUND;
-            c_conciertos CLOSE;
+            CLOSE c_conciertos;
 
-            c_discograficas OPEN;
+            OPEN c_discograficas;
             dbms_output.put_line('');
             LOOP
                 FETCH c_discorgraficas INTO r_discorgraficas;
                 EXIT WHEN c_discorgraficas%NOTFOUND;
-            c_discograficas CLOSE;
+            CLOSE c_discograficas;
 
-            c_studios OPEN;
+            OPEN c_studios;
             dbms_output.put_line('');
             LOOP
                 FETCH c_studios INTO r_studios;
                 EXIT WHEN c_studios%NOTFOUND;
-            c_studios CLOSE;
+            CLOSE c_studios;
 
-            c_ingenieros OPEN;
+            OPEN c_ingenieros;
             dbms_output.put_line('');
             LOOP
                 FETCH c_ingenieros INTO r_ingenieros;
                 EXIT WHEN c_ingenieros%NOTFOUND;
-            c_ingenieros CLOSE;
+            CLOSE c_ingenieros;
 
-            c_managers_albums OPEN;
+            OPEN c_managers_albums;
             dbms_output.put_line('');
             LOOP
                 FETCH c_managers_albums INTO r_managers_albums;
                 EXIT WHEN c_managers_albums%NOTFOUND;
-            c_managers_albums CLOSE;
+            CLOSE c_managers_albums;
 
-            c_managers_conciertos OPEN;
+            OPEN c_managers_conciertos;
             dbms_output.put_line('');
             LOOP
                 FETCH c_managers_conciertos INTO r_managers_conciertos;
                 EXIT WHEN c_managers_conciertos%NOTFOUND;
-            c_managers_conciertos CLOSE;
+            CLOSE c_managers_conciertos;
 
         END informe;
 END melopack;
