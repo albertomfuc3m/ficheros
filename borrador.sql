@@ -503,15 +503,15 @@ CREATE OR REPLACE PACKAGE BODY melopack AS
 
                 
                 IF r_albums.f = 'C' THEN
-                    dbms_output.put_line('CD        '|| CHR(9) || CHR(9) || CHR(9) || CAST(r_albums.n_albums_format AS CHAR(15)) || CHR(9) || CHR(9) || CHR(9) || CAST(r_albums.m_canciones AS CHAR(15)) || CHR(9) || CHR(9) || CHR(9) || CAST(r_albums.m_duration AS CHAR(15)) || CHR(9) || CHR(9) || CHR(9) || CAST(r_albums.m_periodicidad AS CHAR(15)));
+                    dbms_output.put_line(RPAD('CD',10)|| CHR(9) || CHR(9) || CHR(9) || RPAD(r_albums.n_albums_format,15) || CHR(9) || CHR(9) || CHR(9) || RPAD(r_albums.m_canciones,15) || CHR(9) || CHR(9) || CHR(9) || RPAD(r_albums.m_duration,15) || CHR(9) || CHR(9) || CHR(9) || RPAD(r_albums.m_periodicidad,15));
                 ELSIF r_albums.f = 'S' THEN
-                    dbms_output.put_line('SINGLE    '|| CHR(9) || CHR(9) || CHR(9) || CAST(r_albums.n_albums_format AS CHAR(15)) || CHR(9) || CHR(9) || CHR(9) || CAST(r_albums.m_canciones AS CHAR(15)) || CHR(9) || CHR(9) || CHR(9) || CAST(r_albums.m_duration AS CHAR(15)) || CHR(9) || CHR(9) || CHR(9) || CAST(r_albums.m_periodicidad AS CHAR(15)));
+                    dbms_output.put_line(RPAD('SINGLE',10)|| CHR(9) || CHR(9) || CHR(9) || RPAD(r_albums.n_albums_format,15) || CHR(9) || CHR(9) || CHR(9) || RPAD(r_albums.m_canciones,15) || CHR(9) || CHR(9) || CHR(9) || RPAD(r_albums.m_duration,15) || CHR(9) || CHR(9) || CHR(9) || RPAD(r_albums.m_periodicidad,15));
                 ELSIF r_albums.f = 'M' THEN
-                    dbms_output.put_line('MP3       '|| CHR(9) || CHR(9) || CHR(9) || CAST(r_albums.n_albums_format AS CHAR(15)) || CHR(9) || CHR(9) || CHR(9) || CAST(r_albums.m_canciones AS CHAR(15)) || CHR(9) || CHR(9) || CHR(9) || CAST(r_albums.m_duration AS CHAR(15)) || CHR(9) || CHR(9) || CHR(9) || CAST(r_albums.m_periodicidad AS CHAR(15)));
+                    dbms_output.put_line(RPAD('MP3',10)|| CHR(9) || CHR(9) || CHR(9) || RPAD(r_albums.n_albums_format,15) || CHR(9) || CHR(9) || CHR(9) || RPAD(r_albums.m_canciones,15) || CHR(9) || CHR(9) || CHR(9) || RPAD(r_albums.m_duration,15) || CHR(9) || CHR(9) || CHR(9) || RPAD(r_albums.m_periodicidad,15));
                 ELSIF r_albums.f = 'T' THEN
-                    dbms_output.put_line('STREAMING '|| CHR(9) || CHR(9) || CHR(9) || CAST(r_albums.n_albums_format AS CHAR(15)) || CHR(9) || CHR(9) || CHR(9) || CAST(r_albums.m_canciones AS CHAR(15)) || CHR(9) || CHR(9) || CHR(9) || CAST(r_albums.m_duration AS CHAR(15)) || CHR(9) || CHR(9) || CHR(9) || CAST(r_albums.m_periodicidad AS CHAR(15)));
+                    dbms_output.put_line(RPAD('STREAMING',10)|| CHR(9) || CHR(9) || CHR(9) || RPAD(r_albums.n_albums_format,15) || CHR(9) || CHR(9) || CHR(9) || RPAD(r_albums.m_canciones,15) || CHR(9) || CHR(9) || CHR(9) || RPAD(r_albums.m_duration,15) || CHR(9) || CHR(9) || CHR(9) || RPAD(r_albums.m_periodicidad,15));
                 ELSIF r_albums.f = 'V' THEN
-                    dbms_output.put_line('VYNIL     '|| CHR(9) || CHR(9) || CHR(9) || CAST(r_albums.n_albums_format AS CHAR(15)) || CHR(9) || CHR(9) || CHR(9) || CAST(r_albums.m_canciones AS CHAR(15)) || CHR(9) || CHR(9) || CHR(9) || CAST(r_albums.m_duration AS CHAR(15)) || CHR(9) || CHR(9) || CHR(9) || CAST(r_albums.m_periodicidad AS CHAR(15)));
+                    dbms_output.put_line(RPAD('VYNIL',10)|| CHR(9) || CHR(9) || CHR(9) || RPAD(r_albums.n_albums_format,15) || CHR(9) || CHR(9) || CHR(9) || RPAD(r_albums.m_canciones,15) || CHR(9) || CHR(9) || CHR(9) || RPAD(r_albums.m_duration,15) || CHR(9) || CHR(9) || CHR(9) || RPAD(r_albums.m_periodicidad,15));
                 END IF;
 
 
