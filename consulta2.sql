@@ -13,7 +13,7 @@ with tracks_info_raw as (
         FROM albums
     ),
     tracks_info as (
-        SELECT 
+        SELECT
             autor1, 
             titulo,
             interprete,

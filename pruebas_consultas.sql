@@ -1,5 +1,7 @@
 ----------------------------------PRUEBA-1----------------------------------
 
+-- Usamos un interprete de la BD dada para hacer las pruebas más legibles y evitar hacer muchos inserts
+-- Borramos todos los tracks
 -- El porcentaje de tracks va a pasar a NULL, porque dejara de tener grabaciones
 DELETE FROM tracks 
     WHERE pair IN (SELECT pair FROM albums WHERE performer = 'Cunegunda');
@@ -16,7 +18,7 @@ DELETE FROM performances
 -- Insertamos canciones escritas por Cunegunda y las respectivas tracks para cambiar su porcentaje
 -- Tiene 175 tracks, de las cuales 31 ha escrito un miembro, siendo su porcentaje 17.71%
 -- Si añadimos 30 tracks escritas por un miembro
--- porcentaje deberia cambiar a (31+30)/(175+30) = 29.75
+-- porcentaje deberia cambiar a (31+30)/(175+30) = 29.75%
 INSERT ALL
     INTO songs (title, writer, cowriter) VALUES ('Il Signore della notte Vol.01', 'US>>0604451328', NULL)
     INTO songs (title, writer, cowriter) VALUES ('Il Signore della notte Vol.02', 'US>>0604451328', NULL)
@@ -80,7 +82,7 @@ INSERT ALL
     INTO tracks (pair, sequ, title, writer, duration, rec_date, studio, engineer) VALUES ('R35096S379797J0', 29, 'Il Signore della notte Vol.27', 'US>>0604451328', 180, SYSDATE, NULL, 'M.A. Peña')
     INTO tracks (pair, sequ, title, writer, duration, rec_date, studio, engineer) VALUES ('R35096S379797J0', 30, 'Il Signore della notte Vol.28', 'US>>0604451328', 180, SYSDATE, NULL, 'M.A. Peña')
     INTO tracks (pair, sequ, title, writer, duration, rec_date, studio, engineer) VALUES ('R35096S379797J0', 31, 'Il Signore della notte Vol.29', 'US>>0604451328', 180, SYSDATE, NULL, 'M.A. Peña')
-    INTO tracks (pair, sequ, title, writer, duration, rec_date, studio, engineer) VALUES ('R35096S379797J0', 32, 'Il Signore della notte Vol.30', 'US>>0604451328', 180, SYSDATE, NULL, 'M.A. Peña')
+    INTO tracks (pair, sequ, title, writer, duration, rec_date, studio, engineer) VALUES ('R35096S379797J0', 32, 'Il Signore della notte Vol.30', 'US>>0604451328', 180, SYSDATE, NULL, 'RIKI GONZ')
     SELECT 1 FROM DUAL;
 
 ----------------------------------PRUEBA-4----------------------------------
@@ -130,7 +132,7 @@ INSERT INTO performers
     VALUES 
         ('Cunegunda Renacido', 'Spanish', 'Spanish');
 
--- Si insertamos un track pasaran a ser 0 porque no tiene musicos que las hayan podido escribir
+-- Si insertamos un track pasara a ser 0 porque no tiene musicos que las hayan podido escribir
 INSERT INTO albums
     (pair, performer, format, title, rel_date, publisher, manager)
     VALUES
@@ -151,14 +153,14 @@ INSERT INTO musicians
 INSERT INTO involvement
     (band, musician, role, start_d, end_d)
     VALUES
-        ('Cunegunda Renacido', 'ES>>PASAPORTE', 'ONE-MAN-BAND Baby', SYSDATE, NULL)
+        ('Cunegunda Renacido', 'ES>>PASAPORTE', 'Solist', TO_DATE('01/01/2000', 'DD-MM-YYYY'), NULL)
 
 -- Deberian estar en albums, pero es mas facil para los ejemplos dejarlas aparte
 -- Son canciones sin grabacion
 INSERT ALL
     INTO songs (title, writer, cowriter) VALUES ('Soy un ANIMAL', 'ES>>PASAPORTE','US>>0604451328')
     INTO songs (title, writer, cowriter) VALUES ('Soy un ANIMAL - REMIX', 'US>>0604451328', 'ES>>PASAPORTE')
-    SELECT 1 FROM NULL;
+    SELECT 1 FROM DUAL;
 
 INSERT ALL
     INTO concerts (performer, when, tour, municipality, address, country, attendance, duration, manager)
@@ -185,13 +187,13 @@ INSERT ALL
 ----------------------------------PRUEBA-1---------------------------------
 
 -- Insertamos un interprete con una grabacion y dos interpretaciones (usamos el interprete y grabacion de la prueba 1.5)
--- usando los conciertos usado en el apartado anterior
+-- usando los conciertos del apartado anterior
 
 INSERT ALL 
     INTO performances (performer, when, sequ, songtitle, songwriter, duration) 
-        VALUES ('Cunegunda Renacido', TO_DATE('01/01/2010', 'DD-MM-YYYY'), 12, 'Il Signore della notte Vol.01', 'US>>0604451328', 180)
+        VALUES ('Cunegunda Renacido', TO_DATE('01/01/2010', 'DD-MM-YYYY'), 13, 'Il Signore della notte Vol.01', 'US>>0604451328', 180)
     INTO performances (performer, when, sequ, songtitle, songwriter, duration) 
-        VALUES ('Cunegunda Renacido', TO_DATE('01/01/2020', 'DD-MM-YYYY'), 12, 'Il Signore della notte Vol.01', 'US>>0604451328', 180)
+        VALUES ('Cunegunda Renacido', TO_DATE('01/01/2020', 'DD-MM-YYYY'), 13, 'Il Signore della notte Vol.01', 'US>>0604451328', 180)
     SELECT 1 FROM DUAL;
 
 -- Sin tener en cuenta el %, vemos que la media es 5479 dias
@@ -201,18 +203,19 @@ INSERT ALL
 
 ----------------------------------PRUEBA-2---------------------------------
 
--- Añadiendo una interpretacion de otra cancion que no a grabado, su porcentaje pasa a ser 50%
+-- Hasta ahora tiene interpretaciones de 3 canciones distintas y 1 de ellas tiene grabacion, y el porcentaje es 33%
+-- Añadiendo una interpretacion de otra cancion que no a grabado, su porcentaje pasa a ser 25%
 INSERT INTO performances 
     (performer, when, sequ, songtitle, songwriter, duration) 
     VALUES 
-        ('Cunegunda Renacido', TO_DATE('01/01/2010', 'DD-MM-YYYY'), 13, 'Il Signore della notte Vol.02', 'US>>0604451328', 180);
+        ('Cunegunda Renacido', TO_DATE('01/01/2010', 'DD-MM-YYYY'), 14, 'Il Signore della notte Vol.02', 'US>>0604451328', 180);
 
 -- Ademas si añadimos otra interpretacion de la misma cancion, el porcentaje no cambia 
 -- Solo ha interpretado dos canciones distintas, aunque sea en más de una ocasion, y solo ha grabado una cancion
 INSERT INTO performances 
     (performer, when, sequ, songtitle, songwriter, duration) 
     VALUES 
-        ('Cunegunda Renacido', TO_DATE('01/01/2020', 'DD-MM-YYYY'), 13, 'Il Signore della notte Vol.02', 'US>>0604451328', 180);
+        ('Cunegunda Renacido', TO_DATE('01/01/2020', 'DD-MM-YYYY'), 14, 'Il Signore della notte Vol.02', 'US>>0604451328', 180);
 
 
 ----------------------------------PRUEBA-3---------------------------------
@@ -222,3 +225,20 @@ DELETE FROM tracks
     WHERE pair IN (SELECT pair FROM albums WHERE performer = 'Cunegunda Renacido');
 
 ----------------------------------PRUEBA-4--------------------------------- 
+
+-- Si el interprete no tienen ninguna interpretacion no se le tiene en cuenta para el porcentaje
+DELETE FROM performances WHERE performer = 'Cunegunda Renacido';
+
+----------------------------------PRUEBA-5--------------------------------- 
+
+-- Por último, para el calculo de la edad de las canciones
+-- Existe la posibilidad de la grabacion más antigua de una cancion sea despues de una interpretacion de la misma cancion
+-- En ese caso hemos decidido
+INSERT INTO tracks 
+    (pair, sequ, title, writer, duration, rec_date, studio, engineer) 
+    VALUES 
+        ('MELLAMOCARLOS',  1, 'Il Signore della notte Vol.01', 'US>>0604451328', 180, TO_DATE('01/01/2020', 'DD-MM-YYYY'), NULL, 'M.A. Peña');
+INSERT INTO performances 
+    (performer, when, sequ, songtitle, songwriter, duration) 
+    VALUES 
+        ('Cunegunda Renacido', TO_DATE('01/01/2010', 'DD-MM-YYYY'), 14, 'Il Signore della notte Vol.02', 'US>>0604451328', 180);
