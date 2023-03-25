@@ -76,7 +76,7 @@ CREATE TABLE Banned (
         PRIMARY KEY (client, performer),
     CONSTRAINT fk_banned_cliente
         FOREIGN KEY (client)
-        REFERENCES clients(email)
+        REFERENCES clients(e_mail)
         ON DELETE CASCADE,
     CONSTRAINT fk_banned_performer
         FOREIGN KEY (performer)
@@ -103,7 +103,7 @@ CREATE OR REPLACE VIEW fans AS
     ),
     FINAL as (
         SELECT DISTINCT
-            clients.email as email,
+            clients.e_mail as email,
             clients.name as nombre,
             clients.surn1 as apellido1,
             clients.surn2 as apellido2,
@@ -112,7 +112,7 @@ CREATE OR REPLACE VIEW fans AS
             clients
             INNER JOIN
             banned
-            ON banned.client = clients.email
+            ON banned.client = clients.e_mail
         )
         WHERE banned.ban = 0
     )
@@ -122,7 +122,7 @@ WITH CHECK OPTION;
 CREATE OR REPLACE TRIGGER modificaciones_fans
 INSTEAD OF UPDATE ON fans
 BEGIN
-    raise_application_error(-20001, "No se puede modificar view * fans *");
+    raise_application_error(-20001, 'No se puede modificar view * fans *');
 END;
 
 CREATE OR REPLACE TRIGGER insertar_fans
@@ -147,13 +147,13 @@ BEGIN
         SELECT count(*)
             INTO cuenta
             FROM clients
-        WHERE email = :NEW.email
-        GROUP BY email;
+        WHERE e_mail = :NEW.email
+        GROUP BY e_mail;
         
 
         IF cuenta = 0 THEN
             INSERT INTO clients
-                (email, name, surn1, surn2, birthdate, phone, address, dni)
+                (e_mail, name, surn1, surn2, birthdate, phone, address, dni)
                 VALUES
                     (:NEW.email, :NEW.nombre, :NEW.apellido1, :NEW.apellido2, SYSDATE - :NEW.edad, NULL, NULL, NULL);
         END IF;
@@ -189,9 +189,12 @@ BEGIN
             INSERT INTO attendances
                 (client, performer, when, rfid, birthdate, purchase)
                 VALUES
-                    (:NEW.email, melopack.get_ia(), ultimo_concierto, 'RFID-INVENTADO-ULTIMO-CONCIERTO-3.141592653589793', SYSDATE - :NEW.edad, SYSDATE),
+                    (:NEW.email, melopack.get_ia(), ultimo_concierto, 'RFID-INVENTADO-ULTIMO-CONCIERTO-3.141592653589793', SYSDATE - :NEW.edad, SYSDATE)
+            INSERT INTO attendances
+                (client, performer, when, rfid, birthdate, purchase)
+                VALUES
                     (:NEW.email, melopack.get_ia(), penultimo_concierto, 'RFID-INVENTADO-PENULTIMO-CONCIERTO-3.141592653589793', SYSDATE - :NEW.edad, SYSDATE);
-            
+
             INSERT INTO banned
                 (client, performer)
                 VALUES

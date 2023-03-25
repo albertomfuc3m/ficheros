@@ -42,7 +42,7 @@ with song_info as (
             songwriter as autor1_performance
         FROM performances
     ),
-    performer_performance as (
+    performer_performances as (
         SELECT
             autor1,
             autor2,
@@ -84,10 +84,10 @@ with song_info as (
             titulo_song,
             band as band_autor1
         FROM (
-            performer_performance
+            performer_performances
             LEFT OUTER JOIN
             members
-            ON members.member = performer_performance.autor1
+            ON members.member = performer_performances.autor1
         ) 
     ),
     tabla_sin_filtrar_performance as(
@@ -121,7 +121,6 @@ with song_info as (
             tabla_filtrada_performance
             on performers.name = tabla_filtrada_performance.interprete
         GROUP BY  performers.name
-        order by -count(tabla_filtrada_performance.interprete)
     ),
     denominador_performance as (
         SELECT 
@@ -235,5 +234,5 @@ with song_info as (
 
         ) ORDER BY porcentaje_performance
     )
-    select * from FINAL
+    select * from FINAL;
     
