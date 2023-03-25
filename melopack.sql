@@ -490,12 +490,12 @@ CREATE OR REPLACE PACKAGE BODY melopack AS
         r_albums c_albums%ROWTYPE;
 
         BEGIN
-            dbms_output.put_line('--------------------INFORME--------------------');
+            dbms_output.put_line('-------------------------------------------INFORME-----------------------------------------');
             dbms_output.put_line('----- ' || interprete_actual || CHR(10));
 
             OPEN c_albums;
             dbms_output.put_line('-*- ALBUMS');
-            dbms_output.put_line(RPAD('FORMATO',10) ||RPAD('Nº DE ALBUMES',18) ||RPAD('MEDIA DE CANCIONES',20) ||RPAD('DURACION MEDIA',18) ||RPAD('PERIODICIDAD MEDIA',18));
+            dbms_output.put_line(RPAD('FORMATO',10) ||RPAD('Nº DE ALBUMES',18) ||RPAD('MEDIA DE CANCIONES',20) ||RPAD('DURACION MEDIA',18) ||RPAD('PERIODICIDAD MEDIA (dias)',18));
             dbms_output.put_line('-------------------------------------------------------------------------------------------');
             LOOP 
                 FETCH c_albums INTO r_albums;
