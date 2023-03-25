@@ -120,7 +120,7 @@ with tracks_info_raw as (
            ON tracks_info.interprete = performance_info.interprete AND
            tracks_info.titulo = performance_info.titulo AND
            tracks_info.autor1 = performance_info.autor1
-        ) order by p_interprete
+        ) WHERE f_interpretacion - f_grabacion >= 0
         
     ),
     medias as (

@@ -233,7 +233,7 @@ DELETE FROM performances WHERE performer = 'Cunegunda Renacido';
 
 -- Por último, para el calculo de la edad de las canciones
 -- Existe la posibilidad de la grabacion más antigua de una cancion sea despues de una interpretacion de la misma cancion
--- En ese caso hemos decidido
+-- En ese caso hemos decidido que no se tengan en cuenta para la media
 INSERT INTO tracks 
     (pair, sequ, title, writer, duration, rec_date, studio, engineer) 
     VALUES 
@@ -241,4 +241,20 @@ INSERT INTO tracks
 INSERT INTO performances 
     (performer, when, sequ, songtitle, songwriter, duration) 
     VALUES 
-        ('Cunegunda Renacido', TO_DATE('01/01/2010', 'DD-MM-YYYY'), 14, 'Il Signore della notte Vol.02', 'US>>0604451328', 180);
+        ('Cunegunda Renacido', TO_DATE('01/01/2010', 'DD-MM-YYYY'), 14, 'Il Signore della notte Vol.01', 'US>>0604451328', 180);
+
+-- Como es la unica pareja de interpretacion y grabacion, pero las fechas no se ajustan
+-- No tiene media de periodo
+
+INSERT INTO tracks 
+    (pair, sequ, title, writer, duration, rec_date, studio, engineer) 
+    VALUES 
+        ('MELLAMOCARLOS',  2, 'Il Signore della notte Vol.02', 'US>>0604451328', 180, TO_DATE('01/01/2010', 'DD-MM-YYYY'), NULL, 'M.A. Peña');
+INSERT INTO performances 
+    (performer, when, sequ, songtitle, songwriter, duration) 
+    VALUES 
+        ('Cunegunda Renacido', TO_DATE('01/01/2020', 'DD-MM-YYYY'), 14, 'Il Signore della notte Vol.02', 'US>>0604451328', 180);
+select * from tracks where pair = 'MELLAMOCARLOS'
+
+-- En cambio si añadimos otr pareja de track y interpretacion con las fechas bien
+-- La media sale 1/1/20 - 1/1/10 = 3652 dias, si tener en cuenta la anterior
