@@ -134,8 +134,32 @@ INSERT INTO performer
 INSERT INTO albums
     (pair, performer, format, title, rel_date, publisher, manager)
     VALUES
-        ('MELLAMOCARLOS', 'Cunegunda Renacido', 'V', 'Cunegunda Rencido, EL ALBUM', SYSDATE, 'QuickSilver', 555336234)
+        ('MELLAMOCARLOS', 'Cunegunda Renacido', 'V', 'Cunegunda Rencido, EL ALBUM', TO_DATE('20/07/2019', 'DD-MM-YYYY'), 'QuickSilver', 555336234)
 INSERT INTO tracks 
     (pair, sequ, title, writer, duration, rec_date, studio, engineer) 
     VALUES 
-        ('MELLAMOCARLOS',  1, 'Il Signore della notte Vol.01', 'US>>0604451328', 180, SYSDATE, NULL, 'M.A. Peña')
+        ('MELLAMOCARLOS',  1, 'Il Signore della notte Vol.01', 'US>>0604451328', 180, TO_DATE('01/01/2000', 'DD-MM-YYYY'), NULL, 'M.A. Peña')
+
+
+----------------------------------------------------------------------------
+
+----------------------------------PRUEBA-1---------------------------------
+
+-- Insertamos un interprete con una grabacion y dos interpretaciones (usamos el interprete y grabacion de la anterior prueba)
+-- Dos conciertos con una interpretacion cada una
+
+INSERT ALL
+    INTO concerts (performer, when, tour, municipality, address, country, attendance, duration, manager)
+        VALUES ('Cunegunda Renacido', TO_DATE('01/01/2010', 'DD-MM-YYYY'), NULL, 'Leganes', 'Avenida 123', 'Spain', 0, NULL, NULL)
+    INTO concerts (performer, when, tour, municipality, address, country, attendance, duration, manager)
+        VALUES ('Cunegunda Renacido', TO_DATE('01/01/2020', 'DD-MM-YYYY'), NULL, 'Leganes', 'Avenida 123', 'Spain', 0, NULL, NULL)
+    SELECT 1 FROM DUAL;
+
+INSERT ALL 
+    INTO performances (performer, when, sequ, songtitle, songwriter, duration) 
+        VALUES ('Cunegunda Renacido', TO_DATE('01/01/2010', 'DD-MM-YYYY'), 12, 'Il Signore della notte Vol.01', 'US>>0604451328', 180)
+    INTO performances (performer, when, sequ, songtitle, songwriter, duration) 
+        VALUES ('Cunegunda Renacido', TO_DATE('01/01/2020', 'DD-MM-YYYY'), 12, 'Il Signore della notte Vol.01', 'US>>0604451328', 180)
+    SELECT 1 FROM DUAL;
+
+-- Sin tener en cuenta el %, vemos que la media es

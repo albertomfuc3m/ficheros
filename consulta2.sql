@@ -126,17 +126,17 @@ with tracks_info_raw as (
     medias as (
         SELECT
             p_interprete,
-            round(sum(edad)/count(*),0) as media
+            round(avg(edad),0) as media
         FROM temp
         GROUP BY p_interprete  
     ),
     FINAL as (
         SELECT 
-            top_10.p_interprete,
-            medias.media as media_total_dias,
-            trunc(medias.media/365,0) as media_años,
-            trunc(MOD(medias.media, 365)/30,0) as media_meses,
-            MOD(MOD(medias.media, 365),30) as media_dias
+            top_10.p_interprete as interprete,
+            trunc(medias.media/365,0) as años,
+            trunc(MOD(medias.media, 365)/30,0) as meses,
+            MOD(MOD(medias.media, 365),30) as dias,
+            medias.media as media_total_dias
         FROM 
             top_10
             INNER JOIN
