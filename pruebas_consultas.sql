@@ -140,15 +140,25 @@ INSERT INTO tracks
     VALUES 
         ('MELLAMOCARLOS',  1, 'Il Signore della notte Vol.01', 'US>>0604451328', 180, TO_DATE('01/01/2000', 'DD-MM-YYYY'), NULL, 'M.A. Peña');
 
+----------------------------------PRUEBA-6----------------------------------
 
-------------------------------------------------------------------------------------------------------------------------------------------------
+-- Por último vamos a comprobar que la autoria del cowriter tambien cuenta para el porcentaje
+INSERT INTO musicians
+    (name, passport, birthdate, nationality)
+    VALUES  
+        ('Cunegunda Ibarra JR.', 'ES>>PASAPORTE', TO_DATE('01/01/2000', 'DD-MM-YYYY'), 'Spanish');
+-- Unico miembro de la banda 
+INSERT INTO involvement
+    (band, musician, role, start_d, end_d)
+    VALUES
+        ('Cunegunda Renacido', 'ES>>PASAPORTE', 'ONE-MAN-BAND Baby', SYSDATE, NULL)
 
-
-
-----------------------------------PRUEBA-1---------------------------------
-
--- Insertamos un interprete con una grabacion y dos interpretaciones (usamos el interprete y grabacion de la anterior prueba)
--- Dos conciertos con una interpretacion cada una
+-- Deberian estar en albums, pero es mas facil para los ejemplos dejarlas aparte
+-- Son canciones sin grabacion
+INSERT ALL
+    INTO songs (title, writer, cowriter) VALUES ('Soy un ANIMAL', 'ES>>PASAPORTE','US>>0604451328')
+    INTO songs (title, writer, cowriter) VALUES ('Soy un ANIMAL - REMIX', 'US>>0604451328', 'ES>>PASAPORTE')
+    SELECT 1 FROM NULL;
 
 INSERT ALL
     INTO concerts (performer, when, tour, municipality, address, country, attendance, duration, manager)
@@ -156,6 +166,26 @@ INSERT ALL
     INTO concerts (performer, when, tour, municipality, address, country, attendance, duration, manager)
         VALUES ('Cunegunda Renacido', TO_DATE('01/01/2020', 'DD-MM-YYYY'), NULL, 'Leganes', 'Avenida 123', 'Spain', 0, NULL, 555336234)
     SELECT 1 FROM DUAL;
+
+INSERT ALL 
+    INTO performances (performer, when, sequ, songtitle, songwriter, duration) 
+        VALUES ('Cunegunda Renacido', TO_DATE('01/01/2010', 'DD-MM-YYYY'), 12, 'Soy un ANIMAL', 'ES>>PASAPORTE', 180)
+    INTO performances (performer, when, sequ, songtitle, songwriter, duration) 
+        VALUES ('Cunegunda Renacido', TO_DATE('01/01/2020', 'DD-MM-YYYY'), 12, 'Soy un ANIMAL - REMIX', 'US>>0604451328', 180)
+    SELECT 1 FROM DUAL;
+
+-- Por lo tanto, tiene 2 interpretaciones de canciones distintas
+-- Ambas canciones estan escritas por el musico, como autor o co-autor
+-- El porcentaje de interpretaciones suyas es el 100%
+
+------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+----------------------------------PRUEBA-1---------------------------------
+
+-- Insertamos un interprete con una grabacion y dos interpretaciones (usamos el interprete y grabacion de la prueba 1.5)
+-- usando los conciertos usado en el apartado anterior
 
 INSERT ALL 
     INTO performances (performer, when, sequ, songtitle, songwriter, duration) 
@@ -172,13 +202,23 @@ INSERT ALL
 ----------------------------------PRUEBA-2---------------------------------
 
 -- Añadiendo una interpretacion de otra cancion que no a grabado, su porcentaje pasa a ser 50%
-INSERT performances 
+INSERT INTO performances 
     (performer, when, sequ, songtitle, songwriter, duration) 
     VALUES 
         ('Cunegunda Renacido', TO_DATE('01/01/2010', 'DD-MM-YYYY'), 13, 'Il Signore della notte Vol.02', 'US>>0604451328', 180);
+
+-- Ademas si añadimos otra interpretacion de la misma cancion, el porcentaje no cambia 
+-- Solo ha interpretado dos canciones distintas, aunque sea en más de una ocasion, y solo ha grabado una cancion
+INSERT INTO performances 
+    (performer, when, sequ, songtitle, songwriter, duration) 
+    VALUES 
+        ('Cunegunda Renacido', TO_DATE('01/01/2020', 'DD-MM-YYYY'), 13, 'Il Signore della notte Vol.02', 'US>>0604451328', 180);
+
 
 ----------------------------------PRUEBA-3---------------------------------
 
 -- Si se diese el caso de que no ha grabado ninguna cancion que ha interpretado no apareceria en la media y su porcentaje seria 0
 DELETE FROM tracks 
     WHERE pair IN (SELECT pair FROM albums WHERE performer = 'Cunegunda Renacido');
+
+----------------------------------PRUEBA-4--------------------------------- 
