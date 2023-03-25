@@ -66,121 +66,66 @@ CREATE OR REPLACE PACKAGE BODY melopack AS
         engineer VARCHAR2,
         duration NUMBER
         ) IS
-            pair_album albums.pair%TYPE;
-            publisher publishers.name%TYPE;
-            manager managers.mobile%TYPE;
-            title_song songs.title%TYPE;
-            writer_song songs.title%TYPE;
-            studio studios.name%TYPE;
-
-            cuenta NUMBER;
+    
+            cuenta1 NUMBER;
+            cuenta2 NUMBER;
+            cuenta3 NUMBER;
+            cuenta4 NUMBER;
+            cuenta5 NUMBER;
 
             BEGIN
                 IF interprete_actual is not NULL THEN
                     -- Comprobar las filas referenciadas
                     SELECT 
                         count(*)
-                        INTO cuenta
+                        INTO cuenta1
                         FROM albums
                     WHERE pair = id_pair;
 
-                    IF cuenta = 1 THEN
-                        SELECT 
-                            pair
-                            INTO pair_album
-                            FROM albums
-                        WHERE pair = id_pair;
-                    ELSE
-                        pair_album := NULL;
-                    END IF;
-
                     SELECT 
                         count(*)
-                        INTO cuenta
+                        INTO cuenta2
                         FROM publishers
                     WHERE name = id_publisher;
 
-                    IF cuenta = 1 THEN
-                        SELECT
-                            name
-                            INTO publisher
-                            FROM publishers
-                        WHERE name = id_publisher;
-                    ELSE
-                        publisher := NULL;
-                    END IF;
-
                     SELECT 
                         count(*)
-                        INTO cuenta
+                        INTO cuenta3
                         FROM managers
                     WHERE mobile = id_manager;
-
-                    IF cuenta = 1 THEN
-                        SELECT
-                            mobile
-                            INTO manager
-                            FROM managers
-                        WHERE mobile = id_manager;
-                    ELSE
-                        manager := NULL;
-                    END IF;
                     
                     SELECT 
                         count(*)
-                        INTO cuenta
+                        INTO cuenta4
                         FROM songs
                     WHERE songs.writer = id_writer_song AND songs.title = id_title_song;
 
-                    IF cuenta = 1 THEN
-                        SELECT
-                            title,
-                            writer
-                            INTO title_song, writer_song
-                            FROM songs
-                        WHERE songs.writer = id_writer_song AND songs.title = id_title_song;
-                    ELSE
-                        title_song := NULL;
-                        writer_song := NULL;
-                    END IF;
-
                     SELECT 
                         count(*)
-                        INTO cuenta
+                        INTO cuenta5
                         FROM studios
                     WHERE name = id_studio;
 
-                    IF cuenta = 1 THEN
-                        SELECT
-                            name
-                            INTO studio
-                            FROM studios
-                        WHERE name = id_studio;
-                    ELSE
-                        studio := NULL;
-                    END IF;
-
-
-                    IF  title_song is NOT NULL AND 
-                        writer_song is NOT NULL AND 
-                        (studio is NOT NULL or id_studio is NULL) AND 
-                        publisher is NOT NULL AND
-                        manager is NOT NULL THEN 
-
+                    IF  cuenta1 != 0 AND 
+                        cuenta2 != 0 AND 
+                        cuenta3 != 0 AND 
+                        cuenta4 != 0 AND 
+                        cuenta5 != 0 AND 
+                        (format = 'C' OR format = 'M' OR format = 'S' OR format = 'T' OR format = 'V') THEN
                         -- datos referenciados existen
 
                         IF pair_album is NULL THEN 
                             INSERT INTO albums
                             (PAIR, performer, format, title, rel_date, publisher, manager)
                             VALUES 
-                                (id_pair, interprete_actual, format, title, rel_date, publisher, manager);
+                                (id_pair, interprete_actual, format, title, rel_date, id_publisher, id_manager);
                         END IF;
 
                         
                         INSERT INTO tracks
                         (PAIR, sequ, title, writer, rec_date, studio, engineer, duration)
                         VALUES 
-                            (id_pair, sequ, title_song, writer_song, rec_date, studio, engineer, duration);
+                            (id_pair, sequ, id_title_song, id_writer_song, rec_date, id_studio, engineer, duration);
                         
                     
                     END IF;
