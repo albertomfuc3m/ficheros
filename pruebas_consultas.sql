@@ -1,15 +1,17 @@
+----------------------------------PRUEBA-1----------------------------------
+
 -- El porcentaje de tracks va a pasar a NULL, porque dejara de tener grabaciones
 DELETE FROM tracks 
     WHERE pair IN (SELECT pair FROM albums WHERE performer = 'Cunegunda');
 
-----------------------------------------------------------------------------
+----------------------------------PRUEBA-2----------------------------------
 
--- Si borramos le 
+-- Si borramos las interpretaciones
 -- El porcentaje de interpretaciones va a pasar a NULL
 DELETE FROM performances
     WHERE performer = 'Cunegunda';
 
-----------------------------------------------------------------------------
+----------------------------------PRUEBA-3----------------------------------
 
 -- Insertamos canciones escritas por Cunegunda y las respectivas tracks para cambiar su porcentaje
 -- Tiene 175 tracks, de las cuales 31 ha escrito un miembro, siendo su porcentaje 17.71%
@@ -81,7 +83,7 @@ INSERT ALL
     INTO tracks (pair, sequ, title, writer, duration, rec_date, studio, engineer) VALUES ('R35096S379797J0', 32, 'Il Signore della notte Vol.30', 'US>>0604451328', 180, SYSDATE, NULL, 'M.A. Peña')
     SELECT 1 FROM DUAL;
 
-----------------------------------------------------------------------------
+----------------------------------PRUEBA-4----------------------------------
 
 -- Despues de insertar la canciones, insertamos las respectivas interpretaciones para cambiar el porcentaje
 -- Tiene 87 interpretaciones de canciones distintas, de las cuales 12 ha escrito un miembro, siendo su porcentaje 13.79%
@@ -120,7 +122,7 @@ INSERT ALL
     INTO performances (performer, when, sequ, songtitle, songwriter, duration) VALUES ('Cunegunda', TO_DATE('20/07/2019', 'DD-MM-YYYY'), 40, 'Il Signore della notte Vol.30', 'US>>0604451328', 180)
     SELECT 1 FROM DUAL
 
-----------------------------------------------------------------------------
+----------------------------------PRUEBA-5----------------------------------
 
 -- Para un interprete sin musicos, ni interpretaciones, ni tracks, ambos porcentajes son NULL
 INSERT INTO performer
@@ -132,7 +134,7 @@ INSERT INTO performer
 INSERT INTO albums
     (pair, performer, format, title, rel_date, publisher, manager)
     VALUES
-        ('MELLAMOCARLOS', 'Cunegunda Renacido', 'V', 'Cunegunda Rencido, EL ALBUM', SYSDATE, 'Quicksilver', 555336234)
+        ('MELLAMOCARLOS', 'Cunegunda Renacido', 'V', 'Cunegunda Rencido, EL ALBUM', SYSDATE, 'QuickSilver', 555336234)
 INSERT INTO tracks 
     (pair, sequ, title, writer, duration, rec_date, studio, engineer) 
     VALUES 
