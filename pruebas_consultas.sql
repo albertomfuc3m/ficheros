@@ -11,69 +11,106 @@ DELETE FROM performances
 -- Si añadirmos 30 tracks escritos por un miembro
 -- porcentaje deberia cambiar a (31+30)/(175+30) = 29.75
 INSERT ALL
-    VALUES
-        INTO songs (title, writer, cowriter) VALUES ('Il Signore della notte Vol.01', 'US>>0604451328', NULL),
-        INTO songs (title, writer, cowriter) VALUES ('Il Signore della notte Vol.02', 'US>>0604451328', NULL),
-        INTO songs (title, writer, cowriter) VALUES ('Il Signore della notte Vol.03', 'US>>0604451328', NULL),
-        INTO songs (title, writer, cowriter) VALUES ('Il Signore della notte Vol.04', 'US>>0604451328', NULL),
-        INTO songs (title, writer, cowriter) VALUES ('Il Signore della notte Vol.05', 'US>>0604451328', NULL),
-        INTO songs (title, writer, cowriter) VALUES ('Il Signore della notte Vol.06', 'US>>0604451328', NULL),
-        INTO songs (title, writer, cowriter) VALUES ('Il Signore della notte Vol.07', 'US>>0604451328', NULL),
-        INTO songs (title, writer, cowriter) VALUES ('Il Signore della notte Vol.08', 'US>>0604451328', NULL),
-        INTO songs (title, writer, cowriter) VALUES ('Il Signore della notte Vol.09', 'US>>0604451328', NULL),
-        INTO songs (title, writer, cowriter) VALUES ('Il Signore della notte Vol.10', 'US>>0604451328', NULL),
-        INTO songs (title, writer, cowriter) VALUES ('Il Signore della notte Vol.11', 'US>>0604451328', NULL),
-        INTO songs (title, writer, cowriter) VALUES ('Il Signore della notte Vol.12', 'US>>0604451328', NULL),
-        INTO songs (title, writer, cowriter) VALUES ('Il Signore della notte Vol.13', 'US>>0604451328', NULL),
-        INTO songs (title, writer, cowriter) VALUES ('Il Signore della notte Vol.14', 'US>>0604451328', NULL),
-        INTO songs (title, writer, cowriter) VALUES ('Il Signore della notte Vol.15', 'US>>0604451328', NULL),
-        INTO songs (title, writer, cowriter) VALUES ('Il Signore della notte Vol.16', 'US>>0604451328', NULL),
-        INTO songs (title, writer, cowriter) VALUES ('Il Signore della notte Vol.17', 'US>>0604451328', NULL),
-        INTO songs (title, writer, cowriter) VALUES ('Il Signore della notte Vol.18', 'US>>0604451328', NULL),
-        INTO songs (title, writer, cowriter) VALUES ('Il Signore della notte Vol.19', 'US>>0604451328', NULL),
-        INTO songs (title, writer, cowriter) VALUES ('Il Signore della notte Vol.20', 'US>>0604451328', NULL),
-        INTO songs (title, writer, cowriter) VALUES ('Il Signore della notte Vol.21', 'US>>0604451328', NULL),
-        INTO songs (title, writer, cowriter) VALUES ('Il Signore della notte Vol.22', 'US>>0604451328', NULL),
-        INTO songs (title, writer, cowriter) VALUES ('Il Signore della notte Vol.23', 'US>>0604451328', NULL),
-        INTO songs (title, writer, cowriter) VALUES ('Il Signore della notte Vol.24', 'US>>0604451328', NULL),
-        INTO songs (title, writer, cowriter) VALUES ('Il Signore della notte Vol.25', 'US>>0604451328', NULL),
-        INTO songs (title, writer, cowriter) VALUES ('Il Signore della notte Vol.26', 'US>>0604451328', NULL),
-        INTO songs (title, writer, cowriter) VALUES ('Il Signore della notte Vol.27', 'US>>0604451328', NULL),
-        INTO songs (title, writer, cowriter) VALUES ('Il Signore della notte Vol.28', 'US>>0604451328', NULL),
-        INTO songs (title, writer, cowriter) VALUES ('Il Signore della notte Vol.29', 'US>>0604451328', NULL),
-        INTO songs (title, writer, cowriter) VALUES ('Il Signore della notte Vol.30', 'US>>0604451328', NULL)
+    INTO songs (title, writer, cowriter) VALUES ('Il Signore della notte Vol.01', 'US>>0604451328', NULL)
+    INTO songs (title, writer, cowriter) VALUES ('Il Signore della notte Vol.02', 'US>>0604451328', NULL)
+    INTO songs (title, writer, cowriter) VALUES ('Il Signore della notte Vol.03', 'US>>0604451328', NULL)
+    INTO songs (title, writer, cowriter) VALUES ('Il Signore della notte Vol.04', 'US>>0604451328', NULL)
+    INTO songs (title, writer, cowriter) VALUES ('Il Signore della notte Vol.05', 'US>>0604451328', NULL)
+    INTO songs (title, writer, cowriter) VALUES ('Il Signore della notte Vol.06', 'US>>0604451328', NULL)
+    INTO songs (title, writer, cowriter) VALUES ('Il Signore della notte Vol.07', 'US>>0604451328', NULL)
+    INTO songs (title, writer, cowriter) VALUES ('Il Signore della notte Vol.08', 'US>>0604451328', NULL)
+    INTO songs (title, writer, cowriter) VALUES ('Il Signore della notte Vol.09', 'US>>0604451328', NULL)
+    INTO songs (title, writer, cowriter) VALUES ('Il Signore della notte Vol.10', 'US>>0604451328', NULL)
+    INTO songs (title, writer, cowriter) VALUES ('Il Signore della notte Vol.11', 'US>>0604451328', NULL)
+    INTO songs (title, writer, cowriter) VALUES ('Il Signore della notte Vol.12', 'US>>0604451328', NULL)
+    INTO songs (title, writer, cowriter) VALUES ('Il Signore della notte Vol.13', 'US>>0604451328', NULL)
+    INTO songs (title, writer, cowriter) VALUES ('Il Signore della notte Vol.14', 'US>>0604451328', NULL)
+    INTO songs (title, writer, cowriter) VALUES ('Il Signore della notte Vol.15', 'US>>0604451328', NULL)
+    INTO songs (title, writer, cowriter) VALUES ('Il Signore della notte Vol.16', 'US>>0604451328', NULL)
+    INTO songs (title, writer, cowriter) VALUES ('Il Signore della notte Vol.17', 'US>>0604451328', NULL)
+    INTO songs (title, writer, cowriter) VALUES ('Il Signore della notte Vol.18', 'US>>0604451328', NULL)
+    INTO songs (title, writer, cowriter) VALUES ('Il Signore della notte Vol.19', 'US>>0604451328', NULL)
+    INTO songs (title, writer, cowriter) VALUES ('Il Signore della notte Vol.20', 'US>>0604451328', NULL)
+    INTO songs (title, writer, cowriter) VALUES ('Il Signore della notte Vol.21', 'US>>0604451328', NULL)
+    INTO songs (title, writer, cowriter) VALUES ('Il Signore della notte Vol.22', 'US>>0604451328', NULL)
+    INTO songs (title, writer, cowriter) VALUES ('Il Signore della notte Vol.23', 'US>>0604451328', NULL)
+    INTO songs (title, writer, cowriter) VALUES ('Il Signore della notte Vol.24', 'US>>0604451328', NULL)
+    INTO songs (title, writer, cowriter) VALUES ('Il Signore della notte Vol.25', 'US>>0604451328', NULL)
+    INTO songs (title, writer, cowriter) VALUES ('Il Signore della notte Vol.26', 'US>>0604451328', NULL)
+    INTO songs (title, writer, cowriter) VALUES ('Il Signore della notte Vol.27', 'US>>0604451328', NULL)
+    INTO songs (title, writer, cowriter) VALUES ('Il Signore della notte Vol.28', 'US>>0604451328', NULL)
+    INTO songs (title, writer, cowriter) VALUES ('Il Signore della notte Vol.29', 'US>>0604451328', NULL)
+    INTO songs (title, writer, cowriter) VALUES ('Il Signore della notte Vol.30', 'US>>0604451328', NULL)
     SELECT 1 FROM DUAL;
 
 INSERT ALL
-        INTO tracks (pair, sequ, title, writer, duration, rec_date, studio, engineer) VALUES ('R35096S379797J0',  3, 'Il Signore della notte Vol.01', 'US>>0604451328', 180, SYSDATE, NULL, 'M.A. Peña'),
-        INTO tracks (pair, sequ, title, writer, duration, rec_date, studio, engineer) VALUES ('R35096S379797J0',  4, 'Il Signore della notte Vol.02', 'US>>0604451328', 180, SYSDATE, NULL, 'M.A. Peña'),
-        INTO tracks (pair, sequ, title, writer, duration, rec_date, studio, engineer) VALUES ('R35096S379797J0',  5, 'Il Signore della notte Vol.03', 'US>>0604451328', 180, SYSDATE, NULL, 'M.A. Peña'),
-        INTO tracks (pair, sequ, title, writer, duration, rec_date, studio, engineer) VALUES ('R35096S379797J0',  6, 'Il Signore della notte Vol.04', 'US>>0604451328', 180, SYSDATE, NULL, 'M.A. Peña'),
-        INTO tracks (pair, sequ, title, writer, duration, rec_date, studio, engineer) VALUES ('R35096S379797J0',  7, 'Il Signore della notte Vol.05', 'US>>0604451328', 180, SYSDATE, NULL, 'M.A. Peña'),
-        INTO tracks (pair, sequ, title, writer, duration, rec_date, studio, engineer) VALUES ('R35096S379797J0',  8, 'Il Signore della notte Vol.06', 'US>>0604451328', 180, SYSDATE, NULL, 'M.A. Peña'),
-        INTO tracks (pair, sequ, title, writer, duration, rec_date, studio, engineer) VALUES ('R35096S379797J0',  9, 'Il Signore della notte Vol.07', 'US>>0604451328', 180, SYSDATE, NULL, 'M.A. Peña'),
-        INTO tracks (pair, sequ, title, writer, duration, rec_date, studio, engineer) VALUES ('R35096S379797J0', 10, 'Il Signore della notte Vol.08', 'US>>0604451328', 180, SYSDATE, NULL, 'M.A. Peña'),
-        INTO tracks (pair, sequ, title, writer, duration, rec_date, studio, engineer) VALUES ('R35096S379797J0', 11, 'Il Signore della notte Vol.09', 'US>>0604451328', 180, SYSDATE, NULL, 'M.A. Peña'),
-        INTO tracks (pair, sequ, title, writer, duration, rec_date, studio, engineer) VALUES ('R35096S379797J0', 12, 'Il Signore della notte Vol.10', 'US>>0604451328', 180, SYSDATE, NULL, 'M.A. Peña'),
-        INTO tracks (pair, sequ, title, writer, duration, rec_date, studio, engineer) VALUES ('R35096S379797J0', 13, 'Il Signore della notte Vol.11', 'US>>0604451328', 180, SYSDATE, NULL, 'M.A. Peña'),
-        INTO tracks (pair, sequ, title, writer, duration, rec_date, studio, engineer) VALUES ('R35096S379797J0', 14, 'Il Signore della notte Vol.12', 'US>>0604451328', 180, SYSDATE, NULL, 'M.A. Peña'),
-        INTO tracks (pair, sequ, title, writer, duration, rec_date, studio, engineer) VALUES ('R35096S379797J0', 15, 'Il Signore della notte Vol.13', 'US>>0604451328', 180, SYSDATE, NULL, 'M.A. Peña'),
-        INTO tracks (pair, sequ, title, writer, duration, rec_date, studio, engineer) VALUES ('R35096S379797J0', 16, 'Il Signore della notte Vol.14', 'US>>0604451328', 180, SYSDATE, NULL, 'M.A. Peña'),
-        INTO tracks (pair, sequ, title, writer, duration, rec_date, studio, engineer) VALUES ('R35096S379797J0', 17, 'Il Signore della notte Vol.15', 'US>>0604451328', 180, SYSDATE, NULL, 'M.A. Peña'),
-        INTO tracks (pair, sequ, title, writer, duration, rec_date, studio, engineer) VALUES ('R35096S379797J0', 18, 'Il Signore della notte Vol.16', 'US>>0604451328', 180, SYSDATE, NULL, 'M.A. Peña'),
-        INTO tracks (pair, sequ, title, writer, duration, rec_date, studio, engineer) VALUES ('R35096S379797J0', 19, 'Il Signore della notte Vol.17', 'US>>0604451328', 180, SYSDATE, NULL, 'M.A. Peña'),
-        INTO tracks (pair, sequ, title, writer, duration, rec_date, studio, engineer) VALUES ('R35096S379797J0', 20, 'Il Signore della notte Vol.18', 'US>>0604451328', 180, SYSDATE, NULL, 'M.A. Peña'),
-        INTO tracks (pair, sequ, title, writer, duration, rec_date, studio, engineer) VALUES ('R35096S379797J0', 21, 'Il Signore della notte Vol.19', 'US>>0604451328', 180, SYSDATE, NULL, 'M.A. Peña'),
-        INTO tracks (pair, sequ, title, writer, duration, rec_date, studio, engineer) VALUES ('R35096S379797J0', 22, 'Il Signore della notte Vol.20', 'US>>0604451328', 180, SYSDATE, NULL, 'M.A. Peña'),
-        INTO tracks (pair, sequ, title, writer, duration, rec_date, studio, engineer) VALUES ('R35096S379797J0', 23, 'Il Signore della notte Vol.21', 'US>>0604451328', 180, SYSDATE, NULL, 'M.A. Peña'),
-        INTO tracks (pair, sequ, title, writer, duration, rec_date, studio, engineer) VALUES ('R35096S379797J0', 24, 'Il Signore della notte Vol.22', 'US>>0604451328', 180, SYSDATE, NULL, 'M.A. Peña'),
-        INTO tracks (pair, sequ, title, writer, duration, rec_date, studio, engineer) VALUES ('R35096S379797J0', 25, 'Il Signore della notte Vol.23', 'US>>0604451328', 180, SYSDATE, NULL, 'M.A. Peña'),
-        INTO tracks (pair, sequ, title, writer, duration, rec_date, studio, engineer) VALUES ('R35096S379797J0', 26, 'Il Signore della notte Vol.24', 'US>>0604451328', 180, SYSDATE, NULL, 'M.A. Peña'),
-        INTO tracks (pair, sequ, title, writer, duration, rec_date, studio, engineer) VALUES ('R35096S379797J0', 27, 'Il Signore della notte Vol.25', 'US>>0604451328', 180, SYSDATE, NULL, 'M.A. Peña'),
-        INTO tracks (pair, sequ, title, writer, duration, rec_date, studio, engineer) VALUES ('R35096S379797J0', 28, 'Il Signore della notte Vol.26', 'US>>0604451328', 180, SYSDATE, NULL, 'M.A. Peña'),
-        INTO tracks (pair, sequ, title, writer, duration, rec_date, studio, engineer) VALUES ('R35096S379797J0', 29, 'Il Signore della notte Vol.27', 'US>>0604451328', 180, SYSDATE, NULL, 'M.A. Peña'),
-        INTO tracks (pair, sequ, title, writer, duration, rec_date, studio, engineer) VALUES ('R35096S379797J0', 30, 'Il Signore della notte Vol.28', 'US>>0604451328', 180, SYSDATE, NULL, 'M.A. Peña'),
-        INTO tracks (pair, sequ, title, writer, duration, rec_date, studio, engineer) VALUES ('R35096S379797J0', 31, 'Il Signore della notte Vol.29', 'US>>0604451328', 180, SYSDATE, NULL, 'M.A. Peña'),
-        INTO tracks (pair, sequ, title, writer, duration, rec_date, studio, engineer) VALUES ('R35096S379797J0', 32, 'Il Signore della notte Vol.30', 'US>>0604451328', 180, SYSDATE, NULL, 'M.A. Peña')
+    INTO tracks (pair, sequ, title, writer, duration, rec_date, studio, engineer) VALUES ('R35096S379797J0',  3, 'Il Signore della notte Vol.01', 'US>>0604451328', 180, SYSDATE, NULL, 'M.A. Peña')
+    INTO tracks (pair, sequ, title, writer, duration, rec_date, studio, engineer) VALUES ('R35096S379797J0',  4, 'Il Signore della notte Vol.02', 'US>>0604451328', 180, SYSDATE, NULL, 'M.A. Peña')
+    INTO tracks (pair, sequ, title, writer, duration, rec_date, studio, engineer) VALUES ('R35096S379797J0',  5, 'Il Signore della notte Vol.03', 'US>>0604451328', 180, SYSDATE, NULL, 'M.A. Peña')
+    INTO tracks (pair, sequ, title, writer, duration, rec_date, studio, engineer) VALUES ('R35096S379797J0',  6, 'Il Signore della notte Vol.04', 'US>>0604451328', 180, SYSDATE, NULL, 'M.A. Peña')
+    INTO tracks (pair, sequ, title, writer, duration, rec_date, studio, engineer) VALUES ('R35096S379797J0',  7, 'Il Signore della notte Vol.05', 'US>>0604451328', 180, SYSDATE, NULL, 'M.A. Peña')
+    INTO tracks (pair, sequ, title, writer, duration, rec_date, studio, engineer) VALUES ('R35096S379797J0',  8, 'Il Signore della notte Vol.06', 'US>>0604451328', 180, SYSDATE, NULL, 'M.A. Peña')
+    INTO tracks (pair, sequ, title, writer, duration, rec_date, studio, engineer) VALUES ('R35096S379797J0',  9, 'Il Signore della notte Vol.07', 'US>>0604451328', 180, SYSDATE, NULL, 'M.A. Peña')
+    INTO tracks (pair, sequ, title, writer, duration, rec_date, studio, engineer) VALUES ('R35096S379797J0', 10, 'Il Signore della notte Vol.08', 'US>>0604451328', 180, SYSDATE, NULL, 'M.A. Peña')
+    INTO tracks (pair, sequ, title, writer, duration, rec_date, studio, engineer) VALUES ('R35096S379797J0', 11, 'Il Signore della notte Vol.09', 'US>>0604451328', 180, SYSDATE, NULL, 'M.A. Peña')
+    INTO tracks (pair, sequ, title, writer, duration, rec_date, studio, engineer) VALUES ('R35096S379797J0', 12, 'Il Signore della notte Vol.10', 'US>>0604451328', 180, SYSDATE, NULL, 'M.A. Peña')
+    INTO tracks (pair, sequ, title, writer, duration, rec_date, studio, engineer) VALUES ('R35096S379797J0', 13, 'Il Signore della notte Vol.11', 'US>>0604451328', 180, SYSDATE, NULL, 'M.A. Peña')
+    INTO tracks (pair, sequ, title, writer, duration, rec_date, studio, engineer) VALUES ('R35096S379797J0', 14, 'Il Signore della notte Vol.12', 'US>>0604451328', 180, SYSDATE, NULL, 'M.A. Peña')
+    INTO tracks (pair, sequ, title, writer, duration, rec_date, studio, engineer) VALUES ('R35096S379797J0', 15, 'Il Signore della notte Vol.13', 'US>>0604451328', 180, SYSDATE, NULL, 'M.A. Peña')
+    INTO tracks (pair, sequ, title, writer, duration, rec_date, studio, engineer) VALUES ('R35096S379797J0', 16, 'Il Signore della notte Vol.14', 'US>>0604451328', 180, SYSDATE, NULL, 'M.A. Peña')
+    INTO tracks (pair, sequ, title, writer, duration, rec_date, studio, engineer) VALUES ('R35096S379797J0', 17, 'Il Signore della notte Vol.15', 'US>>0604451328', 180, SYSDATE, NULL, 'M.A. Peña')
+    INTO tracks (pair, sequ, title, writer, duration, rec_date, studio, engineer) VALUES ('R35096S379797J0', 18, 'Il Signore della notte Vol.16', 'US>>0604451328', 180, SYSDATE, NULL, 'M.A. Peña')
+    INTO tracks (pair, sequ, title, writer, duration, rec_date, studio, engineer) VALUES ('R35096S379797J0', 19, 'Il Signore della notte Vol.17', 'US>>0604451328', 180, SYSDATE, NULL, 'M.A. Peña')
+    INTO tracks (pair, sequ, title, writer, duration, rec_date, studio, engineer) VALUES ('R35096S379797J0', 20, 'Il Signore della notte Vol.18', 'US>>0604451328', 180, SYSDATE, NULL, 'M.A. Peña')
+    INTO tracks (pair, sequ, title, writer, duration, rec_date, studio, engineer) VALUES ('R35096S379797J0', 21, 'Il Signore della notte Vol.19', 'US>>0604451328', 180, SYSDATE, NULL, 'M.A. Peña')
+    INTO tracks (pair, sequ, title, writer, duration, rec_date, studio, engineer) VALUES ('R35096S379797J0', 22, 'Il Signore della notte Vol.20', 'US>>0604451328', 180, SYSDATE, NULL, 'M.A. Peña')
+    INTO tracks (pair, sequ, title, writer, duration, rec_date, studio, engineer) VALUES ('R35096S379797J0', 23, 'Il Signore della notte Vol.21', 'US>>0604451328', 180, SYSDATE, NULL, 'M.A. Peña')
+    INTO tracks (pair, sequ, title, writer, duration, rec_date, studio, engineer) VALUES ('R35096S379797J0', 24, 'Il Signore della notte Vol.22', 'US>>0604451328', 180, SYSDATE, NULL, 'M.A. Peña')
+    INTO tracks (pair, sequ, title, writer, duration, rec_date, studio, engineer) VALUES ('R35096S379797J0', 25, 'Il Signore della notte Vol.23', 'US>>0604451328', 180, SYSDATE, NULL, 'M.A. Peña')
+    INTO tracks (pair, sequ, title, writer, duration, rec_date, studio, engineer) VALUES ('R35096S379797J0', 26, 'Il Signore della notte Vol.24', 'US>>0604451328', 180, SYSDATE, NULL, 'M.A. Peña')
+    INTO tracks (pair, sequ, title, writer, duration, rec_date, studio, engineer) VALUES ('R35096S379797J0', 27, 'Il Signore della notte Vol.25', 'US>>0604451328', 180, SYSDATE, NULL, 'M.A. Peña')
+    INTO tracks (pair, sequ, title, writer, duration, rec_date, studio, engineer) VALUES ('R35096S379797J0', 28, 'Il Signore della notte Vol.26', 'US>>0604451328', 180, SYSDATE, NULL, 'M.A. Peña')
+    INTO tracks (pair, sequ, title, writer, duration, rec_date, studio, engineer) VALUES ('R35096S379797J0', 29, 'Il Signore della notte Vol.27', 'US>>0604451328', 180, SYSDATE, NULL, 'M.A. Peña')
+    INTO tracks (pair, sequ, title, writer, duration, rec_date, studio, engineer) VALUES ('R35096S379797J0', 30, 'Il Signore della notte Vol.28', 'US>>0604451328', 180, SYSDATE, NULL, 'M.A. Peña')
+    INTO tracks (pair, sequ, title, writer, duration, rec_date, studio, engineer) VALUES ('R35096S379797J0', 31, 'Il Signore della notte Vol.29', 'US>>0604451328', 180, SYSDATE, NULL, 'M.A. Peña')
+    INTO tracks (pair, sequ, title, writer, duration, rec_date, studio, engineer) VALUES ('R35096S379797J0', 32, 'Il Signore della notte Vol.30', 'US>>0604451328', 180, SYSDATE, NULL, 'M.A. Peña')
     SELECT 1 FROM DUAL;
+
+
+-- Insertamos interpretaciones de canciones que ha escrito el
+-- Ha interpretado 87 canciones, 12 de ellas de su autoria
+-- Despues de insertar 30 interpretaciones el nuevo porcentaje sera (12+30)/(87+30) = 35.89%
+13.79
+INSERT ALL
+    INTO performances (performer, when, sequ, songtitle, songwriter, duration) VALUES ('Cunegunda', TO_DATE('20/07/2019', 'DD-MM-YYYY'), 12, 'Il Signore della notte Vol.01', 'US>>0604451328', 180)
+    INTO performances (performer, when, sequ, songtitle, songwriter, duration) VALUES ('Cunegunda', TO_DATE('20/07/2019', 'DD-MM-YYYY'), 13, 'Il Signore della notte Vol.02', 'US>>0604451328', 180)
+    INTO performances (performer, when, sequ, songtitle, songwriter, duration) VALUES ('Cunegunda', TO_DATE('20/07/2019', 'DD-MM-YYYY'), 14, 'Il Signore della notte Vol.03', 'US>>0604451328', 180)
+    INTO performances (performer, when, sequ, songtitle, songwriter, duration) VALUES ('Cunegunda', TO_DATE('20/07/2019', 'DD-MM-YYYY'), 15, 'Il Signore della notte Vol.04', 'US>>0604451328', 180)
+    INTO performances (performer, when, sequ, songtitle, songwriter, duration) VALUES ('Cunegunda', TO_DATE('20/07/2019', 'DD-MM-YYYY'), 16, 'Il Signore della notte Vol.05', 'US>>0604451328', 180)
+    INTO performances (performer, when, sequ, songtitle, songwriter, duration) VALUES ('Cunegunda', TO_DATE('20/07/2019', 'DD-MM-YYYY'), 17, 'Il Signore della notte Vol.06', 'US>>0604451328', 180)
+    INTO performances (performer, when, sequ, songtitle, songwriter, duration) VALUES ('Cunegunda', TO_DATE('20/07/2019', 'DD-MM-YYYY'), 18, 'Il Signore della notte Vol.07', 'US>>0604451328', 180)
+    INTO performances (performer, when, sequ, songtitle, songwriter, duration) VALUES ('Cunegunda', TO_DATE('20/07/2019', 'DD-MM-YYYY'), 19, 'Il Signore della notte Vol.08', 'US>>0604451328', 180)
+    INTO performances (performer, when, sequ, songtitle, songwriter, duration) VALUES ('Cunegunda', TO_DATE('20/07/2019', 'DD-MM-YYYY'), 20, 'Il Signore della notte Vol.09', 'US>>0604451328', 180)
+    INTO performances (performer, when, sequ, songtitle, songwriter, duration) VALUES ('Cunegunda', TO_DATE('20/07/2019', 'DD-MM-YYYY'), 21, 'Il Signore della notte Vol.10', 'US>>0604451328', 180)
+    INTO performances (performer, when, sequ, songtitle, songwriter, duration) VALUES ('Cunegunda', TO_DATE('20/07/2019', 'DD-MM-YYYY'), 22, 'Il Signore della notte Vol.11', 'US>>0604451328', 180)
+    INTO performances (performer, when, sequ, songtitle, songwriter, duration) VALUES ('Cunegunda', TO_DATE('20/07/2019', 'DD-MM-YYYY'), 23, 'Il Signore della notte Vol.12', 'US>>0604451328', 180)
+    INTO performances (performer, when, sequ, songtitle, songwriter, duration) VALUES ('Cunegunda', TO_DATE('20/07/2019', 'DD-MM-YYYY'), 24, 'Il Signore della notte Vol.13', 'US>>0604451328', 180)
+    INTO performances (performer, when, sequ, songtitle, songwriter, duration) VALUES ('Cunegunda', TO_DATE('20/07/2019', 'DD-MM-YYYY'), 25, 'Il Signore della notte Vol.14', 'US>>0604451328', 180)
+    INTO performances (performer, when, sequ, songtitle, songwriter, duration) VALUES ('Cunegunda', TO_DATE('20/07/2019', 'DD-MM-YYYY'), 41, 'Il Signore della notte Vol.15', 'US>>0604451328', 180)
+    INTO performances (performer, when, sequ, songtitle, songwriter, duration) VALUES ('Cunegunda', TO_DATE('20/07/2019', 'DD-MM-YYYY'), 26, 'Il Signore della notte Vol.16', 'US>>0604451328', 180)
+    INTO performances (performer, when, sequ, songtitle, songwriter, duration) VALUES ('Cunegunda', TO_DATE('20/07/2019', 'DD-MM-YYYY'), 27, 'Il Signore della notte Vol.17', 'US>>0604451328', 180)
+    INTO performances (performer, when, sequ, songtitle, songwriter, duration) VALUES ('Cunegunda', TO_DATE('20/07/2019', 'DD-MM-YYYY'), 28, 'Il Signore della notte Vol.18', 'US>>0604451328', 180)
+    INTO performances (performer, when, sequ, songtitle, songwriter, duration) VALUES ('Cunegunda', TO_DATE('20/07/2019', 'DD-MM-YYYY'), 29, 'Il Signore della notte Vol.19', 'US>>0604451328', 180)
+    INTO performances (performer, when, sequ, songtitle, songwriter, duration) VALUES ('Cunegunda', TO_DATE('20/07/2019', 'DD-MM-YYYY'), 30, 'Il Signore della notte Vol.20', 'US>>0604451328', 180)
+    INTO performances (performer, when, sequ, songtitle, songwriter, duration) VALUES ('Cunegunda', TO_DATE('20/07/2019', 'DD-MM-YYYY'), 31, 'Il Signore della notte Vol.21', 'US>>0604451328', 180)
+    INTO performances (performer, when, sequ, songtitle, songwriter, duration) VALUES ('Cunegunda', TO_DATE('20/07/2019', 'DD-MM-YYYY'), 32, 'Il Signore della notte Vol.22', 'US>>0604451328', 180)
+    INTO performances (performer, when, sequ, songtitle, songwriter, duration) VALUES ('Cunegunda', TO_DATE('20/07/2019', 'DD-MM-YYYY'), 33, 'Il Signore della notte Vol.23', 'US>>0604451328', 180)
+    INTO performances (performer, when, sequ, songtitle, songwriter, duration) VALUES ('Cunegunda', TO_DATE('20/07/2019', 'DD-MM-YYYY'), 34, 'Il Signore della notte Vol.24', 'US>>0604451328', 180)
+    INTO performances (performer, when, sequ, songtitle, songwriter, duration) VALUES ('Cunegunda', TO_DATE('20/07/2019', 'DD-MM-YYYY'), 35, 'Il Signore della notte Vol.25', 'US>>0604451328', 180)
+    INTO performances (performer, when, sequ, songtitle, songwriter, duration) VALUES ('Cunegunda', TO_DATE('20/07/2019', 'DD-MM-YYYY'), 36, 'Il Signore della notte Vol.26', 'US>>0604451328', 180)
+    INTO performances (performer, when, sequ, songtitle, songwriter, duration) VALUES ('Cunegunda', TO_DATE('20/07/2019', 'DD-MM-YYYY'), 37, 'Il Signore della notte Vol.27', 'US>>0604451328', 180)
+    INTO performances (performer, when, sequ, songtitle, songwriter, duration) VALUES ('Cunegunda', TO_DATE('20/07/2019', 'DD-MM-YYYY'), 38, 'Il Signore della notte Vol.28', 'US>>0604451328', 180)
+    INTO performances (performer, when, sequ, songtitle, songwriter, duration) VALUES ('Cunegunda', TO_DATE('20/07/2019', 'DD-MM-YYYY'), 39, 'Il Signore della notte Vol.29', 'US>>0604451328', 180)
+    INTO performances (performer, when, sequ, songtitle, songwriter, duration) VALUES ('Cunegunda', TO_DATE('20/07/2019', 'DD-MM-YYYY'), 40, 'Il Signore della notte Vol.30', 'US>>0604451328', 180)
+    SELECT 1 FROM DUAL
 
