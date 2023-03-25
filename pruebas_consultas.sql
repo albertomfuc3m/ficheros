@@ -125,23 +125,25 @@ INSERT ALL
 ----------------------------------PRUEBA-5----------------------------------
 
 -- Para un interprete sin musicos, ni interpretaciones, ni tracks, ambos porcentajes son NULL
-INSERT INTO performer
+INSERT INTO performers
     (name, nationality, language)
     VALUES 
-        ('Cunegunga Renacido', 'Spanish', 'Spanish');
+        ('Cunegunda Renacido', 'Spanish', 'Spanish');
 
 -- Si insertamos un track pasaran a ser 0 porque no tiene musicos que las hayan podido escribir
 INSERT INTO albums
     (pair, performer, format, title, rel_date, publisher, manager)
     VALUES
-        ('MELLAMOCARLOS', 'Cunegunda Renacido', 'V', 'Cunegunda Rencido, EL ALBUM', TO_DATE('20/07/2019', 'DD-MM-YYYY'), 'QuickSilver', 555336234)
+        ('MELLAMOCARLOS', 'Cunegunda Renacido', 'V', 'Cunegunda Rencido, EL ALBUM', TO_DATE('20/07/2019', 'DD-MM-YYYY'), 'QuickSilver', 555336234);
 INSERT INTO tracks 
     (pair, sequ, title, writer, duration, rec_date, studio, engineer) 
     VALUES 
-        ('MELLAMOCARLOS',  1, 'Il Signore della notte Vol.01', 'US>>0604451328', 180, TO_DATE('01/01/2000', 'DD-MM-YYYY'), NULL, 'M.A. Peña')
+        ('MELLAMOCARLOS',  1, 'Il Signore della notte Vol.01', 'US>>0604451328', 180, TO_DATE('01/01/2000', 'DD-MM-YYYY'), NULL, 'M.A. Peña');
 
 
-----------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------------------------------
+
+
 
 ----------------------------------PRUEBA-1---------------------------------
 
@@ -150,9 +152,9 @@ INSERT INTO tracks
 
 INSERT ALL
     INTO concerts (performer, when, tour, municipality, address, country, attendance, duration, manager)
-        VALUES ('Cunegunda Renacido', TO_DATE('01/01/2010', 'DD-MM-YYYY'), NULL, 'Leganes', 'Avenida 123', 'Spain', 0, NULL, NULL)
+        VALUES ('Cunegunda Renacido', TO_DATE('01/01/2010', 'DD-MM-YYYY'), NULL, 'Leganes', 'Avenida 123', 'Spain', 0, NULL, 555336234)
     INTO concerts (performer, when, tour, municipality, address, country, attendance, duration, manager)
-        VALUES ('Cunegunda Renacido', TO_DATE('01/01/2020', 'DD-MM-YYYY'), NULL, 'Leganes', 'Avenida 123', 'Spain', 0, NULL, NULL)
+        VALUES ('Cunegunda Renacido', TO_DATE('01/01/2020', 'DD-MM-YYYY'), NULL, 'Leganes', 'Avenida 123', 'Spain', 0, NULL, 555336234)
     SELECT 1 FROM DUAL;
 
 INSERT ALL 
@@ -162,4 +164,21 @@ INSERT ALL
         VALUES ('Cunegunda Renacido', TO_DATE('01/01/2020', 'DD-MM-YYYY'), 12, 'Il Signore della notte Vol.01', 'US>>0604451328', 180)
     SELECT 1 FROM DUAL;
 
--- Sin tener en cuenta el %, vemos que la media es
+-- Sin tener en cuenta el %, vemos que la media es 5479 dias
+-- Del 1/1/2000 al 01/01/2020 hay 7305 dias
+-- Del 1/1/2000 al 01/01/2010 hay 3653 dias
+-- Siendo la media 5479 dias
+
+----------------------------------PRUEBA-2---------------------------------
+
+-- Añadiendo una interpretacion de otra cancion que no a grabado, su porcentaje pasa a ser 50%
+INSERT performances 
+    (performer, when, sequ, songtitle, songwriter, duration) 
+    VALUES 
+        ('Cunegunda Renacido', TO_DATE('01/01/2010', 'DD-MM-YYYY'), 13, 'Il Signore della notte Vol.02', 'US>>0604451328', 180);
+
+----------------------------------PRUEBA-3---------------------------------
+
+-- Si se diese el caso de que no ha grabado ninguna cancion que ha interpretado no apareceria en la media y su porcentaje seria 0
+DELETE FROM tracks 
+    WHERE pair IN (SELECT pair FROM albums WHERE performer = 'Cunegunda Renacido');
