@@ -67,29 +67,28 @@ CREATE OR REPLACE PACKAGE BODY melopack AS
         duration NUMBER
         ) IS
     
-            cuenta1 NUMBER;
-            cuenta2 NUMBER;
-            cuenta3 NUMBER;
-            cuenta4 NUMBER;
-            cuenta5 NUMBER;
-            cuenta6 NUMBER;
+            cuenta1 NUMBER(3);
+            cuenta2 NUMBER(3);
+            cuenta3 NUMBER(3);
+            cuenta4 NUMBER(3);
+            cuenta5 NUMBER(3);
+            cuenta6 NUMBER(3);
 
-            exists_format CHAR;
-            exists_title VARCHAR2;
+            exists_format CHAR(1);
+            exists_title VARCHAR2(50);
             exists_rel_date DATE;
-            exists_publisher VARCHAR2;
-            exists_manager NUMBER;
+            exists_publisher VARCHAR2(25);
+            exists_manager NUMBER(9);
 
             BEGIN
                 IF interprete_actual is not NULL THEN
                     -- Comprobar las filas referenciadas
-
                     SELECT 
                         count(*)
                         INTO cuenta1
                         FROM albums
                     WHERE pair = id_pair;
-
+                    
                     SELECT 
                         count(*)
                         INTO cuenta2
@@ -119,9 +118,8 @@ CREATE OR REPLACE PACKAGE BODY melopack AS
                         INTO cuenta6
                         FROM tracks
                     WHERE pair = id_pair AND sequ = sequ;
-
+                    
                     IF cuenta1 = 0 THEN
-
                         IF  cuenta2 != 0 AND 
                             cuenta3 != 0 AND 
                             (format = 'C' OR format = 'M' OR format = 'S' OR format = 'T' OR format = 'V') AND
@@ -130,7 +128,7 @@ CREATE OR REPLACE PACKAGE BODY melopack AS
                             sequ is not NULL AND
                             cuenta4 != 0 AND
                             rec_date is not NULL AND
-                            cuenta5 != 0 AND
+                            (cuenta5 != 0 or id_studio is NULL) AND
                             engineer is not NULL AND
                             duration is not NULL THEN
 
@@ -145,29 +143,29 @@ CREATE OR REPLACE PACKAGE BODY melopack AS
                             VALUES 
                                 (id_pair, sequ, id_title_song, id_writer_song, rec_date, id_studio, engineer, duration);
                         END IF;
-
+                    
                     ELSE
-
-                        SELECT
-                            (format, title, rel_date, publisher, manager)
+                        
+                        SELECT DISTINCT
+                            format, title, rel_date, publisher, manager
                             INTO 
-                                exists_format CHAR,
-                                exists_title VARCHAR2,
-                                exists_rel_date DATE,
-                                exists_publisher VARCHAR2,
-                                exists_manager NUMBER
+                                exists_format,
+                                exists_title,
+                                exists_rel_date,
+                                exists_publisher,
+                                exists_manager
                             FROM albums
                         WHERE pair = id_pair;
 
-
+                        
                         IF  format = exists_format AND
                             title = exists_title AND
                             rel_date = exists_rel_date AND
-                            publisher = exists_publisher AND
-                            manager = exists_manager AND
+                            id_publisher = exists_publisher AND
+                            id_manager = exists_manager AND
                             cuenta6 = 0 AND
                             cuenta4 != 0 AND
-                            (cuenta5 != 0 or studio is NULL) AND
+                            (cuenta5 != 0 or id_studio is NULL) AND
                             engineer is not NULL AND
                             duration is not NULL AND
                             rec_date is not NULL THEN
@@ -178,8 +176,10 @@ CREATE OR REPLACE PACKAGE BODY melopack AS
                                 (id_pair, sequ, id_title_song, id_writer_song, rec_date, id_studio, engineer, duration);
 
                         END IF;
-
+                        
+            
                     END IF;
+                    
                 END IF;
             END insertar_album_track;
 
@@ -605,4 +605,3 @@ CREATE OR REPLACE PACKAGE BODY melopack AS
 
         END informe;
 END melopack;
-
