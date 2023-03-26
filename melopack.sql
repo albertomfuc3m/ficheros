@@ -158,7 +158,6 @@ CREATE OR REPLACE PACKAGE BODY melopack AS
                                 exists_manager
                             FROM albums
                         WHERE pair = id_pair;
-                        dbms_output.put_line('AQUI ---' || cuenta6);
                         
                         IF  interprete_actual = exists_performer AND
                             format = exists_format AND
