@@ -79,6 +79,7 @@ CREATE OR REPLACE PACKAGE BODY melopack AS
             exists_rel_date DATE;
             exists_publisher VARCHAR2(25);
             exists_manager NUMBER(9);
+            exists_performer VARCHAR2(50);
 
             BEGIN
                 IF interprete_actual is not NULL THEN
@@ -147,8 +148,9 @@ CREATE OR REPLACE PACKAGE BODY melopack AS
                     ELSE
                         
                         SELECT DISTINCT
-                            format, title, rel_date, publisher, manager
+                            performer, format, title, rel_date, publisher, manager
                             INTO 
+                                exists_performer,
                                 exists_format,
                                 exists_title,
                                 exists_rel_date,
@@ -158,7 +160,8 @@ CREATE OR REPLACE PACKAGE BODY melopack AS
                         WHERE pair = id_pair;
 
                         
-                        IF  format = exists_format AND
+                        IF  interprete_actual = exists_performer AND
+                            format = exists_format AND
                             title = exists_title AND
                             rel_date = exists_rel_date AND
                             id_publisher = exists_publisher AND
