@@ -185,13 +185,13 @@ CREATE OR REPLACE PACKAGE BODY melopack AS
                 END IF;
             END insertar_album_track;
 
-    PROCEDURE borrar_track(id_pair CHAR, sequ NUMBER) AS
+    PROCEDURE borrar_track(id_pair CHAR, s3qu NUMBER) AS
         cuenta NUMBER;
         BEGIN
             SELECT count(*)
                 INTO cuenta
                 FROM tracks
-            WHERE pair = id_pair AND sequ = sequ;
+            WHERE pair = id_pair AND sequ = s3qu;
 
             IF cuenta > 0 THEN
                 SELECT count(*)
@@ -202,7 +202,7 @@ CREATE OR REPLACE PACKAGE BODY melopack AS
                 IF cuenta = 1 THEN
                     DELETE FROM albums WHERE PAIR = id_pair;
                 ELSE
-                    DELETE FROM tracks WHERE PAIR = id_pair AND sequ = sequ;
+                    DELETE FROM tracks WHERE PAIR = id_pair AND sequ = s3qu;
                 END IF;
 
             END IF;

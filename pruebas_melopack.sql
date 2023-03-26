@@ -63,3 +63,24 @@ from (
     ) 
 where performer = 'Cunegunda' AND albums.pair = 'A4372UPF9634M4M'
 group by albums.pair;
+
+----------------------------------PRUEBA-3-2----------------------------------
+
+-- Si insertamos un album nuevo con una sola cancion
+EXEC melopack.insertar_album_track( 'ALBUM-NUEVO', 'V', 'Cunegunda Renacido, EL ALBUM', 
+                                    TO_DATE('20/07/2019', 'DD-MM-YYYY'),  'QuickSilver', 555336234, 
+                                    100, 'Il Signore della notte Vol.18', 'US>>0604451328',SYSDATE, 
+                                    NULL, 'RIKI GONZ', 100);
+EXEC melopack.borrar_track('ALBUM-NUEVO', 100);
+-- Se borran tanto el album, como el track
+SELECT * FROM albums WHERE pair = 'ALBUM-NUEVO';
+
+----------------------------------PRUEBA-3-3----------------------------------
+
+-- Si intentamos borrar una cancion en un album que no existe
+-- O un track que no existe en un album que si, no pasara nada
+EXEC melopack.borrar_track('ALBUM-QUE-NO-EXISTE', 1);
+
+-- Este album no tiene un track #100
+EXEC melopack.borrar_track('A4372UPF9634M4M', 100);
+
