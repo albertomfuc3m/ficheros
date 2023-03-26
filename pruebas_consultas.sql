@@ -153,7 +153,7 @@ INSERT INTO musicians
 INSERT INTO involvement
     (band, musician, role, start_d, end_d)
     VALUES
-        ('Cunegunda Renacido', 'ES>>PASAPORTE', 'Solist', TO_DATE('01/01/2000', 'DD-MM-YYYY'), NULL)
+        ('Cunegunda Renacido', 'ES>>PASAPORTE', 'Solist', TO_DATE('01/01/2000', 'DD-MM-YYYY'), NULL);
 
 -- Deberian estar en albums, pero es mas facil para los ejemplos dejarlas aparte
 -- Son canciones sin grabacion

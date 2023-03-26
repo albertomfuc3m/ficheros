@@ -127,7 +127,8 @@ CREATE OR REPLACE PACKAGE BODY melopack AS
                         VALUES 
                             (id_pair, sequ, id_title_song, id_writer_song, rec_date, id_studio, engineer, duration);
                         
-                    
+                    ELSE
+                        -- Imprimir un mensaje de que esta mal
                     END IF;
                 END IF;
             END insertar_album_track;
