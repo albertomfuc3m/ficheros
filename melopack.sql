@@ -106,15 +106,14 @@ CREATE OR REPLACE PACKAGE BODY melopack AS
                         FROM studios
                     WHERE name = id_studio;
 
-                    IF  cuenta1 != 0 AND 
-                        cuenta2 != 0 AND 
+                    IF  cuenta2 != 0 AND 
                         cuenta3 != 0 AND 
                         cuenta4 != 0 AND 
                         cuenta5 != 0 AND 
                         (format = 'C' OR format = 'M' OR format = 'S' OR format = 'T' OR format = 'V') THEN
                         -- datos referenciados existen
 
-                        IF pair_album is NULL THEN 
+                        IF cuenta1 = 0 THEN 
                             INSERT INTO albums
                             (PAIR, performer, format, title, rel_date, publisher, manager)
                             VALUES 
