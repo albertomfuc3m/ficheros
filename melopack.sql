@@ -72,10 +72,18 @@ CREATE OR REPLACE PACKAGE BODY melopack AS
             cuenta3 NUMBER;
             cuenta4 NUMBER;
             cuenta5 NUMBER;
+            cuenta6 NUMBER;
+
+            exists_format CHAR;
+            exists_title VARCHAR2;
+            exists_rel_date DATE;
+            exists_publisher VARCHAR2;
+            exists_manager NUMBER;
 
             BEGIN
                 IF interprete_actual is not NULL THEN
                     -- Comprobar las filas referenciadas
+
                     SELECT 
                         count(*)
                         INTO cuenta1
@@ -93,7 +101,7 @@ CREATE OR REPLACE PACKAGE BODY melopack AS
                         INTO cuenta3
                         FROM managers
                     WHERE mobile = id_manager;
-                    
+
                     SELECT 
                         count(*)
                         INTO cuenta4
@@ -106,28 +114,71 @@ CREATE OR REPLACE PACKAGE BODY melopack AS
                         FROM studios
                     WHERE name = id_studio;
 
-                    IF  cuenta2 != 0 AND 
-                        cuenta3 != 0 AND 
-                        cuenta4 != 0 AND 
-                        cuenta5 != 0 AND 
-                        (format = 'C' OR format = 'M' OR format = 'S' OR format = 'T' OR format = 'V') THEN
-                        -- datos referenciados existen
+                    SELECT 
+                        count(*)
+                        INTO cuenta6
+                        FROM tracks
+                    WHERE pair = id_pair AND sequ = sequ;
 
-                        IF cuenta1 = 0 THEN 
+                    IF cuenta1 = 0 THEN
+
+                        IF  cuenta2 != 0 AND 
+                            cuenta3 != 0 AND 
+                            (format = 'C' OR format = 'M' OR format = 'S' OR format = 'T' OR format = 'V') AND
+                            title is not NULL AND
+                            rel_date is not NULL AND
+                            sequ is not NULL AND
+                            cuenta4 != 0 AND
+                            rec_date is not NULL AND
+                            cuenta5 != 0 AND
+                            engineer is not NULL AND
+                            duration is not NULL THEN
+
+                            -- Tiene que estar bien toda la informacion, sino no insertamos nada
                             INSERT INTO albums
                             (PAIR, performer, format, title, rel_date, publisher, manager)
                             VALUES 
                                 (id_pair, interprete_actual, format, title, rel_date, id_publisher, id_manager);
+
+                            INSERT INTO tracks
+                            (PAIR, sequ, title, writer, rec_date, studio, engineer, duration)
+                            VALUES 
+                                (id_pair, sequ, id_title_song, id_writer_song, rec_date, id_studio, engineer, duration);
                         END IF;
 
-                        
-                        INSERT INTO tracks
-                        (PAIR, sequ, title, writer, rec_date, studio, engineer, duration)
-                        VALUES 
-                            (id_pair, sequ, id_title_song, id_writer_song, rec_date, id_studio, engineer, duration);
-                        
                     ELSE
-                        -- Imprimir un mensaje de que esta mal
+
+                        SELECT
+                            (format, title, rel_date, publisher, manager)
+                            INTO 
+                                exists_format CHAR,
+                                exists_title VARCHAR2,
+                                exists_rel_date DATE,
+                                exists_publisher VARCHAR2,
+                                exists_manager NUMBER
+                            FROM albums
+                        WHERE pair = id_pair;
+
+
+                        IF  format = exists_format AND
+                            title = exists_title AND
+                            rel_date = exists_rel_date AND
+                            publisher = exists_publisher AND
+                            manager = exists_manager AND
+                            cuenta6 = 0 AND
+                            cuenta4 != 0 AND
+                            (cuenta5 != 0 or studio is NULL) AND
+                            engineer is not NULL AND
+                            duration is not NULL AND
+                            rec_date is not NULL THEN
+
+                            INSERT INTO tracks
+                            (PAIR, sequ, title, writer, rec_date, studio, engineer, duration)
+                            VALUES 
+                                (id_pair, sequ, id_title_song, id_writer_song, rec_date, id_studio, engineer, duration);
+
+                        END IF;
+
                     END IF;
                 END IF;
             END insertar_album_track;

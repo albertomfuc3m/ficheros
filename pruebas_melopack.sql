@@ -17,10 +17,6 @@ TO_DATE('20/07/2019', 'DD-MM-YYYY'), 'QuickSilver', 555336234);
 -- Utilizamos este album
 -- Primero insertamos un track nuevo en un album existente
 
-('MELLAMOCARLOS',  1, 'Il Signore della notte Vol.01', 'US>>0604451328', 180, TO_DATE('01/01/2000', 'DD-MM-YYYY'), NULL, 'M.A. Peña');
-melopack.insertar(
-    'MELLAMOCARLOS', NULL, NULL, NULL, NULL, NULL, 
-    100, 'Il Signore della notte Vol.18', 'US>>0604451328',SYSDATE, NULL, 'RIKI GONZ', 100
-);
 
+exec melopack.insertar_album_track('MELLAMOCARLOS', NULL, NULL, NULL, NULL, NULL, 100, 'Il Signore della notte Vol.18', 'US>>0604451328',SYSDATE, NULL, 'RIKI GONZ', 100);
 SELECT * FROM tracks WHERE pair = 'MELLAMOCARLOS' AND sequ = 100;
