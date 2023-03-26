@@ -28,9 +28,18 @@ SELECT * FROM tracks WHERE pair = 'MELLAMOCARLOS' AND sequ = 100;
 ----------------------------------PRUEBA-2-2----------------------------------
 
 -- Cambiamos el PAIR, para crear un album nuevo
-EXEC melopack.insertar_album_track( 'MELLAMO-PATO', 'V', 'Cunegunda Renacido, EL ALBUM', 
-                                    TO_DATE('20/07/2019', 'DD-MM-YYYY'),  'QuickSilver', 555336234, 
-                                    100, 'Il Signore della notte Vol.18', 'US>>0604451328',SYSDATE, 
-                                    NULL, 'RIKI GONZ', 100);
+EXEC melopack.insertar_album_track( 'MELLAMO-PATO', 'V', 'Cunegunda Renacido, EL ALBUM', TO_DATE('20/07/2019', 'DD-MM-YYYY'),  'QuickSilver', 555336234, 100, 'Il Signore della notte Vol.18', 'US>>0604451328',SYSDATE, NULL, 'RIKI GONZ', 100);
 SELECT * FROM albums WHERE pair = 'MELLAMO-PATO';
 SELECT * FROM tracks WHERE pair = 'MELLAMOCARLOS' AND sequ = 100;
+
+
+----------------------------------PRUEBA-2-3----------------------------------
+
+-- Si intentamos insertar un track, sobre un album que previamente insertamo
+-- pero una de las columnas referenciadas no existe NO se inserta
+-- En este caso la discografia NO-EXISTO
+EXEC melopack.insertar_album_track( 'MELLAMO-PATO', 'V', 'Cunegunda Renacido, EL ALBUM', 
+                                    TO_DATE('20/07/2019', 'DD-MM-YYYY'),  'NO-EXISTO', 555336234, 
+                                    100, 'Il Signore della notte Vol.18', 'US>>0604451328',SYSDATE, 
+                                    NULL, 'RIKI GONZ', 100);
+SELECT * FROM tracks WHERE pair = 'MELLAMO-PATO' AND sequ = 100;
