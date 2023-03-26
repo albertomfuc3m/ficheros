@@ -254,7 +254,6 @@ INSERT INTO performances
     (performer, when, sequ, songtitle, songwriter, duration) 
     VALUES 
         ('Cunegunda Renacido', TO_DATE('01/01/2020', 'DD-MM-YYYY'), 14, 'Il Signore della notte Vol.02', 'US>>0604451328', 180);
-select * from tracks where pair = 'MELLAMOCARLOS'
 
 -- En cambio si añadimos otr pareja de track y interpretacion con las fechas bien
 -- La media sale 1/1/20 - 1/1/10 = 3652 dias, si tener en cuenta la anterior
