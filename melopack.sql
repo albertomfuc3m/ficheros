@@ -397,7 +397,7 @@ CREATE OR REPLACE PACKAGE BODY melopack AS
             SELECT * FROM FINAL_managers_conciertos;
 
         CURSOR c_conciertos IS 
-            WITH temp_conciertos0 as (
+            WITH duracion_canciones as (
                 SELECT
                     concerts.performer as p,
                     count(*) as total_canciones,
@@ -413,7 +413,7 @@ CREATE OR REPLACE PACKAGE BODY melopack AS
                 WHERE concerts.performer = interprete_actual
                 GROUP BY concerts.performer
             ),
-            temp_conciertos1 as (
+            n_conciertos_periodo as (
                 SELECT 
                     performer as p, 
                     count(*) as n_conciertos
@@ -422,35 +422,35 @@ CREATE OR REPLACE PACKAGE BODY melopack AS
                 WHERE performer = interprete_actual
                 GROUP BY performer
             ),
-            temp0 as (
+            1concierto as (
                 SELECT
-                    temp_conciertos0.p,
-                    round(temp_conciertos0.total_canciones/temp_conciertos1.n_conciertos, 1) as m_canciones,
-                    round(temp_conciertos0.total_duration/temp_conciertos1.n_conciertos, 1) as m_duration,
+                    duracion_canciones.p,
+                    round(duracion_canciones.total_canciones/n_conciertos_periodo.n_conciertos, 1) as m_canciones,
+                    round(duracion_canciones.total_duration/n_conciertos_periodo.n_conciertos, 1) as m_duration,
                     0 as m_periodicidad
                 FROM (
-                    temp_conciertos0
+                    duracion_canciones
                     INNER JOIN
-                    temp_conciertos1
-                    ON temp_conciertos0.p = temp_conciertos1.p
-                ) where temp_conciertos1.n_conciertos = 1
+                    n_conciertos_periodo
+                    ON duracion_canciones.p = n_conciertos_periodo.p
+                ) where n_conciertos_periodo.n_conciertos = 1
             ),
-            temp1 as (
+            Nconciertos as (
                 SELECT
-                    temp_conciertos0.p,
-                    round(temp_conciertos0.total_canciones/temp_conciertos1.n_conciertos, 1) as m_canciones,
-                    round(temp_conciertos0.total_duration/temp_conciertos1.n_conciertos, 1) as m_duration,
-                    round(temp_conciertos1.periodo/(temp_conciertos1.n_conciertos-1), 1) as m_periodicidad
+                    duracion_canciones.p,
+                    round(duracion_canciones.total_canciones/n_conciertos_periodo.n_conciertos, 1) as m_canciones,
+                    round(duracion_canciones.total_duration/n_conciertos_periodo.n_conciertos, 1) as m_duration,
+                    round(n_conciertos_periodo.periodo/(n_conciertos_periodo.n_conciertos-1), 1) as m_periodicidad
                 FROM (
-                    temp_conciertos0
+                    duracion_canciones
                     INNER JOIN
-                    temp_conciertos1
-                    ON temp_conciertos0.p = temp_conciertos1.p
-                ) where temp_conciertos1.n_conciertos > 1
+                    n_conciertos_periodo
+                    ON duracion_canciones.p = n_conciertos_periodo.p
+                ) where n_conciertos_periodo.n_conciertos > 1
             ),
             FINAL_conciertos as (
                 SELECT *
-                FROM (SELECT * FROM temp0 UNION SELECT * FROM temp1)
+                FROM (SELECT * FROM 1concierto UNION SELECT * FROM Nconciertos)
                     
             )
             SELECT * FROM FINAL_conciertos;
