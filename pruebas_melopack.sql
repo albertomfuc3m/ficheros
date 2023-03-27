@@ -180,3 +180,5 @@ INSERT ALL
         (performer, when, sequ, songtitle, songwriter, duration) VALUES
         VALUES ('INT-NOOB', TO_DATE('01/01/2010', 'DD-MM-YYYY'), 40, 'CANCION-INFORME', 'US>>0604451328', 500)
     SELECT 1 FROM DUAL;
+
+-- Hemos insertado dos conciertos

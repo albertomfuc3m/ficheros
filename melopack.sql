@@ -401,8 +401,7 @@ CREATE OR REPLACE PACKAGE BODY melopack AS
                 SELECT
                     concerts.performer as p,
                     count(*) as total_canciones,
-                    sum(performances.duration) as total_duration,
-                    MAX(concerts.when) - MIN(concerts.when) as total_periodo
+                    sum(performances.duration) as total_duration
                 FROM (
                     concerts
                     INNER JOIN
@@ -417,7 +416,8 @@ CREATE OR REPLACE PACKAGE BODY melopack AS
             temp_conciertos1 as (
                 SELECT 
                     performer as p, 
-                    count(*) as n_conciertos 
+                    count(*) as n_conciertos
+                    MAX(when) - MIN(when) as periodo
                 FROM concerts
                 WHERE performer = interprete_actual
                 GROUP BY performer
@@ -440,7 +440,7 @@ CREATE OR REPLACE PACKAGE BODY melopack AS
                     temp_conciertos0.p,
                     round(temp_conciertos0.total_canciones/temp_conciertos1.n_conciertos, 1) as m_canciones,
                     round(temp_conciertos0.total_duration/temp_conciertos1.n_conciertos, 1) as m_duration,
-                    round(temp_conciertos0.total_periodo/(temp_conciertos1.n_conciertos-1), 1) as m_periodicidad
+                    round(temp_conciertos1.periodo/(temp_conciertos1.n_conciertos-1), 1) as m_periodicidad
                 FROM (
                     temp_conciertos0
                     INNER JOIN
