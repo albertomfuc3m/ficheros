@@ -422,17 +422,36 @@ CREATE OR REPLACE PACKAGE BODY melopack AS
                 WHERE performer = interprete_actual
                 GROUP BY performer
             ),
-            FINAL_conciertos as (
+            temp0 as (
+                SELECT
+                    temp_conciertos0.p,
+                    round(temp_conciertos0.total_canciones/temp_conciertos1.n_conciertos, 1) as m_canciones,
+                    round(temp_conciertos0.total_duration/temp_conciertos1.n_conciertos, 1) as m_duration,
+                    0 as m_periodicidad
+                FROM (
+                    temp_conciertos0
+                    INNER JOIN
+                    temp_conciertos1
+                    ON temp_conciertos0.p = temp_conciertos1.p
+                ) where temp_conciertos1.n_conciertos = 1
+            ),
+            temp1 as (
                 SELECT
                     temp_conciertos0.p,
                     round(temp_conciertos0.total_canciones/temp_conciertos1.n_conciertos, 1) as m_canciones,
                     round(temp_conciertos0.total_duration/temp_conciertos1.n_conciertos, 1) as m_duration,
                     round(temp_conciertos0.total_periodo/(temp_conciertos1.n_conciertos-1), 1) as m_periodicidad
-                FROM 
+                FROM (
                     temp_conciertos0
                     INNER JOIN
                     temp_conciertos1
                     ON temp_conciertos0.p = temp_conciertos1.p
+                ) where temp_conciertos1.n_conciertos > 1
+            ),
+            FINAL_conciertos as (
+                SELECT *
+                FROM (SELECT * FROM temp0 UNION SELECT * FROM temp1)
+                    
             )
             SELECT * FROM FINAL_conciertos;
         CURSOR c_albums IS 
@@ -452,7 +471,7 @@ CREATE OR REPLACE PACKAGE BODY melopack AS
                 SELECT 
                     performer AS p,
                     format AS f,
-                    ROUND((MAX(rel_date) - MIN(rel_date))/COUNT(*), 0) AS t, 
+                    ROUND((MAX(rel_date) - MIN(rel_date))/(COUNT(*)-1), 0) AS t, 
                     COUNT(*) AS c
                 FROM albums
                 WHERE performer = interprete_actual
@@ -463,7 +482,7 @@ CREATE OR REPLACE PACKAGE BODY melopack AS
             
             n_albums_format AS (
                 SELECT *
-                FROM (n_albums1 UNION n_albumsN)
+                FROM (SELECT * FROM n_albums1 UNION SELECT * FROM n_albumsN)
             ),
             temp_canciones AS (
                 SELECT
