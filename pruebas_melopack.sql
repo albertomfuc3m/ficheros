@@ -35,7 +35,7 @@ EXEC melopack.insertar_album_track( 'MELLAMO-PATO', 'V', 'Cunegunda Renacido, EL
                                     100, 'Il Signore della notte Vol.18', 'US>>0604451328',SYSDATE, 
                                     NULL, 'RIKI GONZ', 100);
 SELECT * FROM albums WHERE pair = 'MELLAMO-PATO';
-SELECT * FROM tracks WHERE pair = 'MELLAMOCARLOS' AND sequ = 100;
+SELECT * FROM tracks WHERE pair = 'MELLAMO-PATO' AND sequ = 100;
 
 
 ----------------------------------PRUEBA-2-3----------------------------------
@@ -105,12 +105,6 @@ EXEC melopack.informe();
 
 ----------------------------------PRUEBA-4-2----------------------------------
 
--- Un ejemplo de informe de un artista muchos con datos
-EXEC melopack.asignar('Cunegunda Renacido');
-EXEC melopack.informe();
-
-----------------------------------PRUEBA-4-3----------------------------------
-
 -- Viendo datos específicos con un interprete nuevo
 INSERT INTO performers
     (name, nationality, language)
@@ -158,13 +152,13 @@ INSERT
 
     INTO tracks 
         (pair, sequ, title, writer, duration, rec_date, studio, engineer)
-        VALUES ('PAIR-3', 1, 'CANCION-INFORME', 'US>>0604451328', 1500,  TO_DATE('01/01/2000', 'DD-MM-YYYY'), NULL, 'Jeff Bezos'),
+        VALUES ('PAIR-3', 1, 'CANCION-INFORME', 'US>>0604451328', 500,  TO_DATE('01/01/2000', 'DD-MM-YYYY'), NULL, 'Jeff Bezos'),
     INTO tracks 
         (pair, sequ, title, writer, duration, rec_date, studio, engineer)
-        VALUES ('PAIR-4', 1, 'CANCION-INFORME', 'US>>0604451328', 1500,  TO_DATE('01/01/2000', 'DD-MM-YYYY'), NULL, 'Jeff Bezos'),
+        VALUES ('PAIR-4', 1, 'CANCION-INFORME', 'US>>0604451328', 500,  TO_DATE('01/01/2000', 'DD-MM-YYYY'), NULL, 'Jeff Bezos'),
     INTO tracks 
         (pair, sequ, title, writer, duration, rec_date, studio, engineer)
-        VALUES ('PAIR-5', 1, 'CANCION-INFORME', 'US>>0604451328', 1500,  TO_DATE('01/01/2000', 'DD-MM-YYYY'), NULL, 'Jeff Bezos')
+        VALUES ('PAIR-5', 1, 'CANCION-INFORME', 'US>>0604451328', 500,  TO_DATE('01/01/2000', 'DD-MM-YYYY'), NULL, 'Jeff Bezos')
     SELECT 1 FROM DUAL;
 
 
@@ -173,7 +167,7 @@ INSERT
 --  ambos con 3 canciones de 100 minutos
 
 -- 3 albums single, 
---  12 años entre el primero y el segundo
+--  12 años entre el primero y el ultimo
 --  cada uno con una cancion de de 100 minutos
 
 EXEC melopack.asignar('INTERPRETE-NOOB');

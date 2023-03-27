@@ -21,7 +21,7 @@ CREATE OR REPLACE PACKAGE melopack AS
         engineer VARCHAR2,
         duration NUMBER
         );
-    PROCEDURE borrar_track(id_pair CHAR, sequ NUMBER);
+    PROCEDURE borrar_track(id_pair CHAR, s3qu NUMBER);
     PROCEDURE informe;
 
 END melopack;
@@ -427,7 +427,7 @@ CREATE OR REPLACE PACKAGE BODY melopack AS
                     temp_conciertos0.p,
                     round(temp_conciertos0.total_canciones/temp_conciertos1.n_conciertos, 1) as m_canciones,
                     round(temp_conciertos0.total_duration/temp_conciertos1.n_conciertos, 1) as m_duration,
-                    round(temp_conciertos0.total_periodo/temp_conciertos1.n_conciertos, 1) as m_periodicidad
+                    round(temp_conciertos0.total_periodo/(temp_conciertos1.n_conciertos-1), 1) as m_periodicidad
                 FROM 
                     temp_conciertos0
                     INNER JOIN
@@ -436,7 +436,19 @@ CREATE OR REPLACE PACKAGE BODY melopack AS
             )
             SELECT * FROM FINAL_conciertos;
         CURSOR c_albums IS 
-            WITH n_albums_format AS (
+            WITH n_albums1 as (
+                SELECT 
+                    performer AS p,
+                    format AS f,
+                    0 AS t, 
+                    COUNT(*) AS c
+                FROM albums
+                WHERE performer = interprete_actual
+                GROUP BY format, performer
+                HAVING COUNT(*) = 1
+                ORDER BY performer
+            ),
+            n_albumsN as (
                 SELECT 
                     performer AS p,
                     format AS f,
@@ -445,7 +457,13 @@ CREATE OR REPLACE PACKAGE BODY melopack AS
                 FROM albums
                 WHERE performer = interprete_actual
                 GROUP BY format, performer
+                HAVING COUNT(*) > 1
                 ORDER BY performer
+            ),
+            
+            n_albums_format AS (
+                SELECT *
+                FROM (n_albums1 UNION n_albumsN)
             ),
             temp_canciones AS (
                 SELECT
