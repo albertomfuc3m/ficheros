@@ -114,48 +114,42 @@ INSERT INTO performers
 INSERT 
 
     INTO songs (title, writer, cowriter) 
-        VALUES ('CANCION-INFORME', 'US>>0604451328', NULL),
-
-
-    INTO albums (pair, performer, format, title, rel_date)
-        VALUES ('PAIR-1', 'INT-NOOB', 'V', 'UNO', TO_DATE('01/01/2000', 'DD-MM-YYYY'), 'QuickSilver', 555336234),
-    INTO albums (pair, performer, format, title, rel_date)
-        VALUES ('PAIR-2', 'INT-NOOB', 'V', 'DOS', TO_DATE('01/01/2001', 'DD-MM-YYYY'), 'QuickSilver', 555336234),
-
+        VALUES ('CANCION-INFORME', 'US>>0604451328', NULL)
+    INTO albums (pair, performer, format, title, rel_date, publisher, manager)
+        VALUES ('PAIR-1', 'INT-NOOB', 'V', 'UNO', TO_DATE('01/01/2000', 'DD-MM-YYYY'), 'QuickSilver', 555336234)
+    INTO albums (pair, performer, format, title, rel_date, publisher, manager)
+        VALUES ('PAIR-2', 'INT-NOOB', 'V', 'DOS', TO_DATE('01/01/2001', 'DD-MM-YYYY'), 'QuickSilver', 555336234)
     INTO tracks 
         (pair, sequ, title, writer, duration, rec_date, studio, engineer)
-        VALUES ('PAIR-1', 1, 'CANCION-INFORME', 'US>>0604451328', 100,  TO_DATE('01/01/2000', 'DD-MM-YYYY'), NULL, 'Jeff Bezos'),
+        VALUES ('PAIR-1', 1, 'CANCION-INFORME', 'US>>0604451328', 100,  TO_DATE('01/01/2000', 'DD-MM-YYYY'), NULL, 'Jeff Bezos')
     INTO tracks 
         (pair, sequ, title, writer, duration, rec_date, studio, engineer)
-        VALUES ('PAIR-1', 2, 'CANCION-INFORME', 'US>>0604451328', 100,  TO_DATE('01/01/2000', 'DD-MM-YYYY'), NULL, 'Jeff Bezos'),
+        VALUES ('PAIR-1', 2, 'CANCION-INFORME', 'US>>0604451328', 100,  TO_DATE('01/01/2000', 'DD-MM-YYYY'), NULL, 'Jeff Bezos')
     INTO tracks 
         (pair, sequ, title, writer, duration, rec_date, studio, engineer)
-        VALUES ('PAIR-1', 3, 'CANCION-INFORME', 'US>>0604451328', 100,  TO_DATE('01/01/2000', 'DD-MM-YYYY'), NULL, 'Jeff Bezos'),
-    
+        VALUES ('PAIR-1', 3, 'CANCION-INFORME', 'US>>0604451328', 100,  TO_DATE('01/01/2000', 'DD-MM-YYYY'), NULL, 'Jeff Bezos')
     INTO tracks 
         (pair, sequ, title, writer, duration, rec_date, studio, engineer)
-        VALUES ('PAIR-2', 1, 'CANCION-INFORME', 'US>>0604451328', 100,  TO_DATE('01/01/2000', 'DD-MM-YYYY'), NULL, 'Jeff Bezos'),
+        VALUES ('PAIR-2', 1, 'CANCION-INFORME', 'US>>0604451328', 100,  TO_DATE('01/01/2000', 'DD-MM-YYYY'), NULL, 'Jeff Bezos')
     INTO tracks 
         (pair, sequ, title, writer, duration, rec_date, studio, engineer)
-        VALUES ('PAIR-2', 2, 'CANCION-INFORME', 'US>>0604451328', 100,  TO_DATE('01/01/2000', 'DD-MM-YYYY'), NULL, 'Jeff Bezos'),
+        VALUES ('PAIR-2', 2, 'CANCION-INFORME', 'US>>0604451328', 100,  TO_DATE('01/01/2000', 'DD-MM-YYYY'), NULL, 'Jeff Bezos')
     INTO tracks 
         (pair, sequ, title, writer, duration, rec_date, studio, engineer)
-        VALUES ('PAIR-2', 3, 'CANCION-INFORME', 'US>>0604451328', 100,  TO_DATE('01/01/2000', 'DD-MM-YYYY'), NULL, 'Jeff Bezos'),
-
-
-    INTO albums (pair, performer, format, title, rel_date)
-        VALUES ('PAIR-3', 'INT-NOOB', 'S', 'TRES', TO_DATE('01/01/2002', 'DD-MM-YYYY'), 'QuickSilver', 555336234),
-    INTO albums (pair, performer, format, title, rel_date)
-        VALUES ('PAIR-4', 'INT-NOOB', 'S', 'CUATRO', TO_DATE('01/01/2006', 'DD-MM-YYYY'), 'QuickSilver', 555336234),
-    INTO albums (pair, performer, format, title, rel_date)
-        VALUES ('PAIR-5', 'INT-NOOB', 'S', 'CUATRO', TO_DATE('01/01/2014', 'DD-MM-YYYY'), 'QuickSilver', 555336234),
+        VALUES ('PAIR-2', 3, 'CANCION-INFORME', 'US>>0604451328', 100,  TO_DATE('01/01/2000', 'DD-MM-YYYY'), NULL, 'Jeff Bezos')
+    INTO albums (pair, performer, format, title, rel_date, publisher, manager)
+        VALUES ('PAIR-3', 'INT-NOOB', 'S', 'TRES', TO_DATE('01/01/2002', 'DD-MM-YYYY'), 'QuickSilver', 555336234)
+    INTO albums (pair, performer, format, title, rel_date, publisher, manager)
+        VALUES ('PAIR-4', 'INT-NOOB', 'S', 'CUATRO', TO_DATE('01/01/2006', 'DD-MM-YYYY'), 'QuickSilver', 555336234)
+    INTO albums (pair, performer, format, title, rel_date, publisher, manager)
+        VALUES ('PAIR-5', 'INT-NOOB', 'S', 'CUATRO', TO_DATE('01/01/2014', 'DD-MM-YYYY'), 'QuickSilver', 555336234)
 
     INTO tracks 
         (pair, sequ, title, writer, duration, rec_date, studio, engineer)
-        VALUES ('PAIR-3', 1, 'CANCION-INFORME', 'US>>0604451328', 500,  TO_DATE('01/01/2000', 'DD-MM-YYYY'), NULL, 'Jeff Bezos'),
+        VALUES ('PAIR-3', 1, 'CANCION-INFORME', 'US>>0604451328', 500,  TO_DATE('01/01/2000', 'DD-MM-YYYY'), NULL, 'Jeff Bezos')
     INTO tracks 
         (pair, sequ, title, writer, duration, rec_date, studio, engineer)
-        VALUES ('PAIR-4', 1, 'CANCION-INFORME', 'US>>0604451328', 500,  TO_DATE('01/01/2000', 'DD-MM-YYYY'), NULL, 'Jeff Bezos'),
+        VALUES ('PAIR-4', 1, 'CANCION-INFORME', 'US>>0604451328', 500,  TO_DATE('01/01/2000', 'DD-MM-YYYY'), NULL, 'Jeff Bezos')
     INTO tracks 
         (pair, sequ, title, writer, duration, rec_date, studio, engineer)
         VALUES ('PAIR-5', 1, 'CANCION-INFORME', 'US>>0604451328', 500,  TO_DATE('01/01/2000', 'DD-MM-YYYY'), NULL, 'Jeff Bezos')
@@ -170,6 +164,19 @@ INSERT
 --  12 años entre el primero y el ultimo
 --  cada uno con una cancion de de 100 minutos
 
-EXEC melopack.asignar('INTERPRETE-NOOB');
+EXEC melopack.asignar('INT-NOOB');
 EXEC melopack.informe();
 
+----------------------------------PRUEBA-4-3----------------------------------
+
+INSERT ALL
+    INTO concerts 
+        (performer, when, tour, municipality, address, country, attendance, duration, manager)
+        VALUES ('INT-NOOB', TO_DATE('01/01/2000', 'DD-MM-YYYY'), NULL, 'Leganes', 'Aqui Wacho', 'Spain', 0, 555336234)
+    INTO concerts 
+        (performer, when, tour, municipality, address, country, attendance, duration, manager)
+        VALUES ('INT-NOOB', TO_DATE('01/01/2010', 'DD-MM-YYYY'), NULL, 'Leganes', 'Aqui Wacho', 'Spain', 0, 555336234)
+    INTO performances 
+        (performer, when, sequ, songtitle, songwriter, duration) VALUES
+        VALUES ('INT-NOOB', TO_DATE('01/01/2010', 'DD-MM-YYYY'), 40, 'CANCION-INFORME', 'US>>0604451328', 500)
+    SELECT 1 FROM DUAL;
